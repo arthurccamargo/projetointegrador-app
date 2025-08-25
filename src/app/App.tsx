@@ -1,5 +1,5 @@
 import { Button, TextField, Card, CardContent } from '@mui/material'
-import './App.css'
+import '../styles/App.css'
 
 function App() {
 
