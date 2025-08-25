@@ -1,5 +1,5 @@
 import type { AppRoute } from './types';
-
+  
 // importa todos os arquivos *PageRoute.tsx dentro de main
 const modules = import.meta.glob('../main/**/*PageRoute.tsx', { eager: true }) as Record<
   string,

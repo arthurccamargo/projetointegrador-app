@@ -1,3 +1,4 @@
+import authRoles from '../../auth/authRoles';
 import type { AppRoute } from '../../routes/types';
 import SignInPage from './SignInPage';
 
@@ -6,14 +7,10 @@ const SignInPageRoute: AppRoute = {
   element: <SignInPage />,
   settings: {
     layout: {
-      config: {
-        navbar: { display: false },
-        toolbar: { display: false },
-        footer: { display: false },
-      },
+      config: { navbar: false, toolbar: false, footer: false },
     },
   },
-  auth: [], // sem restrição
+  auth: authRoles.guest, // acessível para visitantes
 };
 
 export default SignInPageRoute;

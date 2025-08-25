@@ -1,17 +1,19 @@
 import type { ReactNode } from 'react';
 
+export type LayoutConfig = {
+  navbar?: boolean;
+  toolbar?: boolean;
+  footer?: boolean;
+  leftSidePanel?: boolean;
+  rightSidePanel?: boolean;
+};
+
 export type AppRoute = {
   path: string;
   element: ReactNode;
   settings?: {
     layout?: {
-      config?: {
-        navbar?: { display: boolean };
-        toolbar?: { display: boolean };
-        footer?: { display: boolean };
-        leftSidePanel?: { display: boolean };
-        rightSidePanel?: { display: boolean };
-      };
+      config?: LayoutConfig;
     };
   };
   auth?: string[]; // roles permitidas
