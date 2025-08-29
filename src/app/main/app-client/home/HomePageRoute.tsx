@@ -6,9 +6,9 @@ const HomePageRoute: AppRoute = {
   path: '/home',
   element: <HomePage />,
   settings: {
-    layout: { config: { navbar: true, toolbar: true, footer: true } },
+    layout: { config: { navbar: true, toolbar: false, footer: false } },
   },
-  auth: authRoles.user, // apenas usuários logados
+  auth: authRoles.guest, // apenas usuários logados
 };
 
 export default HomePageRoute;
