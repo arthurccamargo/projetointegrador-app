@@ -15,6 +15,15 @@ interface Props {
   onBack: () => void;
 }
 
+const defaultFormValues: FormData = {
+  fullName: "",
+  cpf: "",
+  birthDate: "",
+  email: "",
+  password: "",
+  phone: "",
+};
+
 function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
   const {
     control,
@@ -22,7 +31,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(volunteerPersonalSchema),
-    defaultValues,
+    defaultValues: { ...defaultFormValues, ...defaultValues },
   });
 
   return (
@@ -35,6 +44,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="Nome completo"
               {...field}
+              value={field.value}
               error={!!errors.fullName}
               helperText={errors.fullName?.message}
               fullWidth
@@ -48,6 +58,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="CPF"
               {...field}
+              value={field.value}
               error={!!errors.cpf}
               helperText={errors.cpf?.message}
               fullWidth
@@ -62,6 +73,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               label="Data de nascimento"
               type="date"
               {...field}
+              value={field.value}
               InputLabelProps={{ shrink: true }}
               error={!!errors.birthDate}
               helperText={errors.birthDate?.message}
@@ -76,6 +88,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="E-mail"
               {...field}
+              value={field.value}
               error={!!errors.email}
               helperText={errors.email?.message}
               fullWidth
@@ -90,6 +103,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               label="Senha"
               type="password"
               {...field}
+              value={field.value}
               error={!!errors.password}
               helperText={errors.password?.message}
               fullWidth
@@ -103,6 +117,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="Telefone"
               {...field}
+              value={field.value}
               error={!!errors.phone}
               helperText={errors.phone?.message}
               fullWidth
