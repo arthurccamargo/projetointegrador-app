@@ -20,46 +20,35 @@ function SignUpPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [role, setRole] = useState<UserRoleType | null>(null);
 
-  // Estados separados para cada etapa
   const [volunteer, setVolunteer] = useState<Partial<Volunteer> | undefined>(
     undefined
   );
   const [ong, setOng] = useState<Partial<Ong> | undefined>(undefined);
 
-  const handleSelectRole = (selectedRole: UserRoleType) => {
-    setRole(selectedRole);
-    setActiveStep(1);
+  const handleNext = (
+    data: UserRoleType | Partial<Volunteer> | Partial<Ong>
+  ) => {
+    if (activeStep === 0 && typeof data === "string") {
+      setRole(data as UserRoleType);
+      setActiveStep(1);
+    } else if (activeStep === 1 && role === "VOLUNTEER") {
+      setVolunteer((prev) => ({ ...prev, ...(data as Partial<Volunteer>) }));
+      setActiveStep(2);
+    } else if (activeStep === 1 && role === "ONG") {
+      setOng((prev) => ({ ...prev, ...(data as Partial<Ong>) }));
+      setActiveStep(2);
+    } else if (activeStep === 2 && role === "VOLUNTEER") {
+      setVolunteer((prev) => ({ ...prev, ...(data as Partial<Volunteer>) }));
+      // TO DO: enviar volunteer para a API aqui se desejar
+    } else if (activeStep === 2 && role === "ONG") {
+      setOng((prev) => ({ ...prev, ...(data as Partial<Ong>) }));
+      // TO DO: enviar ong para a API 
+    }
   };
 
-  // Handlers para avançar steps
-  // Step 1: Dados pessoais
-  const handleVolunteerPersonalNext = (data: Partial<Volunteer>) => {
-    setVolunteer((prev) => ({ ...prev, ...data }));
-    setActiveStep(2);
-  };
-
-  // Step 2: Endereço e experiências
-  const handleVolunteerAddressNext = (data: Partial<Volunteer>)=> {
-    setVolunteer((prev) => {
-      if (!prev) return prev;
-      return { ...prev, ...data };
-    });
-    // enviar volunteer para a API
-  };
-
-  // Step 1: Dados da ONG
-  const handleOngDataNext = (data: Partial<Ong>) => {
-    setOng((prev) => ({ ...prev, ...data }));
-    setActiveStep(2);
-  };
-
-  // Step 2: Endereço e responsável da ONG
-  const handleOngAddressNext = (data: Partial<Ong>) => {
-    setOng((prev) => {
-      if (!prev) return prev;
-      return { ...prev, ...data };
-    });
-    // enviar ong para a API
+  const handleBack = () => {
+    if (activeStep === 1) setActiveStep(0);
+    else if (activeStep === 2) setActiveStep(1);
   };
 
   return (
@@ -91,34 +80,34 @@ function SignUpPage() {
             ))}
           </Stepper>
           {activeStep === 0 && (
-            <SelectRoleStep onSelectRole={handleSelectRole} />
+            <SelectRoleStep onSelectRole={handleNext} />
           )}
           {activeStep === 1 && role === "VOLUNTEER" && (
             <VolunteerPersonalTab
               defaultValues={volunteer}
-              onNext={handleVolunteerPersonalNext}
-              onBack={() => setActiveStep(0)}
+              onNext={handleNext}
+              onBack={handleBack}
             />
           )}
           {activeStep === 1 && role === "ONG" && (
             <OngDataTab
               defaultValues={ong}
-              onNext={handleOngDataNext}
-              onBack={() => setActiveStep(0)}
+              onNext={handleNext}
+              onBack={handleBack}
             />
           )}
           {activeStep === 2 && role === "VOLUNTEER" && (
             <VolunteerAddressTab
               defaultValues={volunteer}
-              onNext={handleVolunteerAddressNext}
-              onBack={() => setActiveStep(1)}
+              onNext={handleNext}
+              onBack={handleBack}
             />
           )}
           {activeStep === 2 && role === "ONG" && (
             <OngAddressResponsibleTab
               defaultValues={ong}
-              onNext={handleOngAddressNext}
-              onBack={() => setActiveStep(1)}
+              onNext={handleNext}
+              onBack={handleBack}
             />
           )}
         </Box>
