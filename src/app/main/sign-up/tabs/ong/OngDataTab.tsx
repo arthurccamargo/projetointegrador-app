@@ -1,11 +1,18 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ongDataSchema } from "../../validation/ongSchemas";
 import { z } from "zod";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+
+const ongDataSchema = z.object({
+  name: z.string().min(3, "Nome obrigatório"),
+  cnpj: z.string().min(14, "CNPJ obrigatório"),
+  description: z.string().optional(),
+  email: z.email("E-mail inválido"),
+  password: z.string().min(6, "Senha obrigatória"),
+});
 
 type FormData = z.infer<typeof ongDataSchema>;
 

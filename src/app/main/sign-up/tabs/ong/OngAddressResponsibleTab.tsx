@@ -1,11 +1,24 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ongAddressResponsibleSchema } from "../../validation/ongSchemas";
 import { z } from "zod";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+
+const ongAddressResponsibleSchema = z.object({
+  cep: z.string().min(1, "CEP obrigatório"),
+  street: z.string().min(1, "Rua obrigatória"),
+  number: z.string().min(1, "Número obrigatório"),
+  complement: z.string().optional(),
+  neighborhood: z.string().min(1, "Bairro obrigatório"),
+  city: z.string().min(1, "Cidade obrigatória"),
+  state: z.string().min(1, "Estado obrigatório"),
+  responsibleName: z.string().min(3, "Nome do responsável obrigatório"),
+  responsibleCpf: z.string().min(11, "CPF do responsável obrigatório"),
+  responsibleEmail: z.email("E-mail do responsável inválido"),
+  documentUrl: z.string().optional(),
+});
 
 type FormData = z.infer<typeof ongAddressResponsibleSchema>;
 
