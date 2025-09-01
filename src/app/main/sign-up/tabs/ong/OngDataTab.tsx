@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ongDataSchema } from "../../validation/ongSchemas";
 import { z } from "zod";
@@ -15,54 +15,97 @@ interface Props {
   onBack: () => void;
 }
 
+const defaultFormValues: FormData = {
+  name: "",
+  cnpj: "",
+  description: "",
+  email: "",
+  password: "",
+};
+
 function OngDataTab({ defaultValues, onNext, onBack }: Props) {
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ongDataSchema),
-    defaultValues,
+    defaultValues: { ...defaultFormValues, ...defaultValues },
   });
 
   return (
     <form onSubmit={handleSubmit(onNext)}>
       <Stack spacing={2}>
-        <TextField
-          label="Nome da ONG"
-          {...register("name")}
-          error={!!errors.name}
-          helperText={errors.name?.message}
-          fullWidth
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Nome da ONG"
+              {...field}
+              value={field.value}
+              error={!!errors.name}
+              helperText={errors.name?.message}
+              fullWidth
+            />
+          )}
         />
-        <TextField
-          label="CNPJ"
-          {...register("cnpj")}
-          error={!!errors.cnpj}
-          helperText={errors.cnpj?.message}
-          fullWidth
+        <Controller
+          name="cnpj"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="CNPJ"
+              {...field}
+              value={field.value}
+              error={!!errors.cnpj}
+              helperText={errors.cnpj?.message}
+              fullWidth
+            />
+          )}
         />
-        <TextField
-          label="Descrição"
-          {...register("description")}
-          error={!!errors.description}
-          helperText={errors.description?.message}
-          fullWidth
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Descrição"
+              {...field}
+              value={field.value}
+              error={!!errors.description}
+              helperText={errors.description?.message}
+              fullWidth
+            />
+          )}
         />
-        <TextField
-          label="E-mail"
-          {...register("email")}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-          fullWidth
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="E-mail"
+              {...field}
+              value={field.value}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              fullWidth
+            />
+          )}
         />
-        <TextField
-          label="Senha"
-          type="password"
-          {...register("password")}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-          fullWidth
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Senha"
+              type="password"
+              {...field}
+              value={field.value}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              fullWidth
+            />
+          )}
         />
         <Box display="flex" justifyContent="space-between" mt={2}>
           <Button variant="outlined" onClick={onBack}>
