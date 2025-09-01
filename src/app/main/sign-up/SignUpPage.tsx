@@ -8,11 +8,6 @@ import SelectRoleStep from "./tabs/SelectRoleTab";
 import OngDataTab from "./tabs/ong/OngDataTab";
 import VolunteerPersonalTab from "./tabs/volunteer/VolunteerPersonalTab";
 import VolunteerAddressTab from "./tabs/volunteer/VolunteerAddressTab";
-import { z } from "zod";
-import {
-  volunteerPersonalSchema,
-  volunteerAddressSchema,
-} from "./validation/volunteerSchemas";
 import OngAddressResponsibleTab from "./tabs/ong/OngAddressResponsibleTab";
 import type { Volunteer } from "../../types/Volunteer";
 import type { Ong } from "../../types/Ong";
@@ -38,17 +33,13 @@ function SignUpPage() {
 
   // Handlers para avançar steps
   // Step 1: Dados pessoais
-  const handleVolunteerPersonalNext = (
-    data: z.infer<typeof volunteerPersonalSchema>
-  ) => {
+  const handleVolunteerPersonalNext = (data: Partial<Volunteer>) => {
     setVolunteer((prev) => ({ ...prev, ...data }));
     setActiveStep(2);
   };
 
   // Step 2: Endereço e experiências
-  const handleVolunteerAddressNext = (
-    data: z.infer<typeof volunteerAddressSchema>
-  ) => {
+  const handleVolunteerAddressNext = (data: Partial<Volunteer>)=> {
     setVolunteer((prev) => {
       if (!prev) return prev;
       return { ...prev, ...data };

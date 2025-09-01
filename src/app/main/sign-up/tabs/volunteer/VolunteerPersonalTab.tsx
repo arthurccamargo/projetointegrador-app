@@ -1,11 +1,20 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { volunteerPersonalSchema } from "../../validation/volunteerSchemas";
 import { z } from "zod";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+
+const volunteerPersonalSchema = z.object({
+  fullName: z.string().min(3, "Nome obrigatório").nonempty("Nome obrigatório"),
+  cpf: z.string().min(11, "CPF obrigatório").nonempty("CPF obrigatório"),
+  birthDate: z.string().optional(),
+  email: z.string().email("E-mail inválido").nonempty("E-mail obrigatório"),
+  password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres").nonempty("Senha obrigatória"),
+  phone: z.string().optional(),
+});
+
 
 type FormData = z.infer<typeof volunteerPersonalSchema>;
 

@@ -1,11 +1,21 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { volunteerAddressSchema } from "../../validation/volunteerSchemas";
 import { z } from "zod";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+
+const volunteerAddressSchema = z.object({
+  cep: z.string().optional(),
+  street: z.string().optional(),
+  number: z.string().optional(),
+  complement: z.string().optional(),
+  neighborhood: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  experiences: z.string().optional(),
+});
 
 type FormData = z.infer<typeof volunteerAddressSchema>;
 
