@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Schemas individuais (mantidos para validação por etapa)
+// Schemas para validação por etapa)
 export const volunteerPersonalSchema = z.object({
   fullName: z.string().min(3, "Nome obrigatório").nonempty("Nome obrigatório"),
   cpf: z.string().min(11, "CPF obrigatório").nonempty("CPF obrigatório"),
