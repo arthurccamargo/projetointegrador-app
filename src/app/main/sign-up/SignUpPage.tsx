@@ -11,10 +11,14 @@ import VolunteerAddressTab from "./tabs/volunteer/VolunteerAddressTab";
 import OngAddressResponsibleTab from "./tabs/ong/OngAddressResponsibleTab";
 import type { Volunteer } from "../../types/Volunteer";
 import type { Ong } from "../../types/Ong";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const steps = ["Tipo de cadastro", "Informações", "Endereço"];
 
 export type UserRoleType = "VOLUNTEER" | "ONG";
+
+const BASEAPI_URL = import.meta.env.VITE_BASEAPI_URL;
 
 function SignUpPage() {
   const [activeStep, setActiveStep] = useState(0);
@@ -24,8 +28,13 @@ function SignUpPage() {
     undefined
   );
   const [ong, setOng] = useState<Partial<Ong> | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
-  const handleNext = (
+  const navigate = useNavigate();
+
+  const handleNext = async (
     data: UserRoleType | Partial<Volunteer> | Partial<Ong>
   ) => {
     if (activeStep === 0 && typeof data === "string") {
@@ -38,11 +47,27 @@ function SignUpPage() {
       setOng((prev) => ({ ...prev, ...(data as Partial<Ong>) }));
       setActiveStep(2);
     } else if (activeStep === 2 && role === "VOLUNTEER") {
-      setVolunteer((prev) => ({ ...prev, ...(data as Partial<Volunteer>) }));
-      // TO DO: enviar volunteer para a API aqui se desejar
+      const finalVolunteer = {
+        ...volunteer,
+        ...(data as Partial<Volunteer>),
+        role: "VOLUNTEER",
+      };
+      setVolunteer(finalVolunteer);
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+      try {
+        await axios.post(`${BASEAPI_URL}/users/volunteer`, finalVolunteer);
+        setSuccess(true);
+        navigate("/sign-in")
+      } catch (err: any) {
+        setError(err?.response?.data?.message || "Erro ao cadastrar voluntário");
+      } finally {
+        setLoading(false);
+      }
     } else if (activeStep === 2 && role === "ONG") {
       setOng((prev) => ({ ...prev, ...(data as Partial<Ong>) }));
-      // TO DO: enviar ong para a API 
+      // TO DO: enviar ong para a API
     }
   };
 
@@ -79,9 +104,17 @@ function SignUpPage() {
               </Step>
             ))}
           </Stepper>
-          {activeStep === 0 && (
-            <SelectRoleStep onSelectRole={handleNext} />
+          {error && (
+            <Typography color="error" mb={2}>
+              {error}
+            </Typography>
           )}
+          {success && (
+            <Typography color="primary" mb={2}>
+              Cadastro realizado com sucesso!
+            </Typography>
+          )}
+          {activeStep === 0 && <SelectRoleStep onSelectRole={handleNext} />}
           {activeStep === 1 && role === "VOLUNTEER" && (
             <VolunteerPersonalTab
               defaultValues={volunteer}
@@ -109,6 +142,11 @@ function SignUpPage() {
               onNext={handleNext}
               onBack={handleBack}
             />
+          )}
+          {loading && (
+            <Typography color="primary" mt={2}>
+              Enviando cadastro...
+            </Typography>
           )}
         </Box>
       </Box>

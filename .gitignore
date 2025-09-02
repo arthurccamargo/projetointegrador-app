@@ -26,3 +26,6 @@ dist-ssr
 # Capacitor
 /android/
 /ios/
+
+# Environment variables
+.env
