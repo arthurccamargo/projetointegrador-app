@@ -44,7 +44,7 @@ function StartPage() {
           align="center"
           sx={{ mb: 4 }}
         >
-          Bem-vindo ao HELPHUB! Escolha uma opção para continuar.
+          Seja bem-vindo ao HELPHUB! Escolha uma opção para continuar.
         </Typography>
         <Stack spacing={2} width="100%">
           <Button
