@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
+import { HeartHandshake } from 'lucide-react';
 
 function StartPage() {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ function StartPage() {
         >
           HELPHUB
         </Typography>
+        <HeartHandshake />
         <Typography
           variant="subtitle1"
           color="textSecondary"
