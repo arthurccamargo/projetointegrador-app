@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
 const ongDataSchema = z.object({
-  name: z.string().min(3, "Nome obrigatório"),
+  name: z.string().min(1, "Nome obrigatório").nonempty("Nome obrigatório"),
   cnpj: z.string().min(14, "CNPJ obrigatório"),
   description: z.string().optional(),
   email: z.email("E-mail inválido"),

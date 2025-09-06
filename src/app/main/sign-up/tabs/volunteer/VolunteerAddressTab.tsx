@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { CepMaskInput } from "../../../../shared-components/mask/CepMask";
-import { CepService } from "../../../../shared-components/api/cep";
+import { CepService } from "../../../../api/cep";
 
 const volunteerAddressSchema = z.object({
   cep: z
