@@ -16,7 +16,7 @@ export interface CepResponse { // padrão da API ViaCEP, português
 }
 
 export class CepService {
-  static async getAddress(cep: string): Promise<CepResponse | null> {
+  static async getAddress(cep: string): Promise<CepResponse | null | undefined> {
     const cleanedCep = cep.replace(/\D/g, "");
 
     if (cleanedCep.length !== 8) {
@@ -38,7 +38,7 @@ export class CepService {
 
       return response.data;
     } catch {
-      throw new Error("Erro ao buscar CEP. Tente novamente.");
+      console.error("Erro ao buscar endereço pelo CEP");
     }
   }
 }
