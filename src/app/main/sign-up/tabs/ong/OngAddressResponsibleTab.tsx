@@ -45,7 +45,6 @@ const ongAddressResponsibleSchema = z.object({
     .min(14, "CPF deve ter 14 caracteres")
     .nonempty({ message: "Digite o CPF" })
     .refine(isValidCPF, "CPF inválido"),
-  birthDate: z.string().optional(),
   responsibleEmail: z.email("E-mail do responsável inválido"),
   documentUrl: z.string().optional(),
 });
@@ -68,7 +67,6 @@ const defaultFormValues: FormData = {
   state: "",
   responsibleName: "",
   responsibleCpf: "",
-  birthDate: "",
   responsibleEmail: "",
   documentUrl: "",
 };

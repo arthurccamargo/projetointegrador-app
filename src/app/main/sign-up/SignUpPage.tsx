@@ -28,6 +28,7 @@ function SignUpPage() {
     undefined
   );
   const [ong, setOng] = useState<Partial<Ong> | undefined>(undefined);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -68,8 +69,26 @@ function SignUpPage() {
         setLoading(false);
       }
     } else if (activeStep === 2 && role === "ONG") {
-      setOng((prev) => ({ ...prev, ...(data as Partial<Ong>) }));
-      // TO DO: enviar ong para a API
+      const finalOng = {
+        ...ong,
+        ...(data as Partial<Ong>),
+        role: "ONG",
+      };
+      setOng(finalOng);
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+      try {
+        await axios.post(`${BASEAPI_URL}/users/ong`, finalOng);
+        setSuccess(true);
+        navigate("/sign-in");
+      } catch (err: any) {
+        setError(
+          err?.response?.data?.message || "Erro ao cadastrar ONG"
+        );
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
