@@ -57,7 +57,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
             Voltar
           </Button>
           <Button variant="contained" type="submit">
-            Finalizar
+            Próximo
           </Button>
         </Box>
       </Stack>

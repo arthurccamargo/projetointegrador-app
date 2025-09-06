@@ -125,7 +125,7 @@ function SignUpPage() {
             />
           )}
           {activeStep === 1 && role === "ONG" && (
-            <OngDataTab
+            <OngAddressResponsibleTab
               defaultValues={ong}
               onNext={handleNext}
               onBack={handleBack}
@@ -139,7 +139,7 @@ function SignUpPage() {
             />
           )}
           {activeStep === 2 && role === "ONG" && (
-            <OngAddressResponsibleTab
+            <OngDataTab
               defaultValues={ong}
               onNext={handleNext}
               onBack={handleBack}
