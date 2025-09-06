@@ -106,6 +106,8 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Descrição (opcional)"
+              multiline
+              rows={3}
               {...field}
               value={field.value}
               error={!!errors.description}
