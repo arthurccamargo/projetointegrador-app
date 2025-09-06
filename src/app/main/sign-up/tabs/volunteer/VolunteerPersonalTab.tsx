@@ -176,7 +176,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             Voltar
           </Button>
           <Button variant="contained" type="submit">
-            Próximo
+            Finalizar
           </Button>
         </Box>
       </Stack>

@@ -43,7 +43,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="CEP"
+              label="CEP (opcional)"
               {...field}
               error={!!errors.cep}
               helperText={errors.cep?.message}
@@ -56,7 +56,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Rua"
+              label="Rua (opcional)"
               {...field}
               error={!!errors.street}
               helperText={errors.street?.message}
@@ -69,7 +69,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Número"
+              label="Número (opcional)"
               {...field}
               error={!!errors.number}
               helperText={errors.number?.message}
@@ -95,7 +95,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Bairro"
+              label="Bairro (opcional)"
               {...field}
               error={!!errors.neighborhood}
               helperText={errors.neighborhood?.message}
@@ -108,7 +108,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Cidade"
+              label="Cidade (opcional)"
               {...field}
               error={!!errors.city}
               helperText={errors.city?.message}
@@ -121,7 +121,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Estado"
+              label="Estado (opcional)"
               {...field}
               error={!!errors.state}
               helperText={errors.state?.message}
@@ -149,7 +149,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
             Voltar
           </Button>
           <Button variant="contained" type="submit">
-            Finalizar
+            Próximo
           </Button>
         </Box>
       </Stack>

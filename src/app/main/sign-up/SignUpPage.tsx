@@ -14,7 +14,7 @@ import type { Ong } from "../../types/Ong";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const steps = ["Tipo de cadastro", "Informações", "Endereço"];
+const steps = ["Tipo de cadastro", "Endereço", "Informações"];
 
 export type UserRoleType = "VOLUNTEER" | "ONG";
 
@@ -59,9 +59,11 @@ function SignUpPage() {
       try {
         await axios.post(`${BASEAPI_URL}/users/volunteer`, finalVolunteer);
         setSuccess(true);
-        navigate("/sign-in")
+        navigate("/sign-in");
       } catch (err: any) {
-        setError(err?.response?.data?.message || "Erro ao cadastrar voluntário");
+        setError(
+          err?.response?.data?.message || "Erro ao cadastrar voluntário"
+        );
       } finally {
         setLoading(false);
       }
@@ -116,7 +118,7 @@ function SignUpPage() {
           )}
           {activeStep === 0 && <SelectRoleStep onSelectRole={handleNext} />}
           {activeStep === 1 && role === "VOLUNTEER" && (
-            <VolunteerPersonalTab
+            <VolunteerAddressTab
               defaultValues={volunteer}
               onNext={handleNext}
               onBack={handleBack}
@@ -130,7 +132,7 @@ function SignUpPage() {
             />
           )}
           {activeStep === 2 && role === "VOLUNTEER" && (
-            <VolunteerAddressTab
+            <VolunteerPersonalTab
               defaultValues={volunteer}
               onNext={handleNext}
               onBack={handleBack}
