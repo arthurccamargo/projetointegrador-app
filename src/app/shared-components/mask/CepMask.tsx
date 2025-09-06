@@ -1,7 +1,8 @@
 import React from "react";
 import { IMaskInput } from "react-imask";
+import type { CustomProps } from "./interface/CustomProps";
 
-export const CepMaskInput = React.forwardRef<HTMLInputElement, any>(
+export const CepMaskInput = React.forwardRef<HTMLInputElement, CustomProps>(
   (props, ref) => {
     const { onChange, ...other } = props;
     return (

@@ -5,13 +5,19 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import { isValidCNPJ } from "../../../../utils/validators/cnpjValidator";
+import { CnpjMaskInput } from "../../../../shared-components/mask/CnpjMask";
 
 const ongDataSchema = z.object({
   name: z.string().min(1, "Nome obrigatório").nonempty("Nome obrigatório"),
-  cnpj: z.string().min(14, "CNPJ obrigatório"),
+  cnpj: z
+    .string()
+    .min(18, "CNPJ deve ter 18 caracteres")
+    .nonempty("Digite o CNPJ")
+    .refine(isValidCNPJ, "CNPJ inválido"),
   description: z.string().optional(),
-  email: z.email("E-mail inválido"),
-  password: z.string().min(6, "Senha obrigatória"),
+  email: z.email("E-mail inválido").nonempty("E-mail obrigatório"),
+  password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres").nonempty("Senha obrigatória"),
 });
 
 type FormData = z.infer<typeof ongDataSchema>;
@@ -68,6 +74,14 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
               error={!!errors.cnpj}
               helperText={errors.cnpj?.message}
               fullWidth
+              InputProps={{
+                inputComponent: CnpjMaskInput as any,
+              }}
+              inputProps={{
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+                maxLength: 18,
+              }}
             />
           )}
         />
@@ -76,7 +90,7 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Descrição"
+              label="Descrição (opcional)"
               {...field}
               value={field.value}
               error={!!errors.description}
