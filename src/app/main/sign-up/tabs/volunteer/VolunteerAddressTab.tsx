@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { CepMaskInput } from "../../../../shared-components/mask/CepMask";
+import { CepService } from "../../../../shared-components/api/cep";
 
 const volunteerAddressSchema = z.object({
   cep: z
@@ -27,7 +28,7 @@ const volunteerAddressSchema = z.object({
         return true;
       },
       {
-        message: "CEP inválido.",
+        message: "CEP inválido",
       }
     ),
   street: z.string().optional(),
@@ -51,11 +52,28 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(volunteerAddressSchema),
     defaultValues,
   });
+
+  const handleCepBlur = async (cep?: string) => {
+    if (!cep) return;
+    try {
+      const data = await CepService.getAddress(cep);
+
+      if (data) {
+        setValue("street", data.logradouro || "");
+        setValue("neighborhood", data.bairro || "");
+        setValue("city", data.localidade || "");
+        setValue("state", data.uf || "");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onNext)}>
@@ -68,6 +86,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
               label="CEP (opcional)"
               {...field}
               value={field.value || ""}
+              onBlur={() => handleCepBlur(field.value)}
               InputProps={{
                 inputComponent: CepMaskInput as any,
               }}
@@ -87,7 +106,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Rua (opcional)"
+              placeholder="Rua (opcional)"
               {...field}
               error={!!errors.street}
               helperText={errors.street?.message}
@@ -100,7 +119,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Número (opcional)"
+              placeholder="Número (opcional)"
               {...field}
               error={!!errors.number}
               helperText={errors.number?.message}
@@ -113,7 +132,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Complemento (opcional)"
+              placeholder="Complemento (opcional)"
               {...field}
               error={!!errors.complement}
               helperText={errors.complement?.message}
@@ -126,7 +145,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Bairro (opcional)"
+              placeholder="Bairro (opcional)"
               {...field}
               error={!!errors.neighborhood}
               helperText={errors.neighborhood?.message}
@@ -139,7 +158,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Cidade (opcional)"
+              placeholder="Cidade (opcional)"
               {...field}
               error={!!errors.city}
               helperText={errors.city?.message}
@@ -152,7 +171,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Estado (opcional)"
+              placeholder="Estado (opcional)"
               {...field}
               error={!!errors.state}
               helperText={errors.state?.message}
