@@ -102,7 +102,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               label="CPF"
               {...field}
               InputProps={{
-                inputComponent: CPFMaskInput,
+                inputComponent: CPFMaskInput as any,
               }}
               error={!!errors.cpf}
               helperText={errors.cpf?.message}
@@ -202,7 +202,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               label="Telefone"
               {...field}
               InputProps={{
-                inputComponent: PhoneMaskInput,
+                inputComponent: PhoneMaskInput as any,
               }}
               error={!!errors.phone}
               helperText={errors.phone?.message}
