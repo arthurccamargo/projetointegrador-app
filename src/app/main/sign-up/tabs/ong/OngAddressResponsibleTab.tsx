@@ -7,9 +7,32 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { isValidCPF } from "../../../../utils/validators/cpfValidator";
 import { CPFMaskInput } from "../../../../shared-components/mask/CpfMask";
+import { CepService } from "../../../../api/cep";
+import { CepMaskInput } from "../../../../shared-components/mask/CepMask";
 
 const ongAddressResponsibleSchema = z.object({
-  cep: z.string().min(1, "CEP obrigatório"),
+  cep: z
+    .string()
+    .min(1, "CEP obrigatório")
+    .refine(
+      (cep) => {
+        if (!cep) return true;
+
+        // Remove qualquer caractere não numérico (incluindo o hífen)
+        const cleanedCEP = cep.replace(/\D/g, "");
+
+        // Verifica se tem 8 dígitos
+        if (cleanedCEP.length !== 8) return false;
+
+        // Verifica se não é uma sequência repetida (00000000, 11111111, etc)
+        if (/^(\d)\1+$/.test(cleanedCEP)) return false;
+
+        return true;
+      },
+      {
+        message: "CEP inválido",
+      }
+    ),
   street: z.string().min(1, "Rua obrigatória"),
   number: z.string().min(1, "Número obrigatório"),
   complement: z.string().optional(),
@@ -54,11 +77,28 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ongAddressResponsibleSchema),
     defaultValues: { ...defaultFormValues, ...defaultValues },
   });
+
+  const handleCepBlur = async (cep?: string) => {
+    if (!cep) return;
+    try {
+      const data = await CepService.getAddress(cep);
+
+      if (data) {
+        setValue("street", data.logradouro || "");
+        setValue("neighborhood", data.bairro || "");
+        setValue("city", data.localidade || "");
+        setValue("state", data.uf || "");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onNext)}>
@@ -70,6 +110,16 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="CEP"
               {...field}
+              value={field.value || ""}
+              onBlur={() => handleCepBlur(field.value)}
+              InputProps={{
+                inputComponent: CepMaskInput as any,
+              }}
+              inputProps={{
+                inputMode: "numeric",
+                maxLength: 9,
+                pattern: "[0-9-]*",
+              }}
               error={!!errors.cep}
               helperText={errors.cep?.message}
               fullWidth
@@ -81,7 +131,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Rua"
+              placeholder="Rua"
               {...field}
               error={!!errors.street}
               helperText={errors.street?.message}
@@ -94,7 +144,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Número"
+              placeholder="Número"
               {...field}
               error={!!errors.number}
               helperText={errors.number?.message}
@@ -107,7 +157,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Complemento"
+              placeholder="Complemento (opcional)"
               {...field}
               error={!!errors.complement}
               helperText={errors.complement?.message}
@@ -120,7 +170,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Bairro"
+              placeholder="Bairro"
               {...field}
               error={!!errors.neighborhood}
               helperText={errors.neighborhood?.message}
@@ -133,7 +183,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Cidade"
+              placeholder="Cidade"
               {...field}
               error={!!errors.city}
               helperText={errors.city?.message}
@@ -146,7 +196,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Estado"
+              placeholder="Estado"
               {...field}
               error={!!errors.state}
               helperText={errors.state?.message}
@@ -172,7 +222,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="CPF"
+              label="CPF do responsável"
               {...field}
               InputProps={{
                 inputComponent: CPFMaskInput as any,
