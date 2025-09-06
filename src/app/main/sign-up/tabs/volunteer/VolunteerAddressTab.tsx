@@ -5,9 +5,31 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import { CepMaskInput } from "../../../../shared-components/mask/CepMask";
 
 const volunteerAddressSchema = z.object({
-  cep: z.string().optional(),
+  cep: z
+    .string()
+    .optional()
+    .refine(
+      (cep) => {
+        if (!cep) return true;
+
+        // Remove qualquer caractere não numérico (incluindo o hífen)
+        const cleanedCEP = cep.replace(/\D/g, "");
+
+        // Verifica se tem 8 dígitos
+        if (cleanedCEP.length !== 8) return false;
+
+        // Verifica se não é uma sequência repetida (00000000, 11111111, etc)
+        if (/^(\d)\1+$/.test(cleanedCEP)) return false;
+
+        return true;
+      },
+      {
+        message: "CEP inválido.",
+      }
+    ),
   street: z.string().optional(),
   number: z.string().optional(),
   complement: z.string().optional(),
@@ -45,6 +67,15 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="CEP (opcional)"
               {...field}
+              value={field.value || ""}
+              InputProps={{
+                inputComponent: CepMaskInput as any,
+              }}
+              inputProps={{
+                inputMode: "numeric",
+                maxLength: 9,
+                pattern: "[0-9-]*",
+              }}
               error={!!errors.cep}
               helperText={errors.cep?.message}
               fullWidth
