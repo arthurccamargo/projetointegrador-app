@@ -37,7 +37,7 @@ function SignInPage() {
           sm: `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`,
         },
         display: "flex",
-        alignItems: "center",
+        alignItems: { xs: "flex-start", sm: "center" },
         justifyContent: "center",
         p: { xs: 0, sm: 2 },
       }}
@@ -48,12 +48,19 @@ function SignInPage() {
           sx={{ 
             bgcolor: theme.palette.background.paper,
             borderRadius: { xs: 0, sm: 1 },
-            height: { xs: '100vh', sm: 'auto' },
+            minHeight: { xs: '100vh', sm: 'auto' },
             width: { xs: '100%', sm: 'auto' },
-            boxShadow: { xs: 'none', sm: 3 }
+            boxShadow: { xs: 'none', sm: 3 },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: { xs: 'center', sm: 'flex-start' },
+            pb: { xs: 2, sm: 2 }
           }}
         >
           <CardHeader
+            sx={{
+              pt: { xs: 4, sm: 2 }
+            }}
             title={
               <Box display="flex" flexDirection="column" alignItems="center">
                 <Box
