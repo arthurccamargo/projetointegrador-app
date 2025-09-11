@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import Box from "@mui/material/Box"
-import Grid from "@mui/material/Grid"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import CardHeader from "@mui/material/CardHeader"
@@ -33,122 +32,132 @@ function SignInPage() {
     <Box
       sx={{
         minHeight: "100vh",
-        background: `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`,
+        background: {
+          xs: theme.palette.background.paper,
+          sm: `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`,
+        },
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        p: 2,
+        p: { xs: 0, sm: 2 },
       }}
     >
-      <Grid container justifyContent="center">
-        <Grid>
-          <Card elevation={3} sx={{ bgcolor: theme.palette.background.paper }}>
-            <CardHeader
-              title={
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <Box
-                    sx={{
-                      width: 64,
-                      height: 64,
-                      bgcolor: theme.palette.primary.main,
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      mb: 2,
-                    }}
-                  >
-                    <Typography variant="h4" sx={{ color: theme.palette.common.black, fontWeight: "bold" }}>
-                      H
-                    </Typography>
-                  </Box>
-                  <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.text.primary }} gutterBottom>
-                    Entrar no HelpHub
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.text.primary }} align="center">
-                    Acesse sua conta para continuar conectando pessoas e causas
-                  </Typography>
-                </Box>
-              }
-            />
-            <CardContent>
-              <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                <TextField
-                  margin="normal"
-                  fullWidth
-                  id="email"
-                  label="E-mail"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  autoComplete="email"
-                  InputLabelProps={{ shrink: true, style: { color: theme.palette.text.primary } }}
-                />
-                <TextField
-                  margin="normal"
-                  fullWidth
-                  id="password"
-                  label="Senha"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Sua senha"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  required
-                  autoComplete="current-password"
-                  InputLabelProps={{ shrink: true, style: { color: theme.palette.text.primary } }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={() => setShowPassword((show) => !show)}
-                          edge="end"
-                          sx={{ color: theme.palette.primary.main }}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
+      <Box sx={{ width: { xs: '100%', sm: '90%', md: '70%', lg: '50%', xl: '40%' } }}>
+        <Card 
+          elevation={3} 
+          sx={{ 
+            bgcolor: theme.palette.background.paper,
+            borderRadius: { xs: 0, sm: 1 },
+            height: { xs: '100vh', sm: 'auto' },
+            width: { xs: '100%', sm: 'auto' },
+            boxShadow: { xs: 'none', sm: 3 }
+          }}
+        >
+          <CardHeader
+            title={
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <Box
+                  sx={{
+                    width: 64,
+                    height: 64,
+                    bgcolor: theme.palette.primary.main,
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mb: 2,
                   }}
-                />
-                <Box display="flex" justifyContent="flex-end" mb={2}>
-                  <Button
-                    component={Link}
-                    variant="text"
-                    sx={{ textTransform: "none", fontSize: 14, color: theme.palette.primary.main, textDecoration: "underline" }}
-                  >
-                    Esqueceu a senha?
-                  </Button>
-                </Box>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  sx={{ py: 1.5, fontWeight: "bold", fontSize: 16, bgcolor: theme.palette.primary.main, color: theme.palette.common.black, '&:hover': { bgcolor: 'theme.palette.primary.contrastText' } }}
                 >
-                  Entrar
-                </Button>
-              </Box>
-              <Box mt={4} textAlign="center">
-                <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
-                  Ainda não tem uma conta?{" "}
-                  <Button
-                    component={Link}
-                    onClick={() => navigate('/sign-up')}
-                    variant="text"
-                    sx={{ textTransform: "none", fontWeight: "bold", fontSize: 14, color: theme.palette.primary.main, textDecoration: "underline" }}
-                  >
-                    Cadastre-se aqui
-                  </Button>
+                  <Typography variant="h4" sx={{ color: theme.palette.common.black, fontWeight: "bold" }}>
+                    H
+                  </Typography>
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.text.primary }} gutterBottom>
+                  Entrar no HelpHub
+                </Typography>
+                <Typography variant="body2" sx={{ color: theme.palette.text.primary }} align="center">
+                  Acesse sua conta para continuar conectando pessoas e causas
                 </Typography>
               </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+            }
+          />
+          <CardContent>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                fullWidth
+                id="email"
+                label="E-mail"
+                type="email"
+                placeholder="seu@email.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+                autoComplete="email"
+                InputLabelProps={{ shrink: true, style: { color: theme.palette.text.primary } }}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                id="password"
+                label="Senha"
+                type={showPassword ? "text" : "password"}
+                placeholder="Sua senha"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+                autoComplete="current-password"
+                InputLabelProps={{ shrink: true, style: { color: theme.palette.text.primary } }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword((show) => !show)}
+                        edge="end"
+                        sx={{ color: theme.palette.primary.main }}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Button
+                  component={Link}
+                  variant="text"
+                  sx={{ textTransform: "none", fontSize: 14, color: theme.palette.primary.contrastText, textDecoration: "underline" }}
+                >
+                  Esqueceu a senha?
+                </Button>
+              </Box>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{ py: 1.5, fontWeight: "bold", fontSize: 16, bgcolor: theme.palette.primary.main, color: theme.palette.common.black, '&:hover': { bgcolor: theme.palette.primary.contrastText } }}
+              >
+                Entrar
+              </Button>
+            </Box>
+            <Box mt={4} textAlign="center">
+              <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
+                Ainda não tem uma conta?{" "}
+                <Button
+                  component={Link}
+                  onClick={() => navigate('/sign-up')}
+                  variant="text"
+                  sx={{ textTransform: "none", fontWeight: "bold", fontSize: 14, color: theme.palette.primary.contrastText, textDecoration: "underline" }}
+                >
+                  Cadastre-se aqui
+                </Button>
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
     </Box>
   )
 }
