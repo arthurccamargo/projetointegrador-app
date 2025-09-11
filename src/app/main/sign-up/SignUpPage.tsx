@@ -14,7 +14,7 @@ import type { Ong } from "../../types/Ong";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const steps = ["Tipo de cadastro", "Informações", "Endereço"];
+const steps = ["Tipo de cadastro", "Endereço", "Informações"];
 
 export type UserRoleType = "VOLUNTEER" | "ONG";
 
@@ -28,6 +28,7 @@ function SignUpPage() {
     undefined
   );
   const [ong, setOng] = useState<Partial<Ong> | undefined>(undefined);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -59,15 +60,35 @@ function SignUpPage() {
       try {
         await axios.post(`${BASEAPI_URL}/users/volunteer`, finalVolunteer);
         setSuccess(true);
-        navigate("/sign-in")
+        navigate("/sign-in");
       } catch (err: any) {
-        setError(err?.response?.data?.message || "Erro ao cadastrar voluntário");
+        setError(
+          err?.response?.data?.message || "Erro ao cadastrar voluntário"
+        );
       } finally {
         setLoading(false);
       }
     } else if (activeStep === 2 && role === "ONG") {
-      setOng((prev) => ({ ...prev, ...(data as Partial<Ong>) }));
-      // TO DO: enviar ong para a API
+      const finalOng = {
+        ...ong,
+        ...(data as Partial<Ong>),
+        role: "ONG",
+      };
+      setOng(finalOng);
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+      try {
+        await axios.post(`${BASEAPI_URL}/users/ong`, finalOng);
+        setSuccess(true);
+        navigate("/sign-in");
+      } catch (err: any) {
+        setError(
+          err?.response?.data?.message || "Erro ao cadastrar ONG"
+        );
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -116,28 +137,28 @@ function SignUpPage() {
           )}
           {activeStep === 0 && <SelectRoleStep onSelectRole={handleNext} />}
           {activeStep === 1 && role === "VOLUNTEER" && (
-            <VolunteerPersonalTab
-              defaultValues={volunteer}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          {activeStep === 1 && role === "ONG" && (
-            <OngDataTab
-              defaultValues={ong}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          {activeStep === 2 && role === "VOLUNTEER" && (
             <VolunteerAddressTab
               defaultValues={volunteer}
               onNext={handleNext}
               onBack={handleBack}
             />
           )}
-          {activeStep === 2 && role === "ONG" && (
+          {activeStep === 1 && role === "ONG" && (
             <OngAddressResponsibleTab
+              defaultValues={ong}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          )}
+          {activeStep === 2 && role === "VOLUNTEER" && (
+            <VolunteerPersonalTab
+              defaultValues={volunteer}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          )}
+          {activeStep === 2 && role === "ONG" && (
+            <OngDataTab
               defaultValues={ong}
               onNext={handleNext}
               onBack={handleBack}
