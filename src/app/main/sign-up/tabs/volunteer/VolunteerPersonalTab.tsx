@@ -8,8 +8,12 @@ import Stack from "@mui/material/Stack";
 import { CPFMaskInput } from "../../../../shared-components/mask/CpfMask";
 import { PhoneMaskInput } from "../../../../shared-components/mask/PhoneMask";
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
 import { isValidCPF } from "../../../../utils/validators/cpfValidator";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useTheme } from "../../../../../theme/useTheme";
 
 const volunteerPersonalSchema = z
   .object({
@@ -73,6 +77,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
     resolver: zodResolver(volunteerPersonalSchema),
     defaultValues: { ...defaultFormValues, ...defaultValues },
   });
+  const theme = useTheme();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -87,7 +92,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="Nome completo"
               placeholder="Seu nome"
-              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               value={field.value}
               error={!!errors.fullName}
@@ -104,7 +109,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               label="CPF"
               placeholder="000.000.000-00"
               {...field}
-              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               InputProps={{
                 inputComponent: CPFMaskInput as any,
               }}
@@ -123,7 +128,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               type="date"
               {...field}
               value={field.value}
-              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               error={!!errors.birthDate}
               helperText={errors.birthDate?.message}
               fullWidth
@@ -138,7 +143,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               label="Telefone"
               placeholder="(99) 99999-9999"
               {...field}
-              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               InputProps={{
                 inputComponent: PhoneMaskInput as any,
               }}
@@ -155,7 +160,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="E-mail"
               placeholder="seu@email.com"
-              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               value={field.value}
               error={!!errors.email}
@@ -171,7 +176,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="Senha"
               placeholder="Sua senha"
-              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               type={showPassword ? "text" : "password"}
               {...field}
               value={field.value}
@@ -180,12 +185,16 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               fullWidth
               InputProps={{
                 endAdornment: (
-                  <Box
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
-                  </Box>
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword((show) => !show)}
+                      edge="end"
+                      sx={{ color: theme.palette.primary.main }}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
                 ),
               }}
             />
@@ -198,7 +207,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             <TextField
               label="Confirmar Senha"
               placeholder="Confirme sua senha"
-              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               type={showConfirmPassword ? "text" : "password"}
               {...field}
               value={field.value}
@@ -207,16 +216,16 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               fullWidth
               InputProps={{
                 endAdornment: (
-                  <Box
-                    onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    {showConfirmPassword ? (
-                      <Eye size={20} />
-                    ) : (
-                      <EyeOff size={20} />
-                    )}
-                  </Box>
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowConfirmPassword((show) => !show)}
+                      edge="end"
+                      sx={{ color: theme.palette.primary.main }}
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
                 ),
               }}
             />
@@ -226,7 +235,14 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
           <Button variant="outlined" onClick={onBack}>
             Voltar
           </Button>
-          <Button variant="contained" type="submit">
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              bgcolor: "theme.palette.primary.main",
+              color: theme.palette.common.black,
+            }}
+          >
             Finalizar
           </Button>
         </Box>
