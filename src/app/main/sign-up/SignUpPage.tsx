@@ -135,6 +135,7 @@ function SignUpPage() {
     <Box
       sx={{
         minHeight: "100vh",
+        height: "100vh",
         background: {
           xs: theme.palette.background.paper,
           sm: `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`,
@@ -143,6 +144,7 @@ function SignUpPage() {
         alignItems: { xs: "flex-start", sm: "center" },
         justifyContent: "center",
         p: { xs: 0, sm: 2 },
+        overflow: "auto",
       }}
     >
       <Box
@@ -161,7 +163,7 @@ function SignUpPage() {
             display: "flex",
             flexDirection: "column",
             justifyContent: { xs: "center", sm: "flex-start" },
-            pb: { xs: 2, sm: 2 },
+            pb: { xs: 2, sm: 2 }, 
           }}
         >
           <CardContent>
