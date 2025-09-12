@@ -183,7 +183,7 @@ function SignUpPage() {
                 <Step key={label}>
                   <StepLabel StepIconComponent={CustomStepIcon}>
                     <Typography
-                      variant="body2"
+                      variant="body1"
                       sx={{ color: theme.palette.common.black }}
                     >
                       {label}
