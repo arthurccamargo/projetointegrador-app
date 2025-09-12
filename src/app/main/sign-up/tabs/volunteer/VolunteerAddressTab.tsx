@@ -201,7 +201,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           )}
         />
         */}
-        <Box display="flex" justifyContent="space-between" mt={2}>
+        <Box display="flex" justifyContent="space-between" mt={1}>
           <Button variant="outlined" onClick={onBack}>
             Voltar
           </Button>

@@ -4,7 +4,6 @@ import { z } from "zod";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
 import { isValidCPF } from "../../../../utils/validators/cpfValidator";
 import { CPFMaskInput } from "../../../../shared-components/mask/CpfMask";
 import { CepService } from "../../../../api/cep";
@@ -100,49 +99,70 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
     }
   };
 
+  const textFieldStyles = {
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: theme.palette.background.paper,
+      "&.Mui-focused fieldset": {
+        borderColor: theme.palette.primary.main,
+      },
+    },
+    "& .MuiInputLabel-root": {
+      "&.Mui-focused": {
+        color: theme.palette.primary.main,
+      },
+    },
+  };
+
   return (
-    <form onSubmit={handleSubmit(onNext)}>
-      <Stack spacing={2}>
-        <Controller
-          name="cep"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="CEP"
-              placeholder="00000-000"
-              {...field}
-              value={field.value || ""}
-              onBlur={() => handleCepBlur(field.value)}
-              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
-              InputProps={{
-                inputComponent: CepMaskInput as any,
-              }}
-              inputProps={{
-                inputMode: "numeric",
-                maxLength: 9,
-                pattern: "[0-9-]*",
-              }}
-              error={!!errors.cep}
-              helperText={errors.cep?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Controller
-          name="street"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="Rua"
-              placeholder="Rua"
-              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
-              {...field}
-              error={!!errors.street}
-              helperText={errors.street?.message}
-              fullWidth
-            />
-          )}
-        />
+    <form
+      className="flex flex-col gap-4 w-full max-w-sm"
+      onSubmit={handleSubmit(onNext)}
+    >
+      <Controller
+        name="cep"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="CEP"
+            placeholder="00000-000"
+            {...field}
+            value={field.value || ""}
+            onBlur={() => handleCepBlur(field.value)}
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            InputProps={{
+              inputComponent: CepMaskInput as any,
+            }}
+            inputProps={{
+              inputMode: "numeric",
+              maxLength: 9,
+              pattern: "[0-9-]*",
+            }}
+            error={!!errors.cep}
+            helperText={errors.cep?.message}
+            fullWidth
+            sx={textFieldStyles}
+          />
+        )}
+      />
+
+      <Controller
+        name="street"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Rua"
+            placeholder="Rua"
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            {...field}
+            error={!!errors.street}
+            helperText={errors.street?.message}
+            fullWidth
+            sx={textFieldStyles}
+          />
+        )}
+      />
+
+      <Box className="flex gap-2">
         <Controller
           name="number"
           control={control}
@@ -154,10 +174,11 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
               {...field}
               error={!!errors.number}
               helperText={errors.number?.message}
-              fullWidth
+              sx={{ ...textFieldStyles, flex: 1 }}
             />
           )}
         />
+
         <Controller
           name="complement"
           control={control}
@@ -169,25 +190,30 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
               {...field}
               error={!!errors.complement}
               helperText={errors.complement?.message}
-              fullWidth
+              sx={{ ...textFieldStyles, flex: 2 }}
             />
           )}
         />
-        <Controller
-          name="neighborhood"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="Bairro"
-              placeholder="Bairro"
-              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
-              {...field}
-              error={!!errors.neighborhood}
-              helperText={errors.neighborhood?.message}
-              fullWidth
-            />
-          )}
-        />
+      </Box>
+
+      <Controller
+        name="neighborhood"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Bairro"
+            placeholder="Bairro"
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            {...field}
+            error={!!errors.neighborhood}
+            helperText={errors.neighborhood?.message}
+            fullWidth
+            sx={textFieldStyles}
+          />
+        )}
+      />
+
+      <Box className="flex gap-2">
         <Controller
           name="city"
           control={control}
@@ -199,10 +225,11 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
               {...field}
               error={!!errors.city}
               helperText={errors.city?.message}
-              fullWidth
+              sx={{ ...textFieldStyles, flex: 2 }}
             />
           )}
         />
+
         <Controller
           name="state"
           control={control}
@@ -214,82 +241,98 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
               {...field}
               error={!!errors.state}
               helperText={errors.state?.message}
-              fullWidth
+              sx={{ ...textFieldStyles, flex: 1 }}
             />
           )}
         />
-        <Controller
-          name="responsibleName"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="Nome do responsável"
-              placeholder="Nome do responsável"
-              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
-              {...field}
-              error={!!errors.responsibleName}
-              helperText={errors.responsibleName?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Controller
-          name="responsibleCpf"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="CPF do responsável"
-              placeholder="000.000.000-00"
-              {...field}
-              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
-              InputProps={{
-                inputComponent: CPFMaskInput as any,
-              }}
-              error={!!errors.responsibleCpf}
-              helperText={errors.responsibleCpf?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Controller
-          name="responsibleEmail"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="E-mail do responsável"
-              placeholder="emaildoresponsavel@exemplo.com"
-              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
-              {...field}
-              error={!!errors.responsibleEmail}
-              helperText={errors.responsibleEmail?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Controller
-          name="documentUrl"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="Documento (URL)"
-              placeholder="Link para o documento (opcional)"
-              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
-              {...field}
-              error={!!errors.documentUrl}
-              helperText={errors.documentUrl?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Box display="flex" justifyContent="space-between" mt={2}>
-          <Button variant="outlined" onClick={onBack}>
-            Voltar
-          </Button>
-          <Button variant="contained" type="submit" sx={{ bgcolor: 'theme.palette.primary.main', color: theme.palette.common.black }}>
-            Próximo
-          </Button>
-        </Box>
-      </Stack>
+      </Box>
+
+      <Controller
+        name="responsibleName"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Nome do responsável"
+            placeholder="Nome do responsável"
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            {...field}
+            error={!!errors.responsibleName}
+            helperText={errors.responsibleName?.message}
+            fullWidth
+            sx={textFieldStyles}
+          />
+        )}
+      />
+
+      <Controller
+        name="responsibleCpf"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="CPF do responsável"
+            placeholder="000.000.000-00"
+            {...field}
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            InputProps={{
+              inputComponent: CPFMaskInput as any,
+            }}
+            error={!!errors.responsibleCpf}
+            helperText={errors.responsibleCpf?.message}
+            fullWidth
+            sx={textFieldStyles}
+          />
+        )}
+      />
+
+      <Controller
+        name="responsibleEmail"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="E-mail do responsável"
+            placeholder="emaildoresponsavel@exemplo.com"
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            {...field}
+            error={!!errors.responsibleEmail}
+            helperText={errors.responsibleEmail?.message}
+            fullWidth
+            sx={textFieldStyles}
+          />
+        )}
+      />
+
+      <Controller
+        name="documentUrl"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Documento (URL)"
+            placeholder="Link para o documento (opcional)"
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            {...field}
+            error={!!errors.documentUrl}
+            helperText={errors.documentUrl?.message}
+            fullWidth
+            sx={textFieldStyles}
+          />
+        )}
+      />
+
+      <Box display="flex" justifyContent="space-between" mt={1}>
+        <Button variant="outlined" onClick={onBack}>
+          Voltar
+        </Button>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            bgcolor: "theme.palette.primary.main",
+            color: theme.palette.common.black,
+          }}
+        >
+          Próximo
+        </Button>
+      </Box>
     </form>
   );
 }

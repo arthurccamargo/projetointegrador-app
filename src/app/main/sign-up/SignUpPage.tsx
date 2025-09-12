@@ -1,11 +1,7 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import Paper from "@mui/material/Paper";
 import SelectRoleStep from "./tabs/SelectRoleTab";
 import OngDataTab from "./tabs/ong/OngDataTab";
 import VolunteerPersonalTab from "./tabs/volunteer/VolunteerPersonalTab";
@@ -16,6 +12,9 @@ import type { Ong } from "../../types/Ong";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../theme/useTheme";
+import Stepper from "@mui/material/Stepper";
+import StepLabel from "@mui/material/StepLabel";
+import Step from "@mui/material/Step";
 
 const steps = ["Tipo de cadastro", "Endereço", "Informações"];
 
@@ -132,142 +131,126 @@ function SignUpPage() {
   }
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        height: "100vh",
-        background: {
-          xs: theme.palette.background.paper,
-          sm: `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`,
-        },
-        display: "flex",
-        alignItems: { xs: "flex-start", sm: "center" },
-        justifyContent: "center",
-        p: { xs: 0, sm: 2 },
+    <div
+      className="flex min-w-0 flex-1 flex-col items-center"
+      style={{
         overflow: "auto",
+        minHeight: "100vh",
+        background:
+          window.innerWidth >= 600
+            ? `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`
+            : theme.palette.background.paper,
+        padding: window.innerWidth >= 600 ? "16px" : "0",
       }}
     >
-      <Box
+      <Paper
+        className="w-full p-8 rounded-3xl shadow-md"
         sx={{
-          width: { xs: "100%", sm: "90%", md: "70%", lg: "50%", xl: "40%" },
+          backgroundColor: theme.palette.background.paper,
+          maxWidth: { xs: "100%", sm: "90%", md: "70%", lg: "50%", xl: "40%" },
+          minHeight: "auto",
+          boxShadow: { xs: "none", sm: 3 },
+          borderRadius: { xs: 0, sm: 3 },
         }}
       >
-        <Card
-          elevation={3}
-          sx={{
-            bgcolor: theme.palette.background.paper,
-            borderRadius: { xs: 0, sm: 1 },
-            minHeight: { xs: "100vh", sm: "auto" },
-            width: { xs: "100%", sm: "auto" },
-            boxShadow: { xs: "none", sm: 3 },
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: { xs: "center", sm: "flex-start" },
-            pb: { xs: 2, sm: 2 }, 
-          }}
-        >
-          <CardContent>
-            <Box maxWidth={500} mx="auto" mt={6}>
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  mb: 2,
-                }}
-              >
-                <Box
-                  sx={{
-                    width: 64,
-                    height: 64,
-                    bgcolor: theme.palette.primary.main,
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      color: theme.palette.common.black,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    H
-                  </Typography>
-                </Box>
-              </Box>
-              <Stepper
-                activeStep={activeStep}
-                sx={{ mb: 4 }}
-                alternativeLabel
-              >
-                {steps.map((label) => (
-                  <Step key={label}>
-                    <StepLabel
-                      StepIconComponent={CustomStepIcon}
+        <Box className="flex flex-col items-center">
+          {/* Logo */}
+          <Box
+            sx={{
+              width: 64,
+              height: 64,
+              bgcolor: theme.palette.primary.main,
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 2,
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                color: theme.palette.common.black,
+                fontWeight: "bold",
+              }}
+            >
+              H
+            </Typography>
+          </Box>
+          <Box>
+            <Stepper activeStep={activeStep} sx={{ mb: 4 }} alternativeLabel>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel StepIconComponent={CustomStepIcon}>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: theme.palette.common.black }}
                     >
-                      <Typography
-                        variant="body2"
-                        sx={{ color: theme.palette.common.black }}
-                      >
-                        {label}
-                      </Typography>
-                    </StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-              {error && (
-                <Typography color="error" mb={2}>
-                  {error}
-                </Typography>
-              )}
-              {success && (
-                <Typography color="primary" mb={2}>
-                  Cadastro realizado com sucesso!
-                </Typography>
-              )}
-              {activeStep === 0 && <SelectRoleStep onSelectRole={handleNext} />}
-              {activeStep === 1 && role === "VOLUNTEER" && (
-                <VolunteerAddressTab
-                  defaultValues={volunteer}
-                  onNext={handleNext}
-                  onBack={handleBack}
-                />
-              )}
-              {activeStep === 1 && role === "ONG" && (
-                <OngAddressResponsibleTab
-                  defaultValues={ong}
-                  onNext={handleNext}
-                  onBack={handleBack}
-                />
-              )}
-              {activeStep === 2 && role === "VOLUNTEER" && (
-                <VolunteerPersonalTab
-                  defaultValues={volunteer}
-                  onNext={handleNext}
-                  onBack={handleBack}
-                />
-              )}
-              {activeStep === 2 && role === "ONG" && (
-                <OngDataTab
-                  defaultValues={ong}
-                  onNext={handleNext}
-                  onBack={handleBack}
-                />
-              )}
-              {loading && (
-                <Typography color="primary" mt={2}>
-                  Enviando cadastro...
-                </Typography>
-              )}
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
-    </Box>
+                      {label}
+                    </Typography>
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
+          {error && (
+            <Typography
+              color="error"
+              sx={{ mb: 2, textAlign: "center", maxWidth: 400 }}
+            >
+              {error}
+            </Typography>
+          )}
+          {success && (
+            <Typography
+              color="primary"
+              sx={{ mb: 2, textAlign: "center", maxWidth: 400 }}
+            >
+              Cadastro realizado com sucesso!
+            </Typography>
+          )}
+
+          {/* Form Content */}
+          <Box className="w-full max-w-sm">
+            {activeStep === 0 && <SelectRoleStep onSelectRole={handleNext} />}
+            {activeStep === 1 && role === "VOLUNTEER" && (
+              <VolunteerAddressTab
+                defaultValues={volunteer}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+            {activeStep === 1 && role === "ONG" && (
+              <OngAddressResponsibleTab
+                defaultValues={ong}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+            {activeStep === 2 && role === "VOLUNTEER" && (
+              <VolunteerPersonalTab
+                defaultValues={volunteer}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+            {activeStep === 2 && role === "ONG" && (
+              <OngDataTab
+                defaultValues={ong}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+          </Box>
+
+          {loading && (
+            <Typography color="primary" sx={{ mt: 2, textAlign: "center" }}>
+              Enviando cadastro...
+            </Typography>
+          )}
+        </Box>
+      </Paper>
+    </div>
   );
 }
 
