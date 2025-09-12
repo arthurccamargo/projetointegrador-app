@@ -9,6 +9,7 @@ import { isValidCNPJ } from "../../../../utils/validators/cnpjValidator";
 import { CnpjMaskInput } from "../../../../shared-components/mask/CnpjMask";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useTheme } from "../../../../../theme/useTheme";
 
 const ongDataSchema = z
   .object({
@@ -18,7 +19,7 @@ const ongDataSchema = z
       .min(18, "CNPJ deve ter 18 caracteres")
       .nonempty("Digite o CNPJ")
       .refine(isValidCNPJ, "CNPJ inválido"),
-    description: z.string().optional(),
+    // description: z.string().optional(),
     email: z.email("E-mail inválido").nonempty("E-mail obrigatório"),
     password: z
       .string()
@@ -42,7 +43,7 @@ interface Props {
 const defaultFormValues: FormData = {
   name: "",
   cnpj: "",
-  description: "",
+  // description: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -57,6 +58,7 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
     resolver: zodResolver(ongDataSchema),
     defaultValues: { ...defaultFormValues, ...defaultValues },
   });
+  const theme = useTheme();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -70,6 +72,8 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Nome da ONG"
+              placeholder="Nome da ONG"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               value={field.value}
               error={!!errors.name}
@@ -84,6 +88,8 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="CNPJ"
+              placeholder="00.000.000/0000-00"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               value={field.value}
               error={!!errors.cnpj}
@@ -100,12 +106,15 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
             />
           )}
         />
+        {/* 
         <Controller
           name="description"
           control={control}
           render={({ field }) => (
             <TextField
               label="Descrição (opcional)"
+              placeholder="Fale um pouco sobre a ONG"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               multiline
               rows={3}
               {...field}
@@ -116,12 +125,15 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
             />
           )}
         />
+        */}
         <Controller
           name="email"
           control={control}
           render={({ field }) => (
             <TextField
               label="E-mail"
+              placeholder="emaildaong@exemplo.com"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               value={field.value}
               error={!!errors.email}
@@ -136,6 +148,8 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Senha"
+              placeholder="Sua senha"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               type={showPassword ? "text" : "password"}
               {...field}
               value={field.value}
@@ -161,6 +175,8 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Confirmar Senha"
+              placeholder="Confirme sua senha"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               type={showConfirmPassword ? "text" : "password"}
               {...field}
               value={field.value}
@@ -188,7 +204,7 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
           <Button variant="outlined" onClick={onBack}>
             Voltar
           </Button>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" sx={{ bgcolor: theme.palette.primary.main, color: theme.palette.common.black }}>
             Finalizar
           </Button>
         </Box>
