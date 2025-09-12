@@ -172,6 +172,12 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
               placeholder="Número"
               InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
+              value={field.value || ""}
+              onChange={(e) => {
+                const onlyNums = e.target.value.replace(/\D/g, ""); // remove tudo que não for número
+                field.onChange(onlyNums);
+              }}
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
               error={!!errors.number}
               helperText={errors.number?.message}
               sx={{ ...textFieldStyles, flex: 1 }}
