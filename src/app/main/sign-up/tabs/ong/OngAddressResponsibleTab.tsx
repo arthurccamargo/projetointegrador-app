@@ -9,6 +9,7 @@ import { isValidCPF } from "../../../../utils/validators/cpfValidator";
 import { CPFMaskInput } from "../../../../shared-components/mask/CpfMask";
 import { CepService } from "../../../../api/cep";
 import { CepMaskInput } from "../../../../shared-components/mask/CepMask";
+import { useTheme } from "../../../../../theme/useTheme";
 
 const ongAddressResponsibleSchema = z.object({
   cep: z
@@ -81,6 +82,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
     resolver: zodResolver(ongAddressResponsibleSchema),
     defaultValues: { ...defaultFormValues, ...defaultValues },
   });
+  const theme = useTheme();
 
   const handleCepBlur = async (cep?: string) => {
     if (!cep) return;
@@ -107,9 +109,11 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="CEP"
+              placeholder="00000-000"
               {...field}
               value={field.value || ""}
               onBlur={() => handleCepBlur(field.value)}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               InputProps={{
                 inputComponent: CepMaskInput as any,
               }}
@@ -129,7 +133,9 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
+              label="Rua"
               placeholder="Rua"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.street}
               helperText={errors.street?.message}
@@ -142,7 +148,9 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
+              label="Número"
               placeholder="Número"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.number}
               helperText={errors.number?.message}
@@ -155,7 +163,9 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
+              label="Complemento"
               placeholder="Complemento (opcional)"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.complement}
               helperText={errors.complement?.message}
@@ -168,7 +178,9 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
+              label="Bairro"
               placeholder="Bairro"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.neighborhood}
               helperText={errors.neighborhood?.message}
@@ -181,7 +193,9 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
+              label="Cidade"
               placeholder="Cidade"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.city}
               helperText={errors.city?.message}
@@ -194,7 +208,9 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
+              label="Estado"
               placeholder="Estado"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.state}
               helperText={errors.state?.message}
@@ -208,6 +224,8 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Nome do responsável"
+              placeholder="Nome do responsável"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.responsibleName}
               helperText={errors.responsibleName?.message}
@@ -221,7 +239,9 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="CPF do responsável"
+              placeholder="000.000.000-00"
               {...field}
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               InputProps={{
                 inputComponent: CPFMaskInput as any,
               }}
@@ -237,6 +257,8 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="E-mail do responsável"
+              placeholder="emaildoresponsavel@exemplo.com"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.responsibleEmail}
               helperText={errors.responsibleEmail?.message}
@@ -250,6 +272,8 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Documento (URL)"
+              placeholder="Link para o documento (opcional)"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.documentUrl}
               helperText={errors.documentUrl?.message}
@@ -261,7 +285,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           <Button variant="outlined" onClick={onBack}>
             Voltar
           </Button>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" sx={{ bgcolor: 'theme.palette.primary.main', color: theme.palette.common.black }}>
             Próximo
           </Button>
         </Box>

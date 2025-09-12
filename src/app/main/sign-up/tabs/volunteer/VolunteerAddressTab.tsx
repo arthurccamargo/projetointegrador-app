@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { CepMaskInput } from "../../../../shared-components/mask/CepMask";
 import { CepService } from "../../../../api/cep";
+import { useTheme } from "../../../../../theme/useTheme";
 
 const volunteerAddressSchema = z.object({
   cep: z
@@ -37,7 +38,7 @@ const volunteerAddressSchema = z.object({
   neighborhood: z.string().optional(),
   city: z.string().optional(),
   state: z.string().optional(),
-  experiences: z.string().optional(),
+  //experiences: z.string().optional(),
 });
 
 type FormData = z.infer<typeof volunteerAddressSchema>;
@@ -58,6 +59,7 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
     resolver: zodResolver(volunteerAddressSchema),
     defaultValues,
   });
+  const theme = useTheme();
 
   const handleCepBlur = async (cep?: string) => {
     if (!cep) return;
@@ -84,9 +86,11 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="CEP (opcional)"
+              placeholder="00000-000"
               {...field}
               value={field.value || ""}
               onBlur={() => handleCepBlur(field.value)}
+              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
               InputProps={{
                 inputComponent: CepMaskInput as any,
               }}
@@ -179,12 +183,14 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
             />
           )}
         />
+        {/* Campo para experiências 
         <Controller
           name="experiences"
           control={control}
           render={({ field }) => (
             <TextField
               label="Experiências (opcional)"
+              placeholder="Experiências (opcional)"
               {...field}
               multiline
               rows={3}
@@ -194,11 +200,12 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
             />
           )}
         />
+        */}
         <Box display="flex" justifyContent="space-between" mt={2}>
           <Button variant="outlined" onClick={onBack}>
             Voltar
           </Button>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" sx={{ bgcolor: 'theme.palette.primary.main', color: theme.palette.common.black }}>
             Próximo
           </Button>
         </Box>

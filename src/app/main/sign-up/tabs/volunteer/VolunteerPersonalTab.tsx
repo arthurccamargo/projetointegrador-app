@@ -23,12 +23,6 @@ const volunteerPersonalSchema = z
       .nonempty({ message: "Digite o CPF" })
       .refine(isValidCPF, "CPF inválido"),
     birthDate: z.string().optional(),
-    email: z.email("E-mail inválido").nonempty("E-mail obrigatório"),
-    password: z
-      .string()
-      .min(6, "Senha deve ter no mínimo 6 caracteres")
-      .nonempty("Senha obrigatória"),
-    confirmPassword: z.string().nonempty("Confirme a senha"),
     phone: z
       .string()
       .min(14, "Telefone deve ter 14 caracteres")
@@ -40,6 +34,12 @@ const volunteerPersonalSchema = z
         "Telefone inválido"
       )
       .optional(),
+    email: z.email("E-mail inválido").nonempty("E-mail obrigatório"),
+    password: z
+      .string()
+      .min(6, "Senha deve ter no mínimo 6 caracteres")
+      .nonempty("Senha obrigatória"),
+    confirmPassword: z.string().nonempty("Confirme a senha"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não são iguais",
@@ -58,10 +58,10 @@ const defaultFormValues: FormData = {
   fullName: "",
   cpf: "",
   birthDate: "",
+  phone: "",
   email: "",
   password: "",
   confirmPassword: "",
-  phone: "",
 };
 
 function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
@@ -86,6 +86,8 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Nome completo"
+              placeholder="Seu nome"
+              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
               {...field}
               value={field.value}
               error={!!errors.fullName}
@@ -100,7 +102,9 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="CPF"
+              placeholder="000.000.000-00"
               {...field}
+              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
               InputProps={{
                 inputComponent: CPFMaskInput as any,
               }}
@@ -119,9 +123,27 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
               type="date"
               {...field}
               value={field.value}
-              InputLabelProps={{ shrink: true }}
+              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
               error={!!errors.birthDate}
               helperText={errors.birthDate?.message}
+              fullWidth
+            />
+          )}
+        />
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Telefone"
+              placeholder="(99) 99999-9999"
+              {...field}
+              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
+              InputProps={{
+                inputComponent: PhoneMaskInput as any,
+              }}
+              error={!!errors.phone}
+              helperText={errors.phone?.message}
               fullWidth
             />
           )}
@@ -132,6 +154,8 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="E-mail"
+              placeholder="seu@email.com"
+              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
               {...field}
               value={field.value}
               error={!!errors.email}
@@ -146,6 +170,8 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Senha"
+              placeholder="Sua senha"
+              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
               type={showPassword ? "text" : "password"}
               {...field}
               value={field.value}
@@ -171,6 +197,8 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
           render={({ field }) => (
             <TextField
               label="Confirmar Senha"
+              placeholder="Confirme sua senha"
+              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
               type={showConfirmPassword ? "text" : "password"}
               {...field}
               value={field.value}
@@ -191,22 +219,6 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
                   </Box>
                 ),
               }}
-            />
-          )}
-        />
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="Telefone"
-              {...field}
-              InputProps={{
-                inputComponent: PhoneMaskInput as any,
-              }}
-              error={!!errors.phone}
-              helperText={errors.phone?.message}
-              fullWidth
             />
           )}
         />
