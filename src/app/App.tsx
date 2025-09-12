@@ -4,12 +4,12 @@ import routes from "./routes";
 import PrivateRoute from "./routes/PrivateRoute";
 import AppLayout from "./layout/AppLayout";
 import theme from "../theme/theme";
-
-const userRole: string = "guest";
+import { AuthProvider } from "./auth/AuthProvider";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
+      <AuthProvider> 
       <BrowserRouter>
         <Routes>
           {routes.map((route, idx) => (
@@ -24,13 +24,13 @@ function App() {
                     </AppLayout>
                   }
                   allowedRoles={route.auth}
-                  userRole={userRole}
                 />
               }
             />
           ))}
         </Routes>
       </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
