@@ -41,6 +41,8 @@ function SignUpPage() {
   const handleNext = async (
     data: UserRoleType | Partial<Volunteer> | Partial<Ong>
   ) => {
+    setError(null); // Limpa erro ao avançar
+
     if (activeStep === 0 && typeof data === "string") {
       setRole(data as UserRoleType);
       setActiveStep(1);
@@ -94,6 +96,7 @@ function SignUpPage() {
   };
 
   const handleBack = () => {
+    setError(null); // Limpa erro ao voltar
     if (activeStep === 1) setActiveStep(0);
     else if (activeStep === 2) setActiveStep(1);
   };
@@ -193,22 +196,6 @@ function SignUpPage() {
               ))}
             </Stepper>
           </Box>
-          {error && (
-            <Typography
-              color="error"
-              sx={{ mb: 2, textAlign: "center", maxWidth: 400 }}
-            >
-              {error}
-            </Typography>
-          )}
-          {success && (
-            <Typography
-              color="primary"
-              sx={{ mb: 2, textAlign: "center", maxWidth: 400 }}
-            >
-              Cadastro realizado com sucesso!
-            </Typography>
-          )}
 
           {/* Form Content */}
           <Box className="w-full max-w-sm">
@@ -232,6 +219,9 @@ function SignUpPage() {
                 defaultValues={volunteer}
                 onNext={handleNext}
                 onBack={handleBack}
+                error={error}
+                success={success}
+                loading={loading}
               />
             )}
             {activeStep === 2 && role === "ONG" && (
@@ -239,15 +229,12 @@ function SignUpPage() {
                 defaultValues={ong}
                 onNext={handleNext}
                 onBack={handleBack}
+                error={error}
+                success={success}
+                loading={loading}
               />
             )}
           </Box>
-
-          {loading && (
-            <Typography color="primary" sx={{ mt: 2, textAlign: "center" }}>
-              Enviando cadastro...
-            </Typography>
-          )}
         </Box>
       </Paper>
     </div>

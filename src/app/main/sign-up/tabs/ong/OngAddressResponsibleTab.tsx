@@ -34,7 +34,7 @@ const ongAddressResponsibleSchema = z.object({
       }
     ),
   street: z.string().min(1, "Rua obrigatória"),
-  number: z.string().min(1, "Número obrigatório"),
+  number: z.string().optional(),
   complement: z.string().optional(),
   neighborhood: z.string().min(1, "Bairro obrigatório"),
   city: z.string().min(1, "Cidade obrigatória"),
