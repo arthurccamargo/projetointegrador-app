@@ -8,7 +8,7 @@ const HomePageRoute: AppRoute = {
   settings: {
     layout: { config: { navbar: true, toolbar: false, footer: false } },
   },
-  auth: authRoles.guest, // apenas usuários logados
+  auth: authRoles.user, // apenas usuários logados
 };
 
 export default HomePageRoute;

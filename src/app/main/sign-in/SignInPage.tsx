@@ -1,32 +1,40 @@
-import React, { useState } from "react"
-import Box from "@mui/material/Box"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
-import CardHeader from "@mui/material/CardHeader"
-import Typography from "@mui/material/Typography"
-import TextField from "@mui/material/TextField"
-import Button from "@mui/material/Button"
-import IconButton from "@mui/material/IconButton"
-import InputAdornment from "@mui/material/InputAdornment"
-import Visibility from "@mui/icons-material/Visibility"
-import VisibilityOff from "@mui/icons-material/VisibilityOff"
-import Link from "@mui/material/Link"
-import { useNavigate } from "react-router-dom"
-import { useTheme } from "../../../theme/useTheme"
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Link from "@mui/material/Link";
+import { useNavigate } from "react-router-dom";
+import { useTheme } from "../../../theme/useTheme";
+import { useAuth } from "../../auth/useAuth";
 
 function SignInPage() {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
+  });
   const navigate = useNavigate();
+  const { login } = useAuth();
   const theme = useTheme();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // TODO: Implement login logic
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await login(formData.email, formData.password);
+      navigate("/home");
+    } catch (error: any) {
+      alert(error.message || "Erro ao fazer login");
+    }
+  };
 
   return (
     <Box
@@ -42,24 +50,28 @@ function SignInPage() {
         p: { xs: 0, sm: 2 },
       }}
     >
-      <Box sx={{ width: { xs: '100%', sm: '90%', md: '70%', lg: '50%', xl: '40%' } }}>
-        <Card 
-          elevation={3} 
-          sx={{ 
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "90%", md: "70%", lg: "50%", xl: "40%" },
+        }}
+      >
+        <Card
+          elevation={3}
+          sx={{
             bgcolor: theme.palette.background.paper,
             borderRadius: { xs: 0, sm: 1 },
-            minHeight: { xs: '100vh', sm: 'auto' },
-            width: { xs: '100%', sm: 'auto' },
-            boxShadow: { xs: 'none', sm: 3 },
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: { xs: 'center', sm: 'flex-start' },
-            pb: { xs: 2, sm: 2 }
+            minHeight: { xs: "100vh", sm: "auto" },
+            width: { xs: "100%", sm: "auto" },
+            boxShadow: { xs: "none", sm: 3 },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: { xs: "center", sm: "flex-start" },
+            pb: { xs: 2, sm: 2 },
           }}
         >
           <CardHeader
             sx={{
-              pt: { xs: 4, sm: 2 }
+              pt: { xs: 4, sm: 2 },
             }}
             title={
               <Box display="flex" flexDirection="column" alignItems="center">
@@ -75,21 +87,40 @@ function SignInPage() {
                     mb: 2,
                   }}
                 >
-                  <Typography variant="h4" sx={{ color: theme.palette.common.black, fontWeight: "bold" }}>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      color: theme.palette.common.black,
+                      fontWeight: "bold",
+                    }}
+                  >
                     H
                   </Typography>
                 </Box>
-                <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.text.primary }} gutterBottom>
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
+                  gutterBottom
+                >
                   Entrar no HelpHub
                 </Typography>
-                <Typography variant="body2" sx={{ color: theme.palette.text.primary }} align="center">
+                <Typography
+                  variant="body2"
+                  sx={{ color: theme.palette.text.primary }}
+                  align="center"
+                >
                   Acesse sua conta para continuar conectando pessoas e causas
                 </Typography>
               </Box>
             }
           />
           <CardContent>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
               <TextField
                 margin="normal"
                 fullWidth
@@ -98,10 +129,15 @@ function SignInPage() {
                 type="email"
                 placeholder="seu@email.com"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 required
                 autoComplete="email"
-                InputLabelProps={{ shrink: true, style: { color: theme.palette.text.primary } }}
+                InputLabelProps={{
+                  shrink: true,
+                  style: { color: theme.palette.text.primary },
+                }}
               />
               <TextField
                 margin="normal"
@@ -111,10 +147,15 @@ function SignInPage() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Sua senha"
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 required
                 autoComplete="current-password"
-                InputLabelProps={{ shrink: true, style: { color: theme.palette.text.primary } }}
+                InputLabelProps={{
+                  shrink: true,
+                  style: { color: theme.palette.text.primary },
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -134,7 +175,12 @@ function SignInPage() {
                 <Button
                   component={Link}
                   variant="text"
-                  sx={{ textTransform: "none", fontSize: 14, color: theme.palette.primary.contrastText, textDecoration: "underline" }}
+                  sx={{
+                    textTransform: "none",
+                    fontSize: 14,
+                    color: theme.palette.primary.contrastText,
+                    textDecoration: "underline",
+                  }}
                 >
                   Esqueceu a senha?
                 </Button>
@@ -144,19 +190,35 @@ function SignInPage() {
                 variant="contained"
                 color="primary"
                 fullWidth
-                sx={{ py: 1.5, fontWeight: "bold", fontSize: 16, bgcolor: theme.palette.primary.main, color: theme.palette.common.black, '&:hover': { bgcolor: theme.palette.primary.contrastText } }}
+                sx={{
+                  py: 1.5,
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  bgcolor: theme.palette.primary.main,
+                  color: theme.palette.common.black,
+                  "&:hover": { bgcolor: theme.palette.primary.contrastText },
+                }}
               >
                 Entrar
               </Button>
             </Box>
             <Box mt={4} textAlign="center">
-              <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
+              <Typography
+                variant="body2"
+                sx={{ color: theme.palette.text.primary }}
+              >
                 Ainda não tem uma conta?{" "}
                 <Button
                   component={Link}
-                  onClick={() => navigate('/sign-up')}
+                  onClick={() => navigate("/sign-up")}
                   variant="text"
-                  sx={{ textTransform: "none", fontWeight: "bold", fontSize: 14, color: theme.palette.primary.contrastText, textDecoration: "underline" }}
+                  sx={{
+                    textTransform: "none",
+                    fontWeight: "bold",
+                    fontSize: 14,
+                    color: theme.palette.primary.contrastText,
+                    textDecoration: "underline",
+                  }}
                 >
                   Cadastre-se aqui
                 </Button>
@@ -166,7 +228,7 @@ function SignInPage() {
         </Card>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default SignInPage
+export default SignInPage;
