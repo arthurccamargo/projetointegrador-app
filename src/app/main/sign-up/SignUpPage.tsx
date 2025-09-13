@@ -15,6 +15,7 @@ import { useTheme } from "../../../theme/useTheme";
 import Stepper from "@mui/material/Stepper";
 import StepLabel from "@mui/material/StepLabel";
 import Step from "@mui/material/Step";
+import { useAuth } from "../../auth/useAuth";
 
 const steps = ["Tipo de cadastro", "Endereço", "Informações"];
 
@@ -34,6 +35,7 @@ function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const { signIn } = useAuth();
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -65,7 +67,8 @@ function SignUpPage() {
       try {
         await axios.post(`${BASEAPI_URL}/users/volunteer`, finalVolunteer);
         setSuccess(true);
-        navigate("/sign-in");
+        await signIn(finalVolunteer.email!, finalVolunteer.password!);
+        navigate("/home");
       } catch (err: any) {
         setError(
           err?.response?.data?.message || "Erro ao cadastrar voluntário"
@@ -86,7 +89,8 @@ function SignUpPage() {
       try {
         await axios.post(`${BASEAPI_URL}/users/ong`, finalOng);
         setSuccess(true);
-        navigate("/sign-in");
+        await signIn(finalOng.email!, finalOng.password!);
+        navigate("/home");
       } catch (err: any) {
         setError(err?.response?.data?.message || "Erro ao cadastrar ONG");
       } finally {

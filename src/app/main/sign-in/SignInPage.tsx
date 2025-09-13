@@ -28,7 +28,7 @@ function SignInPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { signIn } = useAuth();
   const theme = useTheme();
 
   const {
@@ -48,7 +48,7 @@ function SignInPage() {
     setError(null);
 
     try {
-      await login(data.email, data.password);
+      await signIn(data.email, data.password);
       navigate("/home");
     } catch (error: any) {
       setError(
