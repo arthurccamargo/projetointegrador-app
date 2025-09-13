@@ -168,7 +168,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Número"
+              label="Número (opcional)"
               placeholder="Número"
               InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
@@ -190,8 +190,8 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Complemento"
-              placeholder="Complemento (opcional)"
+              label="Complemento (opcional)"
+              placeholder="Complemento"
               InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.complement}
