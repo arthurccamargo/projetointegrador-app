@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
+import LoadingSpinner from '../shared-components/LoadingSpinner';
 
 type PrivateRouteProps = {
   element: React.ReactNode;
@@ -11,7 +12,13 @@ export default function PrivateRoute({ element, allowedRoles }: PrivateRouteProp
 
   // Aguarda o carregamento da sessão
   if (isLoading) {
-    return <div>Loading...</div>; // deve ser um spinner!!!!!!!!
+    return (
+      <LoadingSpinner 
+        text="" 
+        fullScreen={true}
+        size={50}
+      />
+    );
   }
 
   // rota pública (não exige autenticação)
