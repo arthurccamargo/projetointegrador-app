@@ -16,6 +16,8 @@ import Stepper from "@mui/material/Stepper";
 import StepLabel from "@mui/material/StepLabel";
 import Step from "@mui/material/Step";
 import { useAuth } from "../../auth/useAuth";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const steps = ["Tipo de cadastro", "Endereço", "Informações"];
 
@@ -161,29 +163,59 @@ function SignUpPage() {
         }}
       >
         <Box className="flex flex-col items-center">
-          {/* Logo */}
           <Box
             sx={{
-              width: 64,
-              height: 64,
-              bgcolor: theme.palette.primary.main,
-              borderRadius: "50%",
+              width: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              position: "relative",
               mb: 2,
             }}
           >
-            <Typography
-              variant="h4"
+            <Box sx={{ position: "absolute", left: 0 }}>
+              <IconButton
+                onClick={() => navigate("/sign-in")}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  color: theme.palette.text.primary,
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  },
+                }}
+              >
+                <ArrowBackIcon fontSize="small" />
+                <Typography variant="body2" sx={{ fontSize: "0.875rem" }}>
+                  Já tenho login
+                </Typography>
+              </IconButton>
+            </Box>
+            {/* Logo */}
+            <Box
               sx={{
-                color: theme.palette.common.black,
-                fontWeight: "bold",
+                width: 64,
+                height: 64,
+                bgcolor: theme.palette.primary.main,
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              H
-            </Typography>
+              <Typography
+                variant="h4"
+                sx={{
+                  color: theme.palette.common.black,
+                  fontWeight: "bold",
+                }}
+              >
+                H
+              </Typography>
+            </Box>
           </Box>
+
           <Box>
             <Stepper activeStep={activeStep} sx={{ mb: 4 }} alternativeLabel>
               {steps.map((label) => (
