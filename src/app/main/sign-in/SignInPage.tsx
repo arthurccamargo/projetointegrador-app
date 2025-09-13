@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -14,163 +12,199 @@ import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../theme/useTheme";
 import { useAuth } from "../../auth/useAuth";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const signInSchema = z.object({
+  email: z.email("E-mail inválido").nonempty("E-mail obrigatório"),
+  password: z.string().min(1, "Senha obrigatória"),
+});
+
+type FormData = z.infer<typeof signInSchema>;
 
 function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
   const theme = useTheme();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data: FormData) => {
+    setLoading(true);
+    setError(null);
 
     try {
-      await login(formData.email, formData.password);
+      await login(data.email, data.password);
       navigate("/home");
     } catch (error: any) {
-      alert(error.message || "Erro ao fazer login");
+      setError(
+        error.message || "Erro ao fazer login. Verifique suas credenciais."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Box
-      sx={{
+    <div
+      className="flex min-w-0 flex-1 flex-col items-center justify-center"
+      style={{
+        overflow: "auto",
         minHeight: "100vh",
-        background: {
-          xs: theme.palette.background.paper,
-          sm: `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`,
-        },
-        display: "flex",
-        alignItems: { xs: "flex-start", sm: "center" },
-        justifyContent: "center",
-        p: { xs: 0, sm: 2 },
+        background:
+          window.innerWidth >= 600
+            ? `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`
+            : theme.palette.background.paper,
+        padding: window.innerWidth >= 600 ? "16px" : "0",
       }}
     >
-      <Box
+      <Paper
+        className="w-full p-8 rounded-3xl shadow-md"
         sx={{
-          width: { xs: "100%", sm: "90%", md: "70%", lg: "50%", xl: "40%" },
+          backgroundColor: theme.palette.background.paper,
+          maxWidth: { xs: "100%", sm: "90%", md: "70%", lg: "50%", xl: "40%" },
+          minHeight: { xs: "100vh", sm: "auto" },
+          boxShadow: { xs: "none", sm: 3 },
+          borderRadius: { xs: 0, sm: 3 },
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: { xs: "center", sm: "flex-start" },
         }}
       >
-        <Card
-          elevation={3}
-          sx={{
-            bgcolor: theme.palette.background.paper,
-            borderRadius: { xs: 0, sm: 1 },
-            minHeight: { xs: "100vh", sm: "auto" },
-            width: { xs: "100%", sm: "auto" },
-            boxShadow: { xs: "none", sm: 3 },
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: { xs: "center", sm: "flex-start" },
-            pb: { xs: 2, sm: 2 },
-          }}
-        >
-          <CardHeader
+        <Box className="flex flex-col items-center">
+          {/* Logo */}
+          <Box
             sx={{
-              pt: { xs: 4, sm: 2 },
+              width: 64,
+              height: 64,
+              bgcolor: theme.palette.primary.main,
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 2,
             }}
-            title={
-              <Box display="flex" flexDirection="column" alignItems="center">
-                <Box
-                  sx={{
-                    width: 64,
-                    height: 64,
-                    bgcolor: theme.palette.primary.main,
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    mb: 2,
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      color: theme.palette.common.black,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    H
-                  </Typography>
-                </Box>
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
-                  gutterBottom
-                >
-                  Entrar no HelpHub
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ color: theme.palette.text.primary }}
-                  align="center"
-                >
-                  Acesse sua conta para continuar conectando pessoas e causas
-                </Typography>
-              </Box>
-            }
-          />
-          <CardContent>
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                color: theme.palette.common.black,
+                fontWeight: "bold",
+              }}
+            >
+              H
+            </Typography>
+          </Box>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "bold",
+              color: theme.palette.text.primary,
+              mb: 1,
+              textAlign: "center",
+            }}
+          >
+            Entrar no HelpHub
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: theme.palette.text.primary,
+              mb: 4,
+              textAlign: "center",
+              maxWidth: 400,
+            }}
+          >
+            Acesse sua conta para continuar conectando pessoas e causas
+          </Typography>
+          <Box className="w-full max-w-sm">
             <Box
               component="form"
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               noValidate
               sx={{ mt: 1 }}
             >
-              <TextField
-                margin="normal"
-                fullWidth
-                id="email"
-                label="E-mail"
-                type="email"
-                placeholder="seu@email.com"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                required
-                autoComplete="email"
-                InputLabelProps={{
-                  shrink: true,
-                  style: { color: theme.palette.text.primary },
-                }}
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    margin="normal"
+                    fullWidth
+                    label="E-mail"
+                    type="email"
+                    placeholder="seu@email.com"
+                    autoComplete="email"
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { color: "#A1A1A1" },
+                    }}
+                  />
+                )}
               />
-              <TextField
-                margin="normal"
-                fullWidth
-                id="password"
-                label="Senha"
-                type={showPassword ? "text" : "password"}
-                placeholder="Sua senha"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                required
-                autoComplete="current-password"
-                InputLabelProps={{
-                  shrink: true,
-                  style: { color: theme.palette.text.primary },
-                }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword((show) => !show)}
-                        edge="end"
-                        sx={{ color: theme.palette.primary.main }}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
+
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    margin="normal"
+                    fullWidth
+                    label="Senha"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Sua senha"
+                    autoComplete="current-password"
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { color: "#A1A1A1" },
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={() => setShowPassword((show) => !show)}
+                            edge="end"
+                            sx={{ color: theme.palette.primary.main }}
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
               />
+
+              {error && (
+                <Typography
+                  color="error"
+                  sx={{ mt: 1, mb: 1, textAlign: "center", fontSize: "14px" }}
+                >
+                  {error}
+                </Typography>
+              )}
+
               <Box display="flex" justifyContent="flex-end" mb={2}>
                 <Button
                   component={Link}
@@ -190,6 +224,7 @@ function SignInPage() {
                 variant="contained"
                 color="primary"
                 fullWidth
+                disabled={loading}
                 sx={{
                   py: 1.5,
                   fontWeight: "bold",
@@ -199,7 +234,7 @@ function SignInPage() {
                   "&:hover": { bgcolor: theme.palette.primary.contrastText },
                 }}
               >
-                Entrar
+                {loading ? "Entrando..." : "Entrar"}
               </Button>
             </Box>
             <Box mt={4} textAlign="center">
@@ -224,10 +259,10 @@ function SignInPage() {
                 </Button>
               </Typography>
             </Box>
-          </CardContent>
-        </Card>
-      </Box>
-    </Box>
+          </Box>
+        </Box>
+      </Paper>
+    </div>
   );
 }
 
