@@ -34,7 +34,7 @@ const ongAddressResponsibleSchema = z.object({
       }
     ),
   street: z.string().min(1, "Rua obrigatória"),
-  number: z.string().min(1, "Número obrigatório"),
+  number: z.string().optional(),
   complement: z.string().optional(),
   neighborhood: z.string().min(1, "Bairro obrigatório"),
   city: z.string().min(1, "Cidade obrigatória"),
@@ -168,10 +168,16 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Número"
+              label="Número (opcional)"
               placeholder="Número"
               InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
+              value={field.value || ""}
+              onChange={(e) => {
+                const onlyNums = e.target.value.replace(/\D/g, ""); // remove tudo que não for número
+                field.onChange(onlyNums);
+              }}
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
               error={!!errors.number}
               helperText={errors.number?.message}
               sx={{ ...textFieldStyles, flex: 1 }}
@@ -184,8 +190,8 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Complemento"
-              placeholder="Complemento (opcional)"
+              label="Complemento (opcional)"
+              placeholder="Complemento"
               InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.complement}

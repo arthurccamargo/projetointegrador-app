@@ -4,7 +4,6 @@ import { z } from "zod";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
 import { CepMaskInput } from "../../../../shared-components/mask/CepMask";
 import { CepService } from "../../../../api/cep";
 import { useTheme } from "../../../../../theme/useTheme";
@@ -78,56 +77,62 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onNext)}>
-      <Stack spacing={2}>
-        <Controller
-          name="cep"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="CEP (opcional)"
-              placeholder="00000-000"
-              {...field}
-              value={field.value || ""}
-              onBlur={() => handleCepBlur(field.value)}
-              InputLabelProps={{ shrink: true, style: { color: '#A1A1A1' } }}
-              InputProps={{
-                inputComponent: CepMaskInput as any,
-              }}
-              inputProps={{
-                inputMode: "numeric",
-                maxLength: 9,
-                pattern: "[0-9-]*",
-              }}
-              error={!!errors.cep}
-              helperText={errors.cep?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Controller
-          name="street"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              placeholder="Rua (opcional)"
-              {...field}
-              error={!!errors.street}
-              helperText={errors.street?.message}
-              fullWidth
-            />
-          )}
-        />
+    <form
+      className="flex flex-col gap-4 w-full max-w-sm"
+      onSubmit={handleSubmit(onNext)}
+    >
+      <Controller
+        name="cep"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="CEP (opcional)"
+            placeholder="00000-000"
+            {...field}
+            value={field.value || ""}
+            onBlur={() => handleCepBlur(field.value)}
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            InputProps={{
+              inputComponent: CepMaskInput as any,
+            }}
+            inputProps={{
+              inputMode: "numeric",
+              maxLength: 9,
+              pattern: "[0-9-]*",
+            }}
+            error={!!errors.cep}
+            helperText={errors.cep?.message}
+            fullWidth
+          />
+        )}
+      />
+      <Controller
+        name="street"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Rua (opcional)"
+            placeholder="Rua"
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            {...field}
+            error={!!errors.street}
+            helperText={errors.street?.message}
+            fullWidth
+          />
+        )}
+      />
+      <Box className="flex gap-2">
         <Controller
           name="number"
           control={control}
           render={({ field }) => (
             <TextField
-              placeholder="Número (opcional)"
+              label="Número (opcional)"
+              placeholder="Número"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.number}
               helperText={errors.number?.message}
-              fullWidth
             />
           )}
         />
@@ -136,7 +141,9 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              placeholder="Complemento (opcional)"
+              label="Complemento (opcional)"
+              placeholder="Complemento"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.complement}
               helperText={errors.complement?.message}
@@ -144,25 +151,31 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
             />
           )}
         />
-        <Controller
-          name="neighborhood"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              placeholder="Bairro (opcional)"
-              {...field}
-              error={!!errors.neighborhood}
-              helperText={errors.neighborhood?.message}
-              fullWidth
-            />
-          )}
-        />
+      </Box>
+      <Controller
+        name="neighborhood"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Bairro (opcional)"
+            placeholder="Bairro"
+            InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
+            {...field}
+            error={!!errors.neighborhood}
+            helperText={errors.neighborhood?.message}
+            fullWidth
+          />
+        )}
+      />
+      <Box className="flex gap-2">
         <Controller
           name="city"
           control={control}
           render={({ field }) => (
             <TextField
-              placeholder="Cidade (opcional)"
+              label="Cidade (opcional)"
+              placeholder="Cidade"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.city}
               helperText={errors.city?.message}
@@ -175,15 +188,17 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           control={control}
           render={({ field }) => (
             <TextField
-              placeholder="Estado (opcional)"
+              label="Estado (opcional)"
+              placeholder="Estado"
+              InputLabelProps={{ shrink: true, style: { color: "#A1A1A1" } }}
               {...field}
               error={!!errors.state}
               helperText={errors.state?.message}
-              fullWidth
             />
           )}
         />
-        {/* Campo para experiências 
+      </Box>
+      {/* Campo para experiências 
         <Controller
           name="experiences"
           control={control}
@@ -201,15 +216,21 @@ function VolunteerAddressTab({ defaultValues, onNext, onBack }: Props) {
           )}
         />
         */}
-        <Box display="flex" justifyContent="space-between" mt={1}>
-          <Button variant="outlined" onClick={onBack}>
-            Voltar
-          </Button>
-          <Button variant="contained" type="submit" sx={{ bgcolor: 'theme.palette.primary.main', color: theme.palette.common.black }}>
-            Próximo
-          </Button>
-        </Box>
-      </Stack>
+      <Box display="flex" justifyContent="space-between" mt={1}>
+        <Button variant="outlined" onClick={onBack}>
+          Voltar
+        </Button>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            bgcolor: "theme.palette.primary.main",
+            color: theme.palette.common.black,
+          }}
+        >
+          Próximo
+        </Button>
+      </Box>
     </form>
   );
 }

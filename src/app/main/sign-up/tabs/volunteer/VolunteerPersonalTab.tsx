@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useTheme } from "../../../../../theme/useTheme";
+import Typography from "@mui/material/Typography";
 
 const volunteerPersonalSchema = z
   .object({
@@ -56,6 +57,9 @@ interface Props {
   defaultValues?: Partial<FormData>;
   onNext: (data: FormData) => void;
   onBack: () => void;
+  error?: string | null;
+  success?: boolean;
+  loading?: boolean;
 }
 
 const defaultFormValues: FormData = {
@@ -68,7 +72,7 @@ const defaultFormValues: FormData = {
   confirmPassword: "",
 };
 
-function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
+function VolunteerPersonalTab({ defaultValues, onNext, onBack, error, success, loading }: Props) {
   const {
     control,
     handleSubmit,
@@ -231,19 +235,36 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack }: Props) {
             />
           )}
         />
+        {error && (
+          <Typography
+            color="error"
+            sx={{ mb: 1, textAlign: "center", fontSize: "14px" }}
+          >
+            {error}
+          </Typography>
+        )}
+        {success && (
+          <Typography
+            color="primary"
+            sx={{ mb: 1, textAlign: "center", fontSize: "14px" }}
+          >
+            Cadastro realizado com sucesso!
+          </Typography>
+        )}
         <Box display="flex" justifyContent="space-between" mt={2}>
-          <Button variant="outlined" onClick={onBack}>
+          <Button variant="outlined" onClick={onBack} disabled={loading}>
             Voltar
           </Button>
           <Button
             variant="contained"
             type="submit"
+            disabled={loading}
             sx={{
               bgcolor: "theme.palette.primary.main",
               color: theme.palette.common.black,
             }}
           >
-            Finalizar
+            {loading ? "Cadastrando..." : "Finalizar"}
           </Button>
         </Box>
       </Stack>

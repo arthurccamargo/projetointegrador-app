@@ -10,6 +10,7 @@ import { CnpjMaskInput } from "../../../../shared-components/mask/CnpjMask";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useTheme } from "../../../../../theme/useTheme";
+import Typography from "@mui/material/Typography";
 
 const ongDataSchema = z
   .object({
@@ -38,6 +39,9 @@ interface Props {
   defaultValues?: Partial<FormData>;
   onNext: (data: FormData) => void;
   onBack: () => void;
+  error?: string | null;
+  success?: boolean;
+  loading?: boolean;
 }
 
 const defaultFormValues: FormData = {
@@ -49,7 +53,7 @@ const defaultFormValues: FormData = {
   confirmPassword: "",
 };
 
-function OngDataTab({ defaultValues, onNext, onBack }: Props) {
+function OngDataTab({ defaultValues, onNext, onBack, error, success, loading }: Props) {
   const {
     control,
     handleSubmit,
@@ -200,12 +204,36 @@ function OngDataTab({ defaultValues, onNext, onBack }: Props) {
             />
           )}
         />
+        {error && (
+          <Typography
+            color="error"
+            sx={{ mb: 1, textAlign: "center", fontSize: "14px" }}
+          >
+            {error}
+          </Typography>
+        )}
+        {success && (
+          <Typography
+            color="primary"
+            sx={{ mb: 1, textAlign: "center", fontSize: "14px" }}
+          >
+            Cadastro realizado com sucesso!
+          </Typography>
+        )}
         <Box display="flex" justifyContent="space-between" mt={2}>
-          <Button variant="outlined" onClick={onBack}>
+          <Button variant="outlined" onClick={onBack} disabled={loading}>
             Voltar
           </Button>
-          <Button variant="contained" type="submit" sx={{ bgcolor: theme.palette.primary.main, color: theme.palette.common.black }}>
-            Finalizar
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={loading}
+            sx={{
+              bgcolor: theme.palette.primary.main,
+              color: theme.palette.common.black,
+            }}
+          >
+            {loading ? "Cadastrando..." : "Finalizar"}
           </Button>
         </Box>
       </Stack>

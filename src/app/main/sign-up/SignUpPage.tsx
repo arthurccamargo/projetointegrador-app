@@ -15,6 +15,9 @@ import { useTheme } from "../../../theme/useTheme";
 import Stepper from "@mui/material/Stepper";
 import StepLabel from "@mui/material/StepLabel";
 import Step from "@mui/material/Step";
+import { useAuth } from "../../auth/useAuth";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const steps = ["Tipo de cadastro", "Endereço", "Informações"];
 
@@ -34,6 +37,7 @@ function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const { signIn } = useAuth();
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -41,6 +45,8 @@ function SignUpPage() {
   const handleNext = async (
     data: UserRoleType | Partial<Volunteer> | Partial<Ong>
   ) => {
+    setError(null); // Limpa erro ao avançar
+
     if (activeStep === 0 && typeof data === "string") {
       setRole(data as UserRoleType);
       setActiveStep(1);
@@ -63,7 +69,8 @@ function SignUpPage() {
       try {
         await axios.post(`${BASEAPI_URL}/users/volunteer`, finalVolunteer);
         setSuccess(true);
-        navigate("/sign-in");
+        await signIn(finalVolunteer.email!, finalVolunteer.password!);
+        navigate("/home");
       } catch (err: any) {
         setError(
           err?.response?.data?.message || "Erro ao cadastrar voluntário"
@@ -84,7 +91,8 @@ function SignUpPage() {
       try {
         await axios.post(`${BASEAPI_URL}/users/ong`, finalOng);
         setSuccess(true);
-        navigate("/sign-in");
+        await signIn(finalOng.email!, finalOng.password!);
+        navigate("/home");
       } catch (err: any) {
         setError(err?.response?.data?.message || "Erro ao cadastrar ONG");
       } finally {
@@ -94,6 +102,7 @@ function SignUpPage() {
   };
 
   const handleBack = () => {
+    setError(null); // Limpa erro ao voltar
     if (activeStep === 1) setActiveStep(0);
     else if (activeStep === 2) setActiveStep(1);
   };
@@ -154,29 +163,59 @@ function SignUpPage() {
         }}
       >
         <Box className="flex flex-col items-center">
-          {/* Logo */}
           <Box
             sx={{
-              width: 64,
-              height: 64,
-              bgcolor: theme.palette.primary.main,
-              borderRadius: "50%",
+              width: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              position: "relative",
               mb: 2,
             }}
           >
-            <Typography
-              variant="h4"
+            <Box sx={{ position: "absolute", left: 0 }}>
+              <IconButton
+                onClick={() => navigate("/sign-in")}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  color: theme.palette.text.primary,
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  },
+                }}
+              >
+                <ArrowBackIcon fontSize="small" />
+                <Typography variant="body2" sx={{ fontSize: "0.875rem" }}>
+                  Já tenho login
+                </Typography>
+              </IconButton>
+            </Box>
+            {/* Logo */}
+            <Box
               sx={{
-                color: theme.palette.common.black,
-                fontWeight: "bold",
+                width: 64,
+                height: 64,
+                bgcolor: theme.palette.primary.main,
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              H
-            </Typography>
+              <Typography
+                variant="h4"
+                sx={{
+                  color: theme.palette.common.black,
+                  fontWeight: "bold",
+                }}
+              >
+                H
+              </Typography>
+            </Box>
           </Box>
+
           <Box>
             <Stepper activeStep={activeStep} sx={{ mb: 4 }} alternativeLabel>
               {steps.map((label) => (
@@ -193,22 +232,6 @@ function SignUpPage() {
               ))}
             </Stepper>
           </Box>
-          {error && (
-            <Typography
-              color="error"
-              sx={{ mb: 2, textAlign: "center", maxWidth: 400 }}
-            >
-              {error}
-            </Typography>
-          )}
-          {success && (
-            <Typography
-              color="primary"
-              sx={{ mb: 2, textAlign: "center", maxWidth: 400 }}
-            >
-              Cadastro realizado com sucesso!
-            </Typography>
-          )}
 
           {/* Form Content */}
           <Box className="w-full max-w-sm">
@@ -232,6 +255,9 @@ function SignUpPage() {
                 defaultValues={volunteer}
                 onNext={handleNext}
                 onBack={handleBack}
+                error={error}
+                success={success}
+                loading={loading}
               />
             )}
             {activeStep === 2 && role === "ONG" && (
@@ -239,15 +265,12 @@ function SignUpPage() {
                 defaultValues={ong}
                 onNext={handleNext}
                 onBack={handleBack}
+                error={error}
+                success={success}
+                loading={loading}
               />
             )}
           </Box>
-
-          {loading && (
-            <Typography color="primary" sx={{ mt: 2, textAlign: "center" }}>
-              Enviando cadastro...
-            </Typography>
-          )}
         </Box>
       </Paper>
     </div>
