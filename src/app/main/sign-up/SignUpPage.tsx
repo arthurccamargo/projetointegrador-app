@@ -69,8 +69,15 @@ function SignUpPage() {
       try {
         await axios.post(`${BASEAPI_URL}/users/volunteer`, finalVolunteer);
         setSuccess(true);
-        await signIn(finalVolunteer.email!, finalVolunteer.password!);
-        navigate("/home");
+        const user = await signIn(
+          finalVolunteer.email!,
+          finalVolunteer.password!
+        );
+        if (user.role === "ONG") {
+          navigate("/dashboard");
+        } else {
+          navigate("/home");
+        }
       } catch (err: any) {
         setError(
           err?.response?.data?.message || "Erro ao cadastrar voluntário"
@@ -91,8 +98,12 @@ function SignUpPage() {
       try {
         await axios.post(`${BASEAPI_URL}/users/ong`, finalOng);
         setSuccess(true);
-        await signIn(finalOng.email!, finalOng.password!);
+        const user = await signIn(finalOng.email!, finalOng.password!);
+        if (user.role === "ONG") {
+        navigate("/dashboard");
+      } else {
         navigate("/home");
+      }
       } catch (err: any) {
         setError(err?.response?.data?.message || "Erro ao cadastrar ONG");
       } finally {

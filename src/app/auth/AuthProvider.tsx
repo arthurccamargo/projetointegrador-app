@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false); // Marca como carregado
   }, []);
 
-  async function signIn(email: string, password: string) {
+  async function signIn(email: string, password: string): Promise<User> {
     const res = await fetch(`${BASEAPI_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -43,6 +43,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     sessionStorage.setItem("token", data.access_token);
     sessionStorage.setItem("user", JSON.stringify(data.user));
+
+    return data.user;
   }
 
   function signOut() {
