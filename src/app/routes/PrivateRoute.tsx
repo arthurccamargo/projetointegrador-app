@@ -7,13 +7,18 @@ type PrivateRouteProps = {
 };
 
 export default function PrivateRoute({ element, allowedRoles }: PrivateRouteProps) {
-  const { user } = useAuth();
+  const { user, token, isTokenValid, isLoading } = useAuth();
+
+  // Aguarda o carregamento da sessão
+  if (isLoading) {
+    return <div>Loading...</div>; // deve ser um spinner!!!!!!!!
+  }
 
   // rota pública (não exige autenticação)
-  if (!allowedRoles || allowedRoles.length === 0) return element;
+  if (!allowedRoles || allowedRoles.length === 0) return <>{element}</>;
 
   // usuário não logado → manda pro login
-  if (!user) {
+  if (!user || !token || !isTokenValid(token)) {
     return <Navigate to="/sign-in" replace />;
   }
 
@@ -21,4 +26,7 @@ export default function PrivateRoute({ element, allowedRoles }: PrivateRouteProp
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     return <Navigate to="/401" replace />;
   }
+
+  // usuário autenticado e com role permitido
+  return <>{element}</>;
 }
