@@ -1,11 +1,14 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useAuth } from "../../../../auth/useAuth";
 
-export default function HomePage() {
+export default function DashboardPage() {
+  const { user } = useAuth();
+
   return (
     <Box
       sx={{
-        backgroundColor: "green",
+        backgroundColor: "purple",
         flex: 1,
         width: "100%",
         height: "100%",
@@ -22,6 +25,9 @@ export default function HomePage() {
       }}
     >
       <Typography variant="h1">Home</Typography>
+      <Typography variant="h1">
+        Bem vindo Ong: {user?.ongProfile?.name}
+      </Typography>
       <Typography variant="body1">
         Somente usuários logados podem ver essa página.
       </Typography>
