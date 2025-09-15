@@ -1,14 +1,18 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+  typography: {
+    fontFamily: "Special Gothic"
+  },
+
   palette: {
     primary: {
-      main: '#FFE400',
-      contrastText: '#FFD600',
+      main: '#ff7a27ff',
+      contrastText: '#faffb4ff',
     },
     secondary: {
-      main: '#1E3A8A',
-      contrastText: '#fff',
+      main: '#faffb4ff',
+      contrastText: '#e6e6e6ff',
     },
     error: {
       main: '#E53935',
@@ -27,8 +31,8 @@ const theme = createTheme({
       paper: '#fff',
     },
     text: {
-      primary: '#000000',
-      secondary: '#ffffff',
+      primary: '#121212ff',
+      secondary: '#f1f1f1ff',
     },
   },
 });

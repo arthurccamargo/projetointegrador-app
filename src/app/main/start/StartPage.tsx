@@ -5,52 +5,73 @@ import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import { HeartHandshake } from 'lucide-react';
 
+
 function StartPage() {
   const navigate = useNavigate();
+
   return (
     <Box
       sx={{
         display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
         alignItems: "center",
-        justifyContent: "center",
         minHeight: "100vh",
-        bgcolor: "#f5f5f5",
+        bgcolor: '#faffb4ff',
+        // bgcolor: '#ecf297ff',
+        background: "linear-gradient(135deg, #faffb4ff 0%, #ecf297ff' 100%)",
+        p: 3,
       }}
     >
       <Box
         sx={{
-          bgcolor: "white",
-          boxShadow: 3,
-          borderRadius: 3,
-          p: 5,
-          width: 350,
+          width: { xs: "90%", sm: 400, md: 450 },
+          maxWidth: 500,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          mb: 30 
         }}
       >
         <Typography
-          variant="h4"
+          variant="h3"
           fontWeight="bold"
           color="primary"
           sx={{ mb: 3 }}
         >
-          HELPHUB
+          HelpHub
         </Typography>
         <HeartHandshake />
         <Typography
           variant="subtitle1"
-          color="textSecondary"
+          color="text"
           align="center"
-          sx={{ mb: 4 }}
+          sx={{ mb: 4, mt: 4, width: "100%" }}
         >
-          Seja bem-vindo ao HELPHUB! Escolha uma opção para continuar.
+          Seja bem-vindo! Escolha uma opção para continuar.
         </Typography>
+      </Box>
+      
+      <Box
+        sx={{
+          width: { xs: "90%", sm: 400, md: 450 },
+          maxWidth: 500,
+          mb: 4
+        }}
+      >
         <Stack spacing={2} width="100%">
           <Button
             variant="contained"
             color="primary"
             size="large"
+            sx={{
+              borderRadius: 30,
+              py: 1.8,
+              fontSize: "1.1rem",
+              fontWeight: "bold"
+            }}
             fullWidth
             onClick={() => navigate("/sign-up")}
           >
@@ -60,6 +81,13 @@ function StartPage() {
             variant="outlined"
             color="primary"
             size="large"
+            sx={{
+              borderRadius: 30,
+              py: 1.8,
+              fontSize: "1.1rem",
+              fontWeight: "bold",
+              borderWidth: 1,  
+            }}
             fullWidth
             onClick={() => navigate("/sign-in")}
           >
