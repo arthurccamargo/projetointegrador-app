@@ -1,6 +1,5 @@
 import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
 import {
-  Building2,
   Calendar,
   Clock,
   Edit3,
@@ -11,7 +10,7 @@ import {
 import type { Event } from "../../../../../../types/events.type";
 
 export default function EventCard({ event }: { event: Event }) {
-  const getCategoriaColor = (categoria: string) => {
+  const getCategoryColor = (category: string) => {
     const colors: Record<
       string,
       "primary" | "success" | "warning" | "error" | "default"
@@ -21,22 +20,22 @@ export default function EventCard({ event }: { event: Event }) {
       Educação: "warning",
       Saúde: "error",
     };
-    return colors[categoria] || "default";
+    return colors[category] || "default";
   };
 
-  const getVagasColor = (disponiveis: number, total: number) => {
-    const percentual = (disponiveis / total) * 100;
-    if (percentual > 50) return "success.main";
-    if (percentual > 20) return "warning.main";
+  const getVacancyColor = (available: number, total: number) => {
+    const percent = (available / total) * 100;
+    if (percent > 50) return "success.main";
+    if (percent > 20) return "warning.main";
     return "error.main";
   };
 
-  const vagasDisponiveis = event.currentCandidates;
-  const totalVagas = event.maxCandidates;
+  const availableVacancies = event.currentCandidates;
+  const totalVacancies = event.maxCandidates;
 
   // Format date and duration
-  const dataFormatada = new Date(event.startDate).toLocaleDateString("pt-BR");
-  const horaFormatada = `${event.durationMinutes} minutos`;
+  const formattedDate = new Date(event.startDate).toLocaleDateString("pt-BR");
+  const formattedDuration = `${event.durationMinutes / 60} horas`;
 
   return (
     <Box
@@ -57,22 +56,19 @@ export default function EventCard({ event }: { event: Event }) {
     >
       <Box display="flex" justifyContent="space-between" alignItems="flex-start">
         <Box flex={1}>
-          {/* Title and Category */}
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             <Typography variant="h6" fontWeight="bold" color="text.common.black">
               {event.title}
             </Typography>
             <Chip
               label={event.category?.name}
-              color={getCategoriaColor(event.category?.name)}
+              color={getCategoryColor(event.category?.name)}
               size="small"
             />
           </Box>
-          {/* Description */}
           <Typography color="text.common.black" mb={3}>
             {event.description}
           </Typography>
-          {/* Event Details */}
           <Box
             display="grid"
             gridTemplateColumns={{
@@ -86,13 +82,13 @@ export default function EventCard({ event }: { event: Event }) {
             <Box display="flex" alignItems="center" gap={1}>
               <Calendar size={16} style={{ color: "#6b7280" }} />
               <Typography variant="body2" color="text.common.black">
-                {dataFormatada}
+                {formattedDate}
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" gap={1}>
               <Clock size={16} style={{ color: "#6b7280" }} />
               <Typography variant="body2" color="text.common.black">
-                {horaFormatada}
+                {formattedDuration}
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" gap={1}>
@@ -105,30 +101,21 @@ export default function EventCard({ event }: { event: Event }) {
               <Users
                 size={16}
                 style={{
-                  color: getVagasColor(vagasDisponiveis, totalVagas),
+                  color: getVacancyColor(availableVacancies, totalVacancies),
                 }}
               />
               <Typography
                 variant="body2"
                 fontWeight="bold"
                 sx={{
-                  color: getVagasColor(vagasDisponiveis, totalVagas),
+                  color: getVacancyColor(availableVacancies, totalVacancies),
                 }}
               >
-                {`${vagasDisponiveis}/${totalVagas} vagas`}
+                {`${availableVacancies}/${totalVacancies} vagas`}
               </Typography>
             </Box>
           </Box>
-          {/* Divider */}
           <Divider sx={{ my: 2 }} />
-          {/* Organization */}
-          <Box display="flex" alignItems="center" gap={1} mb={3}>
-            <Building2 size={16} style={{ color: "#6b7280" }} />
-            <Typography variant="body2" color="text.common.black">
-              {event.ong?.name}
-            </Typography>
-          </Box>
-          {/* Action Buttons */}
           <Stack direction="row" spacing={2}>
             <Button
               variant="outlined"
