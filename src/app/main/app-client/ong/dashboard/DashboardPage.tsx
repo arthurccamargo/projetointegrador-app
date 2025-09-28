@@ -13,9 +13,11 @@ import {
   Stack,
 } from "@mui/material";
 import EventCard from "./components/EventCard";
+import CreateEventModal from "./components/CreateEventModal";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   const filteredEventos = events.filter(
     (event) =>
@@ -89,9 +91,12 @@ export default function DashboardPage() {
           height: 56,
           zIndex: 1000,
         }}
+        onClick={() => setModalOpen(true)}
       >
         <Plus size={28} />
       </Fab>
+
+      <CreateEventModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </Container>
   );
 }
