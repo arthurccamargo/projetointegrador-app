@@ -22,45 +22,62 @@ import { useGetCategoriesQuery } from '../../../../../api/CategoryApi';
 interface CreateEventModalProps {
   open: boolean;
   onClose: () => void;
-  onCreate: (formData: EventFormValues) => void;
+  onCreate: (formData: CreateEventPayload) => void;
 }
 
 const eventSchema = z.object({
   title: z.string().min(3, 'Título obrigatório'),
   categoryId: z.string().min(1, 'Selecione uma categoria'),
   description: z.string().optional(),
-  startDate: z.string()
-    .refine((val) => !isNaN(Date.parse(val)), { message: 'Data inválida (ISO 8601)' }),
-  duration: z.string()
-    .refine(
-      (val) => /^([0-1]?\d|2[0-3]):[0-5]\d$/.test(val),
-      { message: 'Formato: hh:mm' }
-    ),
+  startDate: z.string().min(1, 'Data obrigatória'),
+  startTime: z.string().min(1, 'Hora de início obrigatória'),
+  endTime: z.string().min(1, 'Hora de término obrigatória'),
   maxCandidates: z.string()
     .refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, { message: 'Apenas números inteiros' }),
   location: z.string().min(3, 'Local obrigatório')
-});
+}).refine(
+  (data) => {
+    if (!data.startTime || !data.endTime) return true;
+    const start = data.startTime.split(':').map(Number);
+    const end = data.endTime.split(':').map(Number);
+    const startMinutes = start[0] * 60 + start[1];
+    const endMinutes = end[0] * 60 + end[1];
+    return endMinutes > startMinutes;
+  },
+  {
+    message: 'Hora de término deve ser posterior à hora de início',
+    path: ['endTime']
+  }
+);
 
 type EventFormValues = z.infer<typeof eventSchema> & { durationMinutes?: number };
 
-function parseDateToISO(dateStr: string): string | null {
-  // Espera formato dd/MM/yy HH:mm
-  const match = /^(\d{2})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})$/.exec(dateStr);
-  if (!match) return null;
-  const [_, day, month, year, hour, minute] = match;
-  // Assume século 2000 para ano com dois dígitos
-  const fullYear = parseInt(year, 10) < 50 ? '20' + year : '19' + year;
-  const dateObj = new Date(
-    `${fullYear}-${month}-${day}T${hour}:${minute}:00`
-  );
-  return dateObj.toISOString();
+type CreateEventPayload = {
+  title: string;
+  categoryId: string;
+  description?: string;
+  startDate: string; // ISO 8601
+  maxCandidates: number;
+  location: string;
+  durationMinutes: number;
+};
+
+// Função para combinar data e hora em formato ISO 8601
+function combineDateTime(dateStr: string, timeStr: string): string {
+  // dateStr formato: YYYY-MM-DD
+  // timeStr formato: HH:MM
+  return `${dateStr}T${timeStr}:00`;
 }
 
-function parseDurationToMinutes(duration: string): number {
-  const match = /^([0-1]?\d|2[0-3]):([0-5]\d)$/.exec(duration);
-  if (!match) return 0;
-  const [, hours, minutes] = match;
-  return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+// Função para calcular duração em minutos entre dois horários
+function calculateDurationMinutes(startTime: string, endTime: string): number {
+  const start = startTime.split(':').map(Number);
+  const end = endTime.split(':').map(Number);
+  
+  const startMinutes = start[0] * 60 + start[1];
+  const endMinutes = end[0] * 60 + end[1];
+  
+  return endMinutes - startMinutes;
 }
 
 export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalProps) => {
@@ -80,21 +97,28 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
       categoryId: '',
       description: '',
       startDate: '',
-      duration: '',
+      startTime: '',
+      endTime: '',
       maxCandidates: '',
       location: ''
     }
   });
 
   const onSubmit = (data: EventFormValues) => {
-    const durationMinutes = parseDurationToMinutes(data.duration);
+    const durationMinutes = calculateDurationMinutes(data.startTime, data.endTime);
+    const combinedStartDate = combineDateTime(data.startDate, data.startTime);
+    
     const formattedData = {
       ...data,
-      startDate: data.startDate, // já está em ISO 8601
+      startDate: combinedStartDate,
       maxCandidates: parseInt(data.maxCandidates, 10),
       durationMinutes
     };
-    onCreate(formattedData);
+    
+    // Remove os campos temporários antes de enviar
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { startTime, endTime, ...finalData } = formattedData;
+    onCreate(finalData as CreateEventPayload);
     reset();
   };
 
@@ -147,7 +171,7 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
         >
           {/* Título */}
           <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2" sx={{ mt: 2 }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
               Título da Oportunidade
             </Typography>
             <Controller
@@ -168,7 +192,7 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
 
           {/* Categoria */}
           <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
               Categoria
             </Typography>
             <FormControl fullWidth error={!!errors.categoryId}>
@@ -200,7 +224,7 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
 
           {/* Descrição */}
           <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
               Descrição
             </Typography>
             <Controller
@@ -221,7 +245,6 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
             />
           </Box>
 
-          {/* Data, Duração, Máx. Candidatos */}
           <Box
             sx={{
               display: 'flex',
@@ -230,10 +253,9 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
               width: '100%'
             }}
           >
-            {/* Data (startDate) */}
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Data (ISO 8601)
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                Data de Início
               </Typography>
               <Controller
                 name="startDate"
@@ -242,38 +264,77 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
                   <TextField
                     {...field}
                     fullWidth
-                    type="text"
-                    placeholder="Ex: 2024-01-15T14:00:00"
+                    type="date"
+                    variant="outlined"
                     error={!!errors.startDate}
                     helperText={errors.startDate?.message}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 )}
               />
             </Box>
-            {/* Duração */}
+
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Duração (hh:mm)
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                Hora de Início
               </Typography>
               <Controller
-                name="duration"
+                name="startTime"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     fullWidth
-                    type="text"
-                    placeholder="Ex: 02:30"
+                    type="time"
                     variant="outlined"
-                    error={!!errors.duration}
-                    helperText={errors.duration?.message}
+                    error={!!errors.startTime}
+                    helperText={errors.startTime?.message}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 )}
               />
             </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: 2,
+              width: '100%'
+            }}
+          >
+            {/* Hora de Término */}
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                Hora de Término
+              </Typography>
+              <Controller
+                name="endTime"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    type="time"
+                    variant="outlined"
+                    error={!!errors.endTime}
+                    helperText={errors.endTime?.message}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            </Box>
+
             {/* Máx. Candidatos */}
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
                 Máx. Candidatos
               </Typography>
               <Controller
@@ -297,7 +358,7 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
 
           {/* Local */}
           <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
               Local
             </Typography>
             <Controller
