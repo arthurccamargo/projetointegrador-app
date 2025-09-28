@@ -6,7 +6,7 @@ const DashboardPageRoute: AppRoute = {
   path: '/dashboard',
   element: <DashboardPage />,
   settings: {
-    layout: { config: { navbar: true, toolbar: false, footer: false } },
+    layout: { config: { navbar: false, toolbar: false, footer: false } },
   },
   auth: authRoles.ong, // apenas com role ong pode acessar
 };
