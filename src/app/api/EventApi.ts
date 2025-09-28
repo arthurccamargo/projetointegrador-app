@@ -14,6 +14,7 @@ export const eventApi = createApi({
 			return headers;
 		}
 	}),
+	tagTypes: ['Events'],
 	endpoints: (builder) => ({
 		createEvent: builder.mutation<any, { dto: any }>({
 			query: ({ dto }) => ({
@@ -21,12 +22,14 @@ export const eventApi = createApi({
 				method: "POST",
 				body: dto,
 			}),
+			invalidatesTags: ['Events'],
 		}),
 		getEventsByOngId: builder.query<any, void>({
 			query: () => ({
 				url: "/events/my",
 				method: "GET",
 			}),
+			providesTags: ['Events'],
 		}),
 	}),
 });
