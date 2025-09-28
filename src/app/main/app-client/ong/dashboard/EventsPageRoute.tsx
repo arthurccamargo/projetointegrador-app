@@ -1,10 +1,10 @@
 import authRoles from '../../../../auth/authRoles';
 import type { AppRoute } from '../../../../routes/types';
-import DashboardPage from './DashboardPage';
+import EventsPage from './EventsPage';
 
 const DashboardPageRoute: AppRoute = {
   path: '/dashboard',
-  element: <DashboardPage />,
+  element: <EventsPage />,
   settings: {
     layout: { config: { navbar: false, toolbar: false, footer: false } },
   },

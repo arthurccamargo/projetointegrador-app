@@ -31,7 +31,7 @@ export default function EventCard({ event }: { event: Event }) {
     return "error.main";
   };
 
-  const vagasDisponiveis = event.maxCandidates - event.currentCandidates;
+  const vagasDisponiveis = event.currentCandidates;
   const totalVagas = event.maxCandidates;
 
   // Format date and duration
