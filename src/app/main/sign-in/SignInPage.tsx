@@ -48,8 +48,12 @@ function SignInPage() {
     setError(null);
 
     try {
-      await signIn(data.email, data.password);
-      navigate("/home");
+      const user = await signIn(data.email, data.password);
+      if (user.role === "ONG") {
+        navigate("/dashboard");
+      } else {
+        navigate("/home");
+      }
     } catch (error: any) {
       setError(
         error.message || "Erro ao fazer login. Verifique suas credenciais."

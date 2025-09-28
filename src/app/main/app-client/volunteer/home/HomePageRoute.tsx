@@ -1,5 +1,5 @@
-import authRoles from '../../../auth/authRoles';
-import type { AppRoute } from '../../../routes/types';
+import authRoles from '../../../../auth/authRoles';
+import type { AppRoute } from '../../../../routes/types';
 import HomePage from './HomePage';
 
 const HomePageRoute: AppRoute = {
@@ -8,7 +8,7 @@ const HomePageRoute: AppRoute = {
   settings: {
     layout: { config: { navbar: true, toolbar: false, footer: false } },
   },
-  auth: authRoles.user, // VOLUNTEER ou ONG
+  auth: authRoles.volunteer, // apenas com role volunteer pode acessar
 };
 
 export default HomePageRoute;

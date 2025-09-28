@@ -1,7 +1,10 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useAuth } from "../../../../auth/useAuth";
 
 export default function HomePage() {
+  const { user } = useAuth();
+
   return (
     <Box
       sx={{
@@ -22,6 +25,7 @@ export default function HomePage() {
       }}
     >
       <Typography variant="h1">Home</Typography>
+      <Typography variant="h1">Bem vindo Voluntario: {user?.volunteerProfile?.fullName}</Typography>
       <Typography variant="body1">
         Somente usuários logados podem ver essa página.
       </Typography>
