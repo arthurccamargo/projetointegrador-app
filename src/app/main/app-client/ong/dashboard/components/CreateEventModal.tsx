@@ -17,27 +17,56 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useGetCategoriesQuery } from '../../../../../api/CategoryApi';
 
 interface CreateEventModalProps {
   open: boolean;
   onClose: () => void;
+  onCreate: (formData: EventFormValues) => void;
 }
 
 const eventSchema = z.object({
   title: z.string().min(3, 'Título obrigatório'),
-  category: z.string().min(1, 'Selecione uma categoria'),
+  categoryId: z.string().min(1, 'Selecione uma categoria'),
   description: z.string().optional(),
-  date: z.string().min(1, 'Data obrigatória'),
-  duration: z.string().min(1, 'Duração obrigatória'),
-  maxVolunteers: z.string().min(1, 'Máx. Voluntários obrigatório'),
+  startDate: z.string()
+    .refine((val) => !isNaN(Date.parse(val)), { message: 'Data inválida (ISO 8601)' }),
+  duration: z.string()
+    .refine(
+      (val) => /^([0-1]?\d|2[0-3]):[0-5]\d$/.test(val),
+      { message: 'Formato: hh:mm' }
+    ),
+  maxCandidates: z.string()
+    .refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, { message: 'Apenas números inteiros' }),
   location: z.string().min(3, 'Local obrigatório')
 });
 
-type EventFormValues = z.infer<typeof eventSchema>;
+type EventFormValues = z.infer<typeof eventSchema> & { durationMinutes?: number };
 
-export const CreateEventModal = ({ open, onClose }: CreateEventModalProps) => {
+function parseDateToISO(dateStr: string): string | null {
+  // Espera formato dd/MM/yy HH:mm
+  const match = /^(\d{2})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})$/.exec(dateStr);
+  if (!match) return null;
+  const [_, day, month, year, hour, minute] = match;
+  // Assume século 2000 para ano com dois dígitos
+  const fullYear = parseInt(year, 10) < 50 ? '20' + year : '19' + year;
+  const dateObj = new Date(
+    `${fullYear}-${month}-${day}T${hour}:${minute}:00`
+  );
+  return dateObj.toISOString();
+}
+
+function parseDurationToMinutes(duration: string): number {
+  const match = /^([0-1]?\d|2[0-3]):([0-5]\d)$/.exec(duration);
+  if (!match) return 0;
+  const [, hours, minutes] = match;
+  return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+}
+
+export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { data: categories, isLoading } = useGetCategoriesQuery();
 
   const {
     control,
@@ -48,18 +77,25 @@ export const CreateEventModal = ({ open, onClose }: CreateEventModalProps) => {
     resolver: zodResolver(eventSchema),
     defaultValues: {
       title: '',
-      category: '',
+      categoryId: '',
       description: '',
-      date: '',
+      startDate: '',
       duration: '',
-      maxVolunteers: '',
+      maxCandidates: '',
       location: ''
     }
   });
 
   const onSubmit = (data: EventFormValues) => {
-    console.log('Dados da oportunidade:', data);
-    handleCancel();
+    const durationMinutes = parseDurationToMinutes(data.duration);
+    const formattedData = {
+      ...data,
+      startDate: data.startDate, // já está em ISO 8601
+      maxCandidates: parseInt(data.maxCandidates, 10),
+      durationMinutes
+    };
+    onCreate(formattedData);
+    reset();
   };
 
   const handleCancel = () => {
@@ -109,6 +145,7 @@ export const CreateEventModal = ({ open, onClose }: CreateEventModalProps) => {
           sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
           onSubmit={handleSubmit(onSubmit)}
         >
+          {/* Título */}
           <Box sx={{ width: '100%' }}>
             <Typography variant="subtitle2" sx={{ mt: 2 }}>
               Título da Oportunidade
@@ -129,37 +166,39 @@ export const CreateEventModal = ({ open, onClose }: CreateEventModalProps) => {
             />
           </Box>
 
+          {/* Categoria */}
           <Box sx={{ width: '100%' }}>
             <Typography variant="subtitle2">
               Categoria
             </Typography>
-            <FormControl fullWidth error={!!errors.category}>
+            <FormControl fullWidth error={!!errors.categoryId}>
               <Controller
-                name="category"
+                name="categoryId"
                 control={control}
                 render={({ field }) => (
                   <Select
                     {...field}
                     displayEmpty
+                    disabled={isLoading}
                   >
                     <MenuItem value="">Selecione uma categoria</MenuItem>
-                    <MenuItem value="alimentacao">Alimentação</MenuItem>
-                    <MenuItem value="educacao">Educação</MenuItem>
-                    <MenuItem value="saude">Saúde</MenuItem>
-                    <MenuItem value="meio-ambiente">Meio Ambiente</MenuItem>
-                    <MenuItem value="assistencia-social">Assistência Social</MenuItem>
-                    <MenuItem value="cultura">Cultura</MenuItem>
+                    {Array.isArray(categories) && categories.map((cat) => (
+                      <MenuItem key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </MenuItem>
+                    ))}
                   </Select>
                 )}
               />
-              {errors.category && (
+              {errors.categoryId && (
                 <Typography variant="caption" color="error">
-                  {errors.category.message}
+                  {errors.categoryId.message}
                 </Typography>
               )}
             </FormControl>
           </Box>
 
+          {/* Descrição */}
           <Box sx={{ width: '100%' }}>
             <Typography variant="subtitle2">
               Descrição
@@ -182,6 +221,7 @@ export const CreateEventModal = ({ open, onClose }: CreateEventModalProps) => {
             />
           </Box>
 
+          {/* Data, Duração, Máx. Candidatos */}
           <Box
             sx={{
               display: 'flex',
@@ -190,31 +230,30 @@ export const CreateEventModal = ({ open, onClose }: CreateEventModalProps) => {
               width: '100%'
             }}
           >
+            {/* Data (startDate) */}
             <Box sx={{ flex: 1 }}>
               <Typography variant="subtitle2">
-                Data
+                Data (ISO 8601)
               </Typography>
               <Controller
-                name="date"
+                name="startDate"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     fullWidth
-                    type="date"
-                    placeholder="Ex: 15 de Janeiro, 2024"
-                    error={!!errors.date}
-                    helperText={errors.date?.message}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
+                    type="text"
+                    placeholder="Ex: 2024-01-15T14:00:00"
+                    error={!!errors.startDate}
+                    helperText={errors.startDate?.message}
                   />
                 )}
               />
             </Box>
+            {/* Duração */}
             <Box sx={{ flex: 1 }}>
               <Typography variant="subtitle2">
-                Duração
+                Duração (hh:mm)
               </Typography>
               <Controller
                 name="duration"
@@ -223,7 +262,8 @@ export const CreateEventModal = ({ open, onClose }: CreateEventModalProps) => {
                   <TextField
                     {...field}
                     fullWidth
-                    placeholder="Ex: 4 horas"
+                    type="text"
+                    placeholder="Ex: 02:30"
                     variant="outlined"
                     error={!!errors.duration}
                     helperText={errors.duration?.message}
@@ -231,28 +271,31 @@ export const CreateEventModal = ({ open, onClose }: CreateEventModalProps) => {
                 )}
               />
             </Box>
+            {/* Máx. Candidatos */}
             <Box sx={{ flex: 1 }}>
               <Typography variant="subtitle2">
-                Máx. Voluntários
+                Máx. Candidatos
               </Typography>
               <Controller
-                name="maxVolunteers"
+                name="maxCandidates"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     fullWidth
                     type="number"
+                    inputProps={{ step: 1, min: 1 }}
                     placeholder="20"
                     variant="outlined"
-                    error={!!errors.maxVolunteers}
-                    helperText={errors.maxVolunteers?.message}
+                    error={!!errors.maxCandidates}
+                    helperText={errors.maxCandidates?.message}
                   />
                 )}
               />
             </Box>
           </Box>
 
+          {/* Local */}
           <Box sx={{ width: '100%' }}>
             <Typography variant="subtitle2">
               Local

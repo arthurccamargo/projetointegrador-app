@@ -14,16 +14,30 @@ import {
 } from "@mui/material";
 import EventCard from "./components/EventCard";
 import CreateEventModal from "./components/CreateEventModal";
+import { useCreateEventMutation } from "./EventApi";
+import type { Event } from "../../../../../types/events.type";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [createEvent] = useCreateEventMutation();
 
   const filteredEventos = events.filter(
     (event) =>
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleCreateEvent = async (formData: Event) => {
+    try {
+      await createEvent({ dto: formData }).unwrap();
+      setModalOpen(false);
+      // adicionar um feedback/sucesso ou atualizar a lista de eventos aqui
+    } catch (error) {
+      // trata erro
+      console.error(error);
+    }
+  };
 
   return (
     <Container
@@ -96,7 +110,11 @@ export default function DashboardPage() {
         <Plus size={28} />
       </Fab>
 
-      <CreateEventModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <CreateEventModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onCreate={handleCreateEvent}
+      />
     </Container>
   );
 }
