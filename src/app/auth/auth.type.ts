@@ -2,37 +2,41 @@ export interface VolunteerProfile {
   id: string;
   userId: string;
   fullName: string;
+  email: string;
+  password: string;
   cpf: string;
-  birthDate: string | null;
-  phone: string;
-  cep: string;
-  street: string;
-  number: string;
-  complement: string | null;
-  neighborhood: string;
-  city: string;
-  state: string;
-  experiences: string | null;
+  birthDate?: string | null;
+  phone?: string;
+  cep?: string;
+  street?: string;
+  number?: string;
+  complement?: string | null;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  experiences?: string | null;
 }
 
 export interface OngProfile {
   id: string;
   userId: string;
+  email: string;
+  password: string;
   cnpj: string;
   name: string;
-  description: string | null;
+  description?: string;
   cep: string;
   street: string;
-  number: string;
-  complement: string;
+  number?: string;
+  complement?: string;
   neighborhood: string;
   city: string;
   state: string;
   responsibleName: string;
   responsibleCpf: string;
   responsibleEmail: string;
-  documentUrl: string;
-  status: string;
+  documentUrl?: string;
+  status?: string;
 }
 
 export interface User {

@@ -7,8 +7,7 @@ import OngDataTab from "./tabs/ong/OngDataTab";
 import VolunteerPersonalTab from "./tabs/volunteer/VolunteerPersonalTab";
 import VolunteerAddressTab from "./tabs/volunteer/VolunteerAddressTab";
 import OngAddressResponsibleTab from "./tabs/ong/OngAddressResponsibleTab";
-import type { Volunteer } from "../../types/Volunteer";
-import type { Ong } from "../../types/Ong";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../theme/useTheme";
@@ -18,6 +17,7 @@ import Step from "@mui/material/Step";
 import { useAuth } from "../../auth/useAuth";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import type { OngProfile, VolunteerProfile } from "../../auth/auth.type";
 
 const steps = ["Tipo de cadastro", "Endereço", "Informações"];
 
@@ -29,10 +29,10 @@ function SignUpPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [role, setRole] = useState<UserRoleType | null>(null);
 
-  const [volunteer, setVolunteer] = useState<Partial<Volunteer> | undefined>(
+  const [volunteer, setVolunteer] = useState<Partial<VolunteerProfile> | undefined>(
     undefined
   );
-  const [ong, setOng] = useState<Partial<Ong> | undefined>(undefined);
+  const [ong, setOng] = useState<Partial<OngProfile> | undefined>(undefined);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +43,7 @@ function SignUpPage() {
   const navigate = useNavigate();
 
   const handleNext = async (
-    data: UserRoleType | Partial<Volunteer> | Partial<Ong>
+    data: UserRoleType | Partial<VolunteerProfile> | Partial<OngProfile>
   ) => {
     setError(null); // Limpa erro ao avançar
 
@@ -51,15 +51,15 @@ function SignUpPage() {
       setRole(data as UserRoleType);
       setActiveStep(1);
     } else if (activeStep === 1 && role === "VOLUNTEER") {
-      setVolunteer((prev) => ({ ...prev, ...(data as Partial<Volunteer>) }));
+      setVolunteer((prev) => ({ ...prev, ...(data as Partial<VolunteerProfile>) }));
       setActiveStep(2);
     } else if (activeStep === 1 && role === "ONG") {
-      setOng((prev) => ({ ...prev, ...(data as Partial<Ong>) }));
+      setOng((prev) => ({ ...prev, ...(data as Partial<OngProfile>) }));
       setActiveStep(2);
     } else if (activeStep === 2 && role === "VOLUNTEER") {
       const finalVolunteer = {
         ...volunteer,
-        ...(data as Partial<Volunteer>),
+        ...(data as Partial<VolunteerProfile>),
         role: "VOLUNTEER",
       };
       setVolunteer(finalVolunteer);
@@ -88,7 +88,7 @@ function SignUpPage() {
     } else if (activeStep === 2 && role === "ONG") {
       const finalOng = {
         ...ong,
-        ...(data as Partial<Ong>),
+        ...(data as Partial<OngProfile>),
         role: "ONG",
       };
       setOng(finalOng);
@@ -249,7 +249,15 @@ function SignUpPage() {
             {activeStep === 0 && <SelectRoleStep onSelectRole={handleNext} />}
             {activeStep === 1 && role === "VOLUNTEER" && (
               <VolunteerAddressTab
-                defaultValues={volunteer}
+                defaultValues={{
+                  cep: volunteer?.cep,
+                  street: volunteer?.street,
+                  number: volunteer?.number,
+                  complement: volunteer?.complement ?? undefined,
+                  neighborhood: volunteer?.neighborhood,
+                  city: volunteer?.city,
+                  state: volunteer?.state,
+                }}
                 onNext={handleNext}
                 onBack={handleBack}
               />
@@ -263,7 +271,15 @@ function SignUpPage() {
             )}
             {activeStep === 2 && role === "VOLUNTEER" && (
               <VolunteerPersonalTab
-                defaultValues={volunteer}
+                defaultValues={{
+                  fullName: volunteer?.fullName ?? "",
+                  cpf: volunteer?.cpf ?? "",
+                  email: volunteer?.email ?? "",
+                  password: volunteer?.password ?? "",
+                  confirmPassword: "",
+                  birthDate: volunteer?.birthDate ?? undefined,
+                  phone: volunteer?.phone ?? undefined,
+                }}
                 onNext={handleNext}
                 onBack={handleBack}
                 error={error}

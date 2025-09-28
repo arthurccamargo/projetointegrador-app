@@ -1,6 +1,6 @@
 import { useState, useEffect, type ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
-import type { AuthContextType, User } from "./auth.types";
+import type { AuthContextType, User } from "./auth.type";
 
 const BASEAPI_URL = import.meta.env.VITE_BASEAPI_URL;
 
