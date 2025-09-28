@@ -23,7 +23,7 @@ const steps = ["Tipo de cadastro", "Endereço", "Informações"];
 
 export type UserRoleType = "VOLUNTEER" | "ONG";
 
-const BASEAPI_URL = import.meta.env.VITE_BASEAPI_URL;
+const BASEAPI_URL = import.meta.env.VITE_BASE_API_URL;
 
 function SignUpPage() {
   const [activeStep, setActiveStep] = useState(0);
