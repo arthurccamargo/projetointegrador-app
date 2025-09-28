@@ -22,7 +22,13 @@ export const eventApi = createApi({
 				body: dto,
 			}),
 		}),
+		getEventsByOngId: builder.query<any, void>({
+			query: () => ({
+				url: "/events/my",
+				method: "GET",
+			}),
+		}),
 	}),
 });
 
-export const { useCreateEventMutation } = eventApi;
+export const { useCreateEventMutation, useGetEventsByOngIdQuery } = eventApi;

@@ -3,7 +3,7 @@ import {
   Search,
   Plus,
 } from "lucide-react";
-import { events } from "../../../../../mocks/events.mock";
+import { useCreateEventMutation, useGetEventsByOngIdQuery } from "../../../../api/EventApi";
 import {
   Container,
   Box,
@@ -14,16 +14,16 @@ import {
 } from "@mui/material";
 import EventCard from "./components/EventCard";
 import CreateEventModal from "./components/CreateEventModal";
-import { useCreateEventMutation } from "./EventApi";
 import type { Event } from "../../../../../types/events.type";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [createEvent] = useCreateEventMutation();
+  const { data: events = [], isLoading } = useGetEventsByOngIdQuery();
 
-  const filteredEventos = events.filter(
-    (event) =>
+  const filteredEvents = events.filter(
+    (event: Event) =>
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -73,13 +73,17 @@ export default function DashboardPage() {
 
       {/* Events List */}
       <Stack spacing={3}>
-        {filteredEventos.map((evento) => (
-          <EventCard key={evento.id} evento={evento} />
-        ))}
+        {isLoading ? (
+          <Typography>Carregando eventos...</Typography>
+        ) : (
+          filteredEvents.map((event: Event) => (
+            <EventCard key={event.id} event={event} />
+          ))
+        )}
       </Stack>
 
       {/* No Results */}
-      {filteredEventos.length === 0 && (
+      {!isLoading && filteredEvents.length === 0 && (
         <Box textAlign="center" mt={8}>
           <Typography
             variant="h6"

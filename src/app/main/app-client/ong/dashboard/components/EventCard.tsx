@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import type { Event } from "../../../../../../types/events.type";
 
-export default function EventCard({ evento }: { evento: Event }) {
+export default function EventCard({ event }: { event: Event }) {
   const getCategoriaColor = (categoria: string) => {
     const colors: Record<
       string,
@@ -31,16 +31,16 @@ export default function EventCard({ evento }: { evento: Event }) {
     return "error.main";
   };
 
-  const vagasDisponiveis = evento.maxCandidates - evento.currentCandidates;
-  const totalVagas = evento.maxCandidates;
+  const vagasDisponiveis = event.maxCandidates - event.currentCandidates;
+  const totalVagas = event.maxCandidates;
 
   // Format date and duration
-  const dataFormatada = new Date(evento.startDate).toLocaleDateString("pt-BR");
-  const horaFormatada = `${evento.durationMinutes} minutos`;
+  const dataFormatada = new Date(event.startDate).toLocaleDateString("pt-BR");
+  const horaFormatada = `${event.durationMinutes} minutos`;
 
   return (
     <Box
-      key={evento.id}
+      key={event.id}
       sx={{
         bgcolor: "background.paper",
         borderRadius: 2,
@@ -60,17 +60,17 @@ export default function EventCard({ evento }: { evento: Event }) {
           {/* Title and Category */}
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             <Typography variant="h6" fontWeight="bold" color="text.common.black">
-              {evento.title}
+              {event.title}
             </Typography>
             <Chip
-              label={evento.category?.name}
-              color={getCategoriaColor(evento.category?.name)}
+              label={event.category?.name}
+              color={getCategoriaColor(event.category?.name)}
               size="small"
             />
           </Box>
           {/* Description */}
           <Typography color="text.common.black" mb={3}>
-            {evento.description}
+            {event.description}
           </Typography>
           {/* Event Details */}
           <Box
@@ -98,7 +98,7 @@ export default function EventCard({ evento }: { evento: Event }) {
             <Box display="flex" alignItems="center" gap={1}>
               <MapPin size={16} style={{ color: "#6b7280" }} />
               <Typography variant="body2" color="text.common.black">
-                {evento.location}
+                {event.location}
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" gap={1}>
@@ -125,7 +125,7 @@ export default function EventCard({ evento }: { evento: Event }) {
           <Box display="flex" alignItems="center" gap={1} mb={3}>
             <Building2 size={16} style={{ color: "#6b7280" }} />
             <Typography variant="body2" color="text.common.black">
-              {evento.ong?.name}
+              {event.ong?.name}
             </Typography>
           </Box>
           {/* Action Buttons */}

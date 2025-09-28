@@ -4,6 +4,7 @@ import apiService from './apiService';
 import rootReducer from './rootReducer';
 import { dynamicMiddleware } from './middleware';
 import { categoryApi } from '../app/api/CategoryApi';
+import { eventApi } from '../app/api/EventApi';
 
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
@@ -11,7 +12,8 @@ export type RootState = ReturnType<typeof rootReducer>;
 const middlewares: Middleware[] = [
 	apiService.middleware,
 	dynamicMiddleware,
-	categoryApi.middleware
+	categoryApi.middleware,
+	eventApi.middleware,
 ];
 
 export const makeStore = (preloadedState?: Partial<RootState>) => {
