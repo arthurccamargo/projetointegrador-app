@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { Search, Plus } from "lucide-react";
 import {
-  Search,
-  Plus,
-} from "lucide-react";
-import { useCreateEventMutation, useGetEventsByOngIdQuery } from "../../../../api/EventApi";
+  useCreateEventMutation,
+  useGetEventsByOngIdQuery,
+  useDeleteEventMutation,
+  useUpdateEventMutation,
+} from "../../../../api/EventApi";
 import {
   Container,
   Box,
@@ -15,12 +17,23 @@ import {
 import EventCard from "./components/EventCard";
 import CreateEventModal from "./components/CreateEventModal";
 import type { Event } from "../../../../../types/events.type";
+import type { CreateEventPayload } from "./components/CreateEventModal";
+import ConfirmModal from "../../../../shared-components/ConfirmModal";
+import EditEventModal from "./components/EditEventModal";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteEventModalOpen, setDeleteEventModalOpen] = useState(false);
+  const [editEventModalOpen, setEditEventModalOpen] = useState(false);
+  const [eventSelected, setEventSelected] = useState<Event | null>(null);
   const [createEvent] = useCreateEventMutation();
-  const { data: events = [], isLoading } = useGetEventsByOngIdQuery();
+  const [deleteEvent, { isLoading: isLoadingDelete }] =
+    useDeleteEventMutation();
+  const [updateEvent, { isLoading: isLoadingUpdate }] =
+    useUpdateEventMutation();
+  const { data: events = [], isLoading: isLoadingEvents } =
+    useGetEventsByOngIdQuery();
 
   const filteredEvents = events.filter(
     (event: Event) =>
@@ -28,11 +41,44 @@ export default function DashboardPage() {
       event.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCreateEvent = async (formData: Event) => {
+  const handleCreateEvent = async (formData: CreateEventPayload) => {
     try {
       await createEvent({ dto: formData }).unwrap();
       setModalOpen(false);
-      // adicionar um feedback/sucesso ou atualizar a lista de eventos aqui
+    } catch (error) {
+      // trata erro
+      console.error(error);
+    }
+  };
+
+  const handleDeleteClick = (event: Event) => {
+    setEventSelected(event);
+    setDeleteEventModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!eventSelected) return;
+    try {
+      await deleteEvent({ id: eventSelected.id }).unwrap();
+      setDeleteEventModalOpen(false);
+      setEventSelected(null);
+    } catch (error) {
+      // trata erro
+      console.error(error);
+    }
+  };
+
+  const handleEditClick = (event: Event) => {
+    setEventSelected(event);
+    setEditEventModalOpen(true);
+  };
+
+  const handleConfirmEdit = async (formData: Partial<Event>) => {
+    if (!eventSelected) return;
+    try {
+      await updateEvent({ id: eventSelected.id, dto: formData }).unwrap();
+      setEditEventModalOpen(false);
+      setEventSelected(null);
     } catch (error) {
       // trata erro
       console.error(error);
@@ -42,7 +88,7 @@ export default function DashboardPage() {
   return (
     <Container
       maxWidth="lg"
-      sx={{ py: 6, minHeight: "100vh", position: "relative" }}
+      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2 }}
     >
       <Box mb={8}>
         <Typography variant="h4" fontWeight="bold" color="text.primary" mb={2}>
@@ -51,7 +97,6 @@ export default function DashboardPage() {
         <Typography color="text.common.black" mb={3}>
           Gerencie seus eventos e candidatos
         </Typography>
-        {/* Search Bar */}
         <Box maxWidth={400}>
           <TextField
             fullWidth
@@ -71,19 +116,22 @@ export default function DashboardPage() {
         </Box>
       </Box>
 
-      {/* Events List */}
       <Stack spacing={3}>
-        {isLoading ? (
+        {isLoadingEvents ? (
           <Typography>Carregando eventos...</Typography>
         ) : (
           filteredEvents.map((event: Event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard
+              key={event.id}
+              event={event}
+              onDelete={async () => handleDeleteClick(event)}
+              onEdit={async () => handleEditClick(event)}
+            />
           ))
         )}
       </Stack>
 
-      {/* No Results */}
-      {!isLoading && filteredEvents.length === 0 && (
+      {!isLoadingEvents && filteredEvents.length === 0 && (
         <Box textAlign="center" mt={8}>
           <Typography
             variant="h6"
@@ -118,6 +166,30 @@ export default function DashboardPage() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onCreate={handleCreateEvent}
+      />
+
+      <ConfirmModal
+        open={deleteEventModalOpen}
+        onClose={() => {
+          setDeleteEventModalOpen(false);
+          setEventSelected(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Excluir Evento"
+        message={`Tem certeza que deseja excluir o evento "${eventSelected?.title}"? Essa ação não pode ser desfeita.`}
+        color="error"
+        loading={isLoadingDelete}
+      />
+
+      <EditEventModal
+        open={editEventModalOpen}
+        onClose={() => {
+          setEditEventModalOpen(false);
+          setEventSelected(null);
+        }}
+        onConfirm={handleConfirmEdit}
+        event={eventSelected}
+        loading={isLoadingUpdate}
       />
     </Container>
   );
