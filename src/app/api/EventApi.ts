@@ -31,6 +31,13 @@ export const eventApi = createApi({
       }),
       providesTags: ["Events"],
     }),
+    getAllEvents: builder.query<any, void>({
+      query: () => ({
+        url: "/events",
+        method: "GET",
+      }),
+      providesTags: ["Events"],
+    }),
     updateEvent: builder.mutation<any, { id: string; dto: any }>({
       query: ({ id, dto }) => ({
         url: `/events/${id}`,
@@ -54,4 +61,5 @@ export const {
   useGetEventsByOngIdQuery,
   useDeleteEventMutation,
   useUpdateEventMutation,
+  useGetAllEventsQuery,
 } = eventApi;
