@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
 import {
-    Building,
+  Building,
   Calendar,
   Clock,
   Eye,
@@ -19,12 +19,16 @@ interface EventToVolunteerCardProps {
 export default function EventCardToVolunteer({
   event,
 }: EventToVolunteerCardProps) {
-
   const availableVacancies = event.currentCandidates;
   const totalVacancies = event.maxCandidates;
 
   // Format date and duration
-  const formattedDate = new Date(event.startDate).toLocaleDateString("pt-BR");
+  const startDateObj = new Date(event.startDate);
+  const formattedDate = startDateObj.toLocaleDateString("pt-BR");
+  const formattedTime = startDateObj.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
   const formattedDuration = `${event.durationMinutes / 60} horas`;
 
   return (
@@ -76,30 +80,86 @@ export default function EventCardToVolunteer({
             gridTemplateColumns={{
               xs: "1fr",
               sm: "1fr 1fr",
-              lg: "repeat(4, 1fr)",
+              lg: "auto auto auto auto auto",
             }}
             gap={2}
             mb={2}
+            sx={{
+              alignItems: "center",
+              justifyItems: "start",
+            }}
           >
-            <Box display="flex" alignItems="center" gap={1}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              gap={0.5}
+              sx={{ minWidth: "fit-content" }}
+            >
               <Calendar size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.common.black">
+              <Typography
+                variant="body2"
+                color="text.common.black"
+                sx={{ whiteSpace: "nowrap" }}
+              >
                 {formattedDate}
               </Typography>
             </Box>
-            <Box display="flex" alignItems="center" gap={1}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              gap={1}
+            >
               <Clock size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.common.black">
-                {formattedDuration}
+              <Typography
+                variant="body2"
+                color="text.common.black"
+                sx={{ ml: 0 }}
+              >
+                Hora de Início: {formattedTime}
               </Typography>
             </Box>
-            <Box display="flex" alignItems="center" gap={1}>
-              <MapPin size={16} style={{ color: "#6b7280" }} />
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              gap={1}
+            >
+              <Clock size={16} style={{ color: "#6b7280" }} />
               <Typography variant="body2" color="text.common.black">
+                Duração: {formattedDuration}
+              </Typography>
+            </Box>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              gap={1}
+              sx={{ width: "100%", minWidth: 0 }}
+            >
+              <MapPin size={16} style={{ color: "#6b7280", flexShrink: 0 }} />
+              <Typography
+                variant="body2"
+                color="text.common.black"
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  width: "100%",
+                  display: "block",
+                }}
+                title={event.location}
+              >
                 {event.location}
               </Typography>
             </Box>
-            <Box display="flex" alignItems="center" gap={1}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              gap={1}
+            >
               <Users
                 size={16}
                 style={{
@@ -117,7 +177,7 @@ export default function EventCardToVolunteer({
               </Typography>
             </Box>
           </Box>
-          <Divider sx={{ mb: 2}} />
+          <Divider sx={{ mb: 2 }} />
           <Box display="flex" alignItems="center" gap={1} mb={2}>
             <Building size={16} style={{ color: "#6b7280" }} />
             <Typography variant="body2" color="text.common.black">
