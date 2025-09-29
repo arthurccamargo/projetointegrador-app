@@ -6,9 +6,14 @@ import { useState } from "react";
 import type { Event } from "../../../../../types/events.type";
 import { useGetAllEventsQuery } from "../../../../api/EventApi";
 import EventCardToVolunteer from "./components/EventCardToVolunteer";
+import ConfirmModal from "../../../../shared-components/ConfirmModal";
+import { useApplyMutation } from "../../../../api/EventApplicationApi";
 
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [eventSelected, setEventSelected] = useState<Event | null>(null);
+  const [applyToEvent, { isLoading: isLoadingApply }] = useApplyMutation();
   const { data: events = [], isLoading: isLoadingEvents } =
     useGetAllEventsQuery();
 
@@ -17,6 +22,22 @@ export default function HomePage() {
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleApplyClick = (event: Event) => {
+    setEventSelected(event);
+    setOpenModal(true);
+  };
+
+  const handleConfirmApply = async () => {
+    if (!eventSelected) return;
+    try {
+      await applyToEvent({ eventId: eventSelected.id }).unwrap();
+      setOpenModal(false);
+      setEventSelected(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Container
@@ -54,10 +75,7 @@ export default function HomePage() {
           <Typography>Carregando eventos...</Typography>
         ) : (
           filteredEvents.map((event: Event) => (
-            <EventCardToVolunteer
-              key={event.id}
-              event={event}
-            />
+            <EventCardToVolunteer key={event.id} event={event} onApplyClick={async () => handleApplyClick(event)} />
           ))
         )}
       </Stack>
@@ -77,6 +95,19 @@ export default function HomePage() {
           </Typography>
         </Box>
       )}
+
+      <ConfirmModal
+        open={openModal}
+        onClose={() => {
+          setOpenModal(false);
+          setEventSelected(null);
+        }}
+        onConfirm={handleConfirmApply}
+        title="Confirmar Candidatura"
+        message={`Tem certeza que deseja se candidatar ao evento "${eventSelected?.title}"? Você pode cancelar sua candidatura até 48 horas antes do evento.`}
+        color="success"
+        loading={isLoadingApply}
+      />
     </Container>
   );
 }

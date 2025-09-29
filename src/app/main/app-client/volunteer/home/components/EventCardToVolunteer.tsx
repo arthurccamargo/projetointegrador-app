@@ -14,10 +14,12 @@ import { getVacancyColor } from "../../../../../shared-components/functions/getV
 
 interface EventToVolunteerCardProps {
   event: Event;
+  onApplyClick: (event: Event) => Promise<void>;
 }
 
 export default function EventCardToVolunteer({
   event,
+  onApplyClick,
 }: EventToVolunteerCardProps) {
   const availableVacancies = event.currentCandidates;
   const totalVacancies = event.maxCandidates;
@@ -35,7 +37,7 @@ export default function EventCardToVolunteer({
     <Box
       key={event.id}
       sx={{
-        bgcolor: "background.paper",
+        bgcolor: "#F8F8F8",
         borderRadius: 2,
         boxShadow: 1,
         border: "1px solid",
@@ -196,6 +198,7 @@ export default function EventCardToVolunteer({
               variant="contained"
               startIcon={<Users2 size={18} />}
               color="success"
+              onClick={() => onApplyClick(event)}
             >
               Participar
             </Button>
