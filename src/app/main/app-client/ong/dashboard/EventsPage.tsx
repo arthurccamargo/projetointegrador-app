@@ -17,6 +17,7 @@ import {
 import EventCard from "./components/EventCard";
 import CreateEventModal from "./components/CreateEventModal";
 import type { Event } from "../../../../../types/events.type";
+import type { CreateEventPayload } from "./components/CreateEventModal";
 import ConfirmModal from "../../../../shared-components/ConfirmModal";
 import EditEventModal from "./components/EditEventModal";
 
@@ -40,7 +41,7 @@ export default function DashboardPage() {
       event.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCreateEvent = async (formData: Event) => {
+  const handleCreateEvent = async (formData: CreateEventPayload) => {
     try {
       await createEvent({ dto: formData }).unwrap();
       setModalOpen(false);
@@ -88,7 +89,7 @@ export default function DashboardPage() {
   return (
     <Container
       maxWidth="lg"
-      sx={{ py: 6, minHeight: "100vh", position: "relative" }}
+      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2 }}
     >
       <Box mb={8}>
         <Typography variant="h4" fontWeight="bold" color="text.primary" mb={2}>

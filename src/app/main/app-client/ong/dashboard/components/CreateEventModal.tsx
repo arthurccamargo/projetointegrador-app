@@ -22,7 +22,7 @@ import { useGetCategoriesQuery } from "../../../../../api/CategoryApi";
 interface CreateEventModalProps {
   open: boolean;
   onClose: () => void;
-  onCreate: (formData: CreateEventPayload) => void;
+  onCreate: (formData: CreateEventPayload) => Promise<void>;
 }
 
 const eventSchema = z
@@ -59,7 +59,7 @@ type EventFormValues = z.infer<typeof eventSchema> & {
   durationMinutes?: number;
 };
 
-type CreateEventPayload = {
+export type CreateEventPayload = {
   title: string;
   categoryId: string;
   description?: string;
