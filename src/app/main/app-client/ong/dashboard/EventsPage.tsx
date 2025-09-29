@@ -3,7 +3,7 @@ import {
   Search,
   Plus,
 } from "lucide-react";
-import { useCreateEventMutation, useGetEventsByOngIdQuery } from "../../../../api/EventApi";
+import { useCreateEventMutation, useGetEventsByOngIdQuery, useDeleteEventMutation } from "../../../../api/EventApi";
 import {
   Container,
   Box,
@@ -15,12 +15,16 @@ import {
 import EventCard from "./components/EventCard";
 import CreateEventModal from "./components/CreateEventModal";
 import type { Event } from "../../../../../types/events.type";
+import ConfirmModal from "../../../../shared-components/ConfirmModal";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteEventModalOpen, setDeleteEventModalOpen] = useState(false);
+  const [eventSelected, setEventSelected] = useState<Event | null>(null);
   const [createEvent] = useCreateEventMutation();
-  const { data: events = [], isLoading } = useGetEventsByOngIdQuery();
+  const [deleteEvent, { isLoading: isLoadingDelete }] = useDeleteEventMutation();
+  const { data: events = [], isLoading: isLoadingEvents } = useGetEventsByOngIdQuery();
 
   const filteredEvents = events.filter(
     (event: Event) =>
@@ -33,6 +37,23 @@ export default function DashboardPage() {
       await createEvent({ dto: formData }).unwrap();
       setModalOpen(false);
       // adicionar um feedback/sucesso ou atualizar a lista de eventos aqui
+    } catch (error) {
+      // trata erro
+      console.error(error);
+    }
+  };
+
+  const handleDeleteClick = (event: Event) => {
+    setEventSelected(event);
+    setDeleteEventModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!eventSelected) return;
+    try {
+      await deleteEvent({ id: eventSelected.id }).unwrap();
+      setDeleteEventModalOpen(false);
+      setEventSelected(null);
     } catch (error) {
       // trata erro
       console.error(error);
@@ -73,17 +94,21 @@ export default function DashboardPage() {
 
       {/* Events List */}
       <Stack spacing={3}>
-        {isLoading ? (
+        {isLoadingEvents ? (
           <Typography>Carregando eventos...</Typography>
         ) : (
           filteredEvents.map((event: Event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard
+              key={event.id}
+              event={event}
+              onDelete={() => handleDeleteClick(event)}
+            />
           ))
         )}
       </Stack>
 
       {/* No Results */}
-      {!isLoading && filteredEvents.length === 0 && (
+      {!isLoadingEvents && filteredEvents.length === 0 && (
         <Box textAlign="center" mt={8}>
           <Typography
             variant="h6"
@@ -118,6 +143,19 @@ export default function DashboardPage() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onCreate={handleCreateEvent}
+      />
+
+      <ConfirmModal
+        open={deleteEventModalOpen}
+        onClose={() => {
+          setDeleteEventModalOpen(false);
+          setEventSelected(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Excluir Evento"
+        message={`Tem certeza que deseja excluir o evento "${eventSelected?.title}"? Essa ação não pode ser desfeita.`}
+        color="error"
+        loading={isLoadingDelete}
       />
     </Container>
   );

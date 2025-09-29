@@ -1,15 +1,21 @@
-import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
+import { Box, Button, Divider, Stack, Typography, Chip, IconButton } from "@mui/material";
 import {
   Calendar,
   Clock,
   Edit3,
   Eye,
   MapPin,
+  Trash,
   Users,
 } from "lucide-react";
 import type { Event } from "../../../../../../types/events.type";
 
-export default function EventCard({ event }: { event: Event }) {
+interface EventCardProps {
+  event: Event;
+  onDelete: () => void;
+}
+
+export default function EventCard({ event, onDelete }: EventCardProps) {
   const getCategoryColor = (category: string) => {
     const colors: Record<
       string,
@@ -131,6 +137,9 @@ export default function EventCard({ event }: { event: Event }) {
             >
               Gerenciar
             </Button>
+            <IconButton color="error" onClick={onDelete}>
+              <Trash size={20} />
+            </IconButton>
           </Stack>
         </Box>
       </Box>
