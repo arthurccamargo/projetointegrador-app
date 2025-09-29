@@ -23,6 +23,7 @@ interface CreateEventModalProps {
   open: boolean;
   onClose: () => void;
   onCreate: (formData: CreateEventPayload) => Promise<void>;
+  loading?: boolean;
 }
 
 const eventSchema = z
@@ -91,6 +92,7 @@ export const CreateEventModal = ({
   open,
   onClose,
   onCreate,
+  loading = false,
 }: CreateEventModalProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -176,7 +178,6 @@ export const CreateEventModal = ({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-
       <DialogContent sx={{ pt: 3 }}>
         <Box
           component="form"
@@ -202,8 +203,6 @@ export const CreateEventModal = ({
               )}
             />
           </Box>
-
-          {/* Categoria */}
           <Box sx={{ width: "100%" }}>
             <Typography variant="subtitle2">
               Categoria
@@ -231,8 +230,6 @@ export const CreateEventModal = ({
               )}
             </FormControl>
           </Box>
-
-          {/* Descrição */}
           <Box sx={{ width: "100%" }}>
             <Typography variant="subtitle2">
               Descrição
@@ -254,7 +251,6 @@ export const CreateEventModal = ({
               )}
             />
           </Box>
-
           <Box
             sx={{
               display: "flex",
@@ -285,7 +281,6 @@ export const CreateEventModal = ({
                 )}
               />
             </Box>
-
             <Box sx={{ flex: 1 }}>
               <Typography variant="subtitle2">
                 Hora de Início
@@ -309,7 +304,6 @@ export const CreateEventModal = ({
               />
             </Box>
           </Box>
-
           <Box
             sx={{
               display: "flex",
@@ -318,7 +312,6 @@ export const CreateEventModal = ({
               width: "100%",
             }}
           >
-            {/* Hora de Término */}
             <Box sx={{ flex: 1 }}>
               <Typography variant="subtitle2">
                 Hora de Término
@@ -341,8 +334,6 @@ export const CreateEventModal = ({
                 )}
               />
             </Box>
-
-            {/* Máx. Candidatos */}
             <Box sx={{ flex: 1 }}>
               <Typography variant="subtitle2">
                 Máx. Candidatos
@@ -365,8 +356,6 @@ export const CreateEventModal = ({
               />
             </Box>
           </Box>
-
-          {/* Local */}
           <Box sx={{ width: "100%" }}>
             <Typography variant="subtitle2">
               Local
@@ -388,7 +377,6 @@ export const CreateEventModal = ({
           </Box>
         </Box>
       </DialogContent>
-
       <Divider />
       <DialogActions
         sx={{
@@ -431,7 +419,7 @@ export const CreateEventModal = ({
             },
           }}
         >
-          Criar
+          {loading ? "Criando..." : "Criar"}
         </Button>
       </DialogActions>
     </Dialog>

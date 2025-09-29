@@ -25,7 +25,7 @@ export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [openModal, setOpenModal] = useState<null | "create" | "edit" | "delete">(null);
   const [eventSelected, setEventSelected] = useState<Event | null>(null);
-  const [createEvent] = useCreateEventMutation();
+  const [createEvent, { isLoading: isLoadingCreate }] = useCreateEventMutation();
   const [deleteEvent, { isLoading: isLoadingDelete }] = useDeleteEventMutation();
   const [updateEvent, { isLoading: isLoadingUpdate }] = useUpdateEventMutation();
   const { data: events = [], isLoading: isLoadingEvents } = useGetEventsByOngIdQuery();
@@ -158,6 +158,7 @@ export default function DashboardPage() {
         open={openModal === "create"}
         onClose={() => setOpenModal(null)}
         onCreate={handleCreateEvent}
+        loading={isLoadingCreate}
       />
 
       <ConfirmModal
