@@ -30,6 +30,21 @@ const getStatusColor = (status: string) => {
   }
 };
 
+const translateStatus = (status: string) => {
+  switch (status) {
+    case "PENDING":
+      return "Pendente";
+    case "ACCEPTED":
+      return "Aceita";
+    case "REJECTED":
+      return "Recusada";
+    case "CANCELLED":
+      return "Cancelada";
+    default:
+      return status;
+  }
+};
+
 export default function EventCardToVolunteer({
   application,
   onCancel,
@@ -85,7 +100,7 @@ export default function EventCardToVolunteer({
                 }}
               />
               <Chip
-                label={application.status}
+                label={translateStatus(application.status)}
                 size="small"
                 sx={{
                   backgroundColor: getStatusColor(application.status).bg,
