@@ -1,33 +1,61 @@
 import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
-import { Calendar, Clock, Edit3, MapPin, Trash, Users } from "lucide-react";
-import type { Event } from "../../../../../../types/events.type";
+import { Building, Calendar, Clock, Eye, MapPin, X } from "lucide-react";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
-import { getVacancyColor } from "../../../../../shared-components/functions/getVacancyColor";
+import type { EventApplication } from "../../../../../../types/event-applications.type";
 
-interface EventCardProps {
-  event: Event;
-  onDelete: () => Promise<void>;
-  onEdit: () => Promise<void>;
+interface EventToVolunteerCardProps {
+  application: EventApplication;
+  onCancel: (application: EventApplication) => Promise<void>;
 }
 
-export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
-  const availableVacancies = event.currentCandidates;
-  const totalVacancies = event.maxCandidates;
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "PENDING":
+      return { bg: "#ffe082", color: "#795548" };
+    case "ACCEPTED":
+      return { bg: "#c8e6c9", color: "#388e3c" };
+    case "REJECTED":
+      return { bg: "#ffcdd2", color: "#d32f2f" };
+    case "CANCELLED":
+      return { bg: "#e0e0e0", color: "#616161" };
+    default:
+      return { bg: "#eeeeee", color: "#333" };
+  }
+};
 
+const translateStatus = (status: string) => {
+  switch (status) {
+    case "PENDING":
+      return "Pendente";
+    case "ACCEPTED":
+      return "Aceita";
+    case "REJECTED":
+      return "Recusada";
+    case "CANCELLED":
+      return "Cancelada";
+    default:
+      return status;
+  }
+};
+
+export default function EventCardToVolunteer({
+  application,
+  onCancel,
+}: EventToVolunteerCardProps) {
   // Format date and duration
-  const startDateObj = new Date(event.startDate);
+  const startDateObj = new Date(application.event.startDate);
   const formattedDate = startDateObj.toLocaleDateString("pt-BR");
   const formattedTime = startDateObj.toLocaleTimeString("pt-BR", {
     hour: "2-digit",
     minute: "2-digit",
   });
-  const formattedDuration = `${event.durationMinutes / 60} horas`;
+  const formattedDuration = `${application.event.durationMinutes / 60} horas`;
 
-return (
+  return (
     <Box
-      key={event.id}
+      key={application.event.id}
       sx={{
-        bgcolor: "background.paper",
+        bgcolor: "#F8F8F8",
         borderRadius: 2,
         boxShadow: 1,
         border: "1px solid",
@@ -52,20 +80,34 @@ return (
               fontWeight="bold"
               color="text.common.black"
             >
-              {event.title}
+              {application.event.title}
             </Typography>
-            <Chip
-              label={event.category?.name}
-              size="small"
-              sx={{
-                backgroundColor: getCategoryColor(event.category?.name).bg,
-                color: getCategoryColor(event.category?.name).color,
-                fontWeight: 500,
-              }}
-            />
+            <Box display="flex" flexDirection="column" gap={0.5}>
+              <Chip
+                label={application.event.category?.name}
+                size="small"
+                sx={{
+                  backgroundColor: getCategoryColor(
+                    application.event.category?.name
+                  ).bg,
+                  color: getCategoryColor(application.event.category?.name)
+                    .color,
+                  fontWeight: 500,
+                }}
+              />
+              <Chip
+                label={translateStatus(application.status)}
+                size="small"
+                sx={{
+                  backgroundColor: getStatusColor(application.status).bg,
+                  color: getStatusColor(application.status).color,
+                  fontWeight: 500,
+                }}
+              />
+            </Box>
           </Box>
           <Typography color="text.common.black" mb={3}>
-            {event.description}
+            {application.event.description}
           </Typography>
           <Box
             display="grid"
@@ -89,7 +131,11 @@ return (
               sx={{ minWidth: "fit-content" }}
             >
               <Calendar size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.common.black" sx={{ whiteSpace: "nowrap" }}>
+              <Typography
+                variant="body2"
+                color="text.common.black"
+                sx={{ whiteSpace: "nowrap" }}
+              >
                 {formattedDate}
               </Typography>
             </Box>
@@ -137,52 +183,41 @@ return (
                   width: "100%",
                   display: "block",
                 }}
-                title={event.location}
+                title={application.event.location}
               >
-                {event.location}
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-start"
-              gap={1}
-            >
-              <Users
-                size={16}
-                style={{
-                  color: getVacancyColor(availableVacancies, totalVacancies),
-                }}
-              />
-              <Typography
-                variant="body2"
-                fontWeight="bold"
-                sx={{
-                  color: getVacancyColor(availableVacancies, totalVacancies),
-                }}
-              >
-                {`${availableVacancies}/${totalVacancies} vagas`}
+                {application.event.location}
               </Typography>
             </Box>
           </Box>
-          <Divider sx={{ my: 2 }} />
+          <Divider sx={{ mb: 2 }} />
+          <Box display="flex" alignItems="center" gap={1} mb={2}>
+            <Building size={16} style={{ color: "#6b7280" }} />
+            <Typography variant="body2" color="text.common.black">
+              {application.event.ong?.name}
+            </Typography>
+          </Box>
           <Stack direction="row" spacing={2}>
             <Button
               variant="contained"
-              startIcon={<Edit3 size={18} />}
-              sx={{ color: "#000" }}
-              onClick={onEdit}
+              startIcon={<Eye size={18} />}
+              sx={{ color: "#000", flex: 1 }}
+              fullWidth
             >
-              Editar
+              Ver Onganização
             </Button>
-            <Button
-              variant="contained"
-              startIcon={<Trash size={18} />}
-              color="error"
-              onClick={onDelete}
-            >
-              Excluir
-            </Button>
+            {application.status !== "CANCELLED" &&
+              application.status !== "REJECTED" && (
+                <Button
+                  variant="contained"
+                  startIcon={<X size={18} />}
+                  color="error"
+                  onClick={() => onCancel(application)}
+                  sx={{ flex: 1 }}
+                  fullWidth
+                >
+                  Cancelar
+                </Button>
+              )}
           </Stack>
         </Box>
       </Box>

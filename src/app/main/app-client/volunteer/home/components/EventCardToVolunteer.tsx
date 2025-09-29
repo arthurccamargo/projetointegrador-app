@@ -1,16 +1,26 @@
 import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
-import { Calendar, Clock, Edit3, MapPin, Trash, Users } from "lucide-react";
+import {
+  Building,
+  Calendar,
+  Clock,
+  Eye,
+  MapPin,
+  Users,
+  Users2,
+} from "lucide-react";
 import type { Event } from "../../../../../../types/events.type";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { getVacancyColor } from "../../../../../shared-components/functions/getVacancyColor";
 
-interface EventCardProps {
+interface EventToVolunteerCardProps {
   event: Event;
-  onDelete: () => Promise<void>;
-  onEdit: () => Promise<void>;
+  onApplyClick: (event: Event) => Promise<void>;
 }
 
-export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
+export default function EventCardToVolunteer({
+  event,
+  onApplyClick,
+}: EventToVolunteerCardProps) {
   const availableVacancies = event.currentCandidates;
   const totalVacancies = event.maxCandidates;
 
@@ -23,11 +33,11 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
   });
   const formattedDuration = `${event.durationMinutes / 60} horas`;
 
-return (
+  return (
     <Box
       key={event.id}
       sx={{
-        bgcolor: "background.paper",
+        bgcolor: "#F8F8F8",
         borderRadius: 2,
         boxShadow: 1,
         border: "1px solid",
@@ -89,7 +99,11 @@ return (
               sx={{ minWidth: "fit-content" }}
             >
               <Calendar size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.common.black" sx={{ whiteSpace: "nowrap" }}>
+              <Typography
+                variant="body2"
+                color="text.common.black"
+                sx={{ whiteSpace: "nowrap" }}
+              >
                 {formattedDate}
               </Typography>
             </Box>
@@ -165,23 +179,28 @@ return (
               </Typography>
             </Box>
           </Box>
-          <Divider sx={{ my: 2 }} />
+          <Divider sx={{ mb: 2 }} />
+          <Box display="flex" alignItems="center" gap={1} mb={2}>
+            <Building size={16} style={{ color: "#6b7280" }} />
+            <Typography variant="body2" color="text.common.black">
+              {event.ong?.name}
+            </Typography>
+          </Box>
           <Stack direction="row" spacing={2}>
             <Button
               variant="contained"
-              startIcon={<Edit3 size={18} />}
+              startIcon={<Eye size={18} />}
               sx={{ color: "#000" }}
-              onClick={onEdit}
             >
-              Editar
+              Ver Onganização
             </Button>
             <Button
               variant="contained"
-              startIcon={<Trash size={18} />}
-              color="error"
-              onClick={onDelete}
+              startIcon={<Users2 size={18} />}
+              color="success"
+              onClick={() => onApplyClick(event)}
             >
-              Excluir
+              Participar
             </Button>
           </Stack>
         </Box>
