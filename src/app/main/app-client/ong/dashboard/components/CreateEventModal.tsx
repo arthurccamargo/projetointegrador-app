@@ -1,4 +1,4 @@
-import { useTheme, useMediaQuery } from '@mui/material';
+import { useTheme, useMediaQuery, Divider } from "@mui/material";
 import {
   Dialog,
   DialogTitle,
@@ -12,12 +12,12 @@ import {
   IconButton,
   Box,
   Typography,
-} from '@mui/material';
-import { Close as CloseIcon } from '@mui/icons-material';
-import { useForm, Controller } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useGetCategoriesQuery } from '../../../../../api/CategoryApi';
+} from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useGetCategoriesQuery } from "../../../../../api/CategoryApi";
 
 interface CreateEventModalProps {
   open: boolean;
@@ -25,32 +25,39 @@ interface CreateEventModalProps {
   onCreate: (formData: CreateEventPayload) => void;
 }
 
-const eventSchema = z.object({
-  title: z.string().min(3, 'Título obrigatório'),
-  categoryId: z.string().min(1, 'Selecione uma categoria'),
-  description: z.string().optional(),
-  startDate: z.string().min(1, 'Data obrigatória'),
-  startTime: z.string().min(1, 'Hora de início obrigatória'),
-  endTime: z.string().min(1, 'Hora de término obrigatória'),
-  maxCandidates: z.string()
-    .refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, { message: 'Apenas números inteiros' }),
-  location: z.string().min(3, 'Local obrigatório')
-}).refine(
-  (data) => {
-    if (!data.startTime || !data.endTime) return true;
-    const start = data.startTime.split(':').map(Number);
-    const end = data.endTime.split(':').map(Number);
-    const startMinutes = start[0] * 60 + start[1];
-    const endMinutes = end[0] * 60 + end[1];
-    return endMinutes > startMinutes;
-  },
-  {
-    message: 'Hora de término deve ser posterior à hora de início',
-    path: ['endTime']
-  }
-);
+const eventSchema = z
+  .object({
+    title: z.string().min(3, "Título obrigatório"),
+    categoryId: z.string().min(1, "Selecione uma categoria"),
+    description: z.string().optional(),
+    startDate: z.string().min(1, "Data obrigatória"),
+    startTime: z.string().min(1, "Hora de início obrigatória"),
+    endTime: z.string().min(1, "Hora de término obrigatória"),
+    maxCandidates: z
+      .string()
+      .refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
+        message: "Apenas números inteiros",
+      }),
+    location: z.string().min(3, "Local obrigatório"),
+  })
+  .refine(
+    (data) => {
+      if (!data.startTime || !data.endTime) return true;
+      const start = data.startTime.split(":").map(Number);
+      const end = data.endTime.split(":").map(Number);
+      const startMinutes = start[0] * 60 + start[1];
+      const endMinutes = end[0] * 60 + end[1];
+      return endMinutes > startMinutes;
+    },
+    {
+      message: "Hora de término deve ser posterior à hora de início",
+      path: ["endTime"],
+    }
+  );
 
-type EventFormValues = z.infer<typeof eventSchema> & { durationMinutes?: number };
+type EventFormValues = z.infer<typeof eventSchema> & {
+  durationMinutes?: number;
+};
 
 type CreateEventPayload = {
   title: string;
@@ -71,50 +78,57 @@ function combineDateTime(dateStr: string, timeStr: string): string {
 
 // Função para calcular duração em minutos entre dois horários
 function calculateDurationMinutes(startTime: string, endTime: string): number {
-  const start = startTime.split(':').map(Number);
-  const end = endTime.split(':').map(Number);
-  
+  const start = startTime.split(":").map(Number);
+  const end = endTime.split(":").map(Number);
+
   const startMinutes = start[0] * 60 + start[1];
   const endMinutes = end[0] * 60 + end[1];
-  
+
   return endMinutes - startMinutes;
 }
 
-export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalProps) => {
+export const CreateEventModal = ({
+  open,
+  onClose,
+  onCreate,
+}: CreateEventModalProps) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { data: categories, isLoading } = useGetCategoriesQuery();
 
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      title: '',
-      categoryId: '',
-      description: '',
-      startDate: '',
-      startTime: '',
-      endTime: '',
-      maxCandidates: '',
-      location: ''
-    }
+      title: "",
+      categoryId: "",
+      description: "",
+      startDate: "",
+      startTime: "",
+      endTime: "",
+      maxCandidates: "",
+      location: "",
+    },
   });
 
   const onSubmit = (data: EventFormValues) => {
-    const durationMinutes = calculateDurationMinutes(data.startTime, data.endTime);
+    const durationMinutes = calculateDurationMinutes(
+      data.startTime,
+      data.endTime
+    );
     const combinedStartDate = combineDateTime(data.startDate, data.startTime);
-    
+
     const formattedData = {
       ...data,
       startDate: combinedStartDate,
       maxCandidates: parseInt(data.maxCandidates, 10),
-      durationMinutes
+      durationMinutes,
     };
-    
+
     // Remove os campos temporários antes de enviar
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { startTime, endTime, ...finalData } = formattedData;
@@ -138,17 +152,17 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
         sx: {
           margin: isMobile ? 0 : 2,
           borderRadius: isMobile ? 0 : 2,
-          minHeight: isMobile ? '100vh' : 'auto'
-        }
+          minHeight: isMobile ? "100vh" : "auto",
+        },
       }}
     >
       <DialogTitle
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
           pb: 1,
-          borderBottom: '1px solid #e0e0e0'
+          borderBottom: "1px solid #e0e0e0",
         }}
       >
         <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
@@ -157,7 +171,7 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
         <IconButton
           aria-label="close"
           onClick={onClose}
-          sx={{ color: 'grey.500' }}
+          sx={{ color: "grey.500" }}
         >
           <CloseIcon />
         </IconButton>
@@ -166,12 +180,11 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
       <DialogContent sx={{ pt: 3 }}>
         <Box
           component="form"
-          sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          {/* Título */}
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="subtitle2" sx={{ mt: 1 }}>
               Título da Oportunidade
             </Typography>
             <Controller
@@ -191,8 +204,8 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
           </Box>
 
           {/* Categoria */}
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="subtitle2">
               Categoria
             </Typography>
             <FormControl fullWidth error={!!errors.categoryId}>
@@ -200,17 +213,14 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
                 name="categoryId"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    {...field}
-                    displayEmpty
-                    disabled={isLoading}
-                  >
+                  <Select {...field} displayEmpty disabled={isLoading}>
                     <MenuItem value="">Selecione uma categoria</MenuItem>
-                    {Array.isArray(categories) && categories.map((cat) => (
-                      <MenuItem key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </MenuItem>
-                    ))}
+                    {Array.isArray(categories) &&
+                      categories.map((cat) => (
+                        <MenuItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </MenuItem>
+                      ))}
                   </Select>
                 )}
               />
@@ -223,8 +233,8 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
           </Box>
 
           {/* Descrição */}
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="subtitle2">
               Descrição
             </Typography>
             <Controller
@@ -236,7 +246,7 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
                   fullWidth
                   placeholder="Descreva a atividade e o que o voluntário irá fazer..."
                   multiline
-                  rows={4}
+                  rows={3}
                   variant="outlined"
                   error={!!errors.description}
                   helperText={errors.description?.message}
@@ -247,14 +257,14 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
 
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
               gap: 2,
-              width: '100%'
+              width: "100%",
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              <Typography variant="subtitle2">
                 Data de Início
               </Typography>
               <Controller
@@ -277,7 +287,7 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
             </Box>
 
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              <Typography variant="subtitle2">
                 Hora de Início
               </Typography>
               <Controller
@@ -302,15 +312,15 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
 
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
               gap: 2,
-              width: '100%'
+              width: "100%",
             }}
           >
             {/* Hora de Término */}
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              <Typography variant="subtitle2">
                 Hora de Término
               </Typography>
               <Controller
@@ -334,7 +344,7 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
 
             {/* Máx. Candidatos */}
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              <Typography variant="subtitle2">
                 Máx. Candidatos
               </Typography>
               <Controller
@@ -357,8 +367,8 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
           </Box>
 
           {/* Local */}
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="subtitle2">
               Local
             </Typography>
             <Controller
@@ -379,12 +389,13 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
         </Box>
       </DialogContent>
 
+      <Divider />
       <DialogActions
         sx={{
           p: 3,
           gap: 2,
-          flexDirection: isMobile ? 'column-reverse' : 'row',
-          borderTop: '1px solid #e0e0e0'
+          justifyContent: "center",
+          display: "flex",
         }}
       >
         <Button
@@ -392,12 +403,15 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
           variant="outlined"
           fullWidth={isMobile}
           sx={{
-            color: 'grey.600',
-            borderColor: 'grey.300',
-            '&:hover': {
-              borderColor: 'grey.400',
-              backgroundColor: 'grey.50'
-            }
+            flex: 1,
+            borderRadius: 2,
+            fontWeight: 500,
+            color: "grey.600",
+            borderColor: "grey.300",
+            "&:hover": {
+              borderColor: "grey.400",
+              backgroundColor: "grey.50",
+            },
           }}
         >
           Cancelar
@@ -407,12 +421,14 @@ export const CreateEventModal = ({ open, onClose, onCreate }: CreateEventModalPr
           variant="contained"
           fullWidth={isMobile}
           sx={{
-            backgroundColor: '#f9c74f',
-            color: '#000',
-            fontWeight: 600,
-            '&:hover': {
-              backgroundColor: '#f8b500'
-            }
+            flex: 1,
+            borderRadius: 2,
+            fontWeight: 500,
+            backgroundColor: "theme.palette.primary.main",
+            color: "#000",
+            "&:hover": {
+              backgroundColor: "theme.palette.primary.dark",
+            },
           }}
         >
           Criar
