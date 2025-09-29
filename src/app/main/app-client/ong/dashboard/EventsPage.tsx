@@ -23,17 +23,12 @@ import EditEventModal from "./components/EditEventModal";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [deleteEventModalOpen, setDeleteEventModalOpen] = useState(false);
-  const [editEventModalOpen, setEditEventModalOpen] = useState(false);
+  const [openModal, setOpenModal] = useState<null | "create" | "edit" | "delete">(null);
   const [eventSelected, setEventSelected] = useState<Event | null>(null);
   const [createEvent] = useCreateEventMutation();
-  const [deleteEvent, { isLoading: isLoadingDelete }] =
-    useDeleteEventMutation();
-  const [updateEvent, { isLoading: isLoadingUpdate }] =
-    useUpdateEventMutation();
-  const { data: events = [], isLoading: isLoadingEvents } =
-    useGetEventsByOngIdQuery();
+  const [deleteEvent, { isLoading: isLoadingDelete }] = useDeleteEventMutation();
+  const [updateEvent, { isLoading: isLoadingUpdate }] = useUpdateEventMutation();
+  const { data: events = [], isLoading: isLoadingEvents } = useGetEventsByOngIdQuery();
 
   const filteredEvents = events.filter(
     (event: Event) =>
@@ -44,43 +39,40 @@ export default function DashboardPage() {
   const handleCreateEvent = async (formData: CreateEventPayload) => {
     try {
       await createEvent({ dto: formData }).unwrap();
-      setModalOpen(false);
+      setOpenModal(null);
     } catch (error) {
-      // trata erro
       console.error(error);
     }
   };
 
   const handleDeleteClick = (event: Event) => {
     setEventSelected(event);
-    setDeleteEventModalOpen(true);
+    setOpenModal("delete");
   };
 
   const handleConfirmDelete = async () => {
     if (!eventSelected) return;
     try {
       await deleteEvent({ id: eventSelected.id }).unwrap();
-      setDeleteEventModalOpen(false);
+      setOpenModal(null);
       setEventSelected(null);
     } catch (error) {
-      // trata erro
       console.error(error);
     }
   };
 
   const handleEditClick = (event: Event) => {
     setEventSelected(event);
-    setEditEventModalOpen(true);
+    setOpenModal("edit");
   };
 
   const handleConfirmEdit = async (formData: Partial<Event>) => {
     if (!eventSelected) return;
     try {
       await updateEvent({ id: eventSelected.id, dto: formData }).unwrap();
-      setEditEventModalOpen(false);
+      setOpenModal(null);
       setEventSelected(null);
     } catch (error) {
-      // trata erro
       console.error(error);
     }
   };
@@ -157,21 +149,21 @@ export default function DashboardPage() {
           height: 56,
           zIndex: 1000,
         }}
-        onClick={() => setModalOpen(true)}
+        onClick={() => setOpenModal("create")}
       >
         <Plus size={28} />
       </Fab>
 
       <CreateEventModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        open={openModal === "create"}
+        onClose={() => setOpenModal(null)}
         onCreate={handleCreateEvent}
       />
 
       <ConfirmModal
-        open={deleteEventModalOpen}
+        open={openModal === "delete"}
         onClose={() => {
-          setDeleteEventModalOpen(false);
+          setOpenModal(null);
           setEventSelected(null);
         }}
         onConfirm={handleConfirmDelete}
@@ -182,9 +174,9 @@ export default function DashboardPage() {
       />
 
       <EditEventModal
-        open={editEventModalOpen}
+        open={openModal === "edit"}
         onClose={() => {
-          setEditEventModalOpen(false);
+          setOpenModal(null);
           setEventSelected(null);
         }}
         onConfirm={handleConfirmEdit}

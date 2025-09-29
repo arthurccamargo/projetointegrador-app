@@ -135,7 +135,7 @@ export default function EventCardToVolunteer({
             <Button
               variant="contained"
               startIcon={<Users2 size={18} />}
-              color="error"
+              color="success"
             >
               Participar
             </Button>
