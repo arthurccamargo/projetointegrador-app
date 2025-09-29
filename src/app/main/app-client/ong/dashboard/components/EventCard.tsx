@@ -1,9 +1,8 @@
-import { Box, Button, Divider, Stack, Typography, Chip, IconButton } from "@mui/material";
+import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
 import {
   Calendar,
   Clock,
   Edit3,
-  Eye,
   MapPin,
   Trash,
   Users,
@@ -12,10 +11,11 @@ import type { Event } from "../../../../../../types/events.type";
 
 interface EventCardProps {
   event: Event;
-  onDelete: () => void;
+  onDelete: () => Promise<void>;
+  onEdit: () => Promise<void>;
 }
 
-export default function EventCard({ event, onDelete }: EventCardProps) {
+export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
   const getCategoryColor = (category: string) => {
     const colors: Record<
       string,
@@ -124,22 +124,21 @@ export default function EventCard({ event, onDelete }: EventCardProps) {
           <Divider sx={{ my: 2 }} />
           <Stack direction="row" spacing={2}>
             <Button
-              variant="outlined"
-              startIcon={<Eye size={18} />}
-              color="inherit"
+              variant="contained"
+              startIcon={<Edit3 size={18} />}
+              sx={{ color: "#000" }}
+              onClick={onEdit}
             >
-              Ver Detalhes
+              Editar
             </Button>
             <Button
               variant="contained"
-              startIcon={<Edit3 size={18} />}
-              color="primary"
+              startIcon={<Trash size={18} />}
+              color="error"
+              onClick={onDelete}
             >
-              Gerenciar
+              Excluir
             </Button>
-            <IconButton color="error" onClick={onDelete}>
-              <Trash size={20} />
-            </IconButton>
           </Stack>
         </Box>
       </Box>
