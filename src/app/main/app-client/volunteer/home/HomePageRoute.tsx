@@ -6,7 +6,7 @@ const HomePageRoute: AppRoute = {
   path: '/home',
   element: <HomePage />,
   settings: {
-    layout: { config: { navbar: true, toolbar: false, footer: false } },
+    layout: { config: { navbar: false, toolbar: false, footer: false } },
   },
   auth: authRoles.volunteer, // apenas com role volunteer pode acessar
 };
