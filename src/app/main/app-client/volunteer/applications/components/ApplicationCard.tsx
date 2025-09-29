@@ -12,10 +12,12 @@ import type { EventApplication } from "../../../../../../types/event-application
 
 interface EventToVolunteerCardProps {
   application: EventApplication;
+  onCancel: (application: EventApplication) => Promise<void>;
 }
 
 export default function EventCardToVolunteer({
   application,
+  onCancel,
 }: EventToVolunteerCardProps) {
   // Format date and duration
   const startDateObj = new Date(application.event.startDate);
@@ -169,6 +171,7 @@ export default function EventCardToVolunteer({
               variant="contained"
               startIcon={<X size={18} />}
               color="error"
+              onClick={() => onCancel(application)}
             >
               Cancelar
             </Button>

@@ -3,20 +3,47 @@ import Typography from "@mui/material/Typography";
 import { Container, Stack, TextField } from "@mui/material";
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { useGetAllApplicationsByVolunteerQuery } from "../../../../api/EventApplicationApi";
+import {
+  useCancelMutation,
+  useGetAllApplicationsByVolunteerQuery,
+} from "../../../../api/EventApplicationApi";
 import type { EventApplication } from "../../../../../types/event-applications.type";
 import ApplicationCard from "./components/ApplicationCard";
+import ConfirmModal from "../../../../shared-components/ConfirmModal";
 
 export default function ApplicationsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [applicationSelected, setApplicationSelected] =
+    useState<EventApplication | null>(null);
+  const [cancel, { isLoading: isLoadingCancel }] = useCancelMutation();
   const { data: applications = [], isLoading: isLoadingApplications } =
     useGetAllApplicationsByVolunteerQuery();
 
   const filteredEvents = applications.filter(
-    (application: { event: { title: string; category: { name: string; }; }; }) =>
-      application.event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      application.event.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    (application: { event: { title: string; category: { name: string } } }) =>
+      application.event.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      application.event.category?.name
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
+
+  const handleCancelClick = (application: EventApplication) => {
+    setApplicationSelected(application);
+    setOpenModal(true);
+  };
+
+  const handleConfirmCancel = async () => {
+    if (!applicationSelected) return;
+    try {
+      await cancel({ id: applicationSelected.id }).unwrap();
+      setOpenModal(false);
+    } catch (error) {
+      console.error("Error cancelling application:", error);
+    }
+  };
 
   return (
     <Container
@@ -54,7 +81,7 @@ export default function ApplicationsPage() {
           <Typography>Carregando candidaturas...</Typography>
         ) : (
           filteredEvents.map((application: EventApplication) => (
-            <ApplicationCard key={application.id} application={application} />
+            <ApplicationCard key={application.id} application={application} onCancel={async () => handleCancelClick(application)} />
           ))
         )}
       </Stack>
@@ -74,6 +101,20 @@ export default function ApplicationsPage() {
           </Typography>
         </Box>
       )}
+
+      <ConfirmModal
+        open={openModal}
+        onClose={() => {
+          setOpenModal(false);
+          setApplicationSelected(null);
+        }}
+        onConfirm={handleConfirmCancel}
+        loading={isLoadingCancel}
+        title="Cancelar Candidatura"
+        color="error"
+        message="Tem certeza que deseja cancelar esta candidatura?"
+      />
+
     </Container>
   );
 }
