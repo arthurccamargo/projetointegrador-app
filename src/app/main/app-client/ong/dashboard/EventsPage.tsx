@@ -45,7 +45,6 @@ export default function DashboardPage() {
     try {
       await createEvent({ dto: formData }).unwrap();
       setModalOpen(false);
-      // adicionar um feedback/sucesso ou atualizar a lista de eventos aqui
     } catch (error) {
       // trata erro
       console.error(error);
