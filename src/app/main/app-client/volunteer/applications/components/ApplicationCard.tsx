@@ -1,12 +1,5 @@
 import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
-import {
-  Building,
-  Calendar,
-  Clock,
-  Eye,
-  MapPin,
-  X,
-} from "lucide-react";
+import { Building, Calendar, Clock, Eye, MapPin, X } from "lucide-react";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import type { EventApplication } from "../../../../../../types/event-applications.type";
 
@@ -94,8 +87,11 @@ export default function EventCardToVolunteer({
                 label={application.event.category?.name}
                 size="small"
                 sx={{
-                  backgroundColor: getCategoryColor(application.event.category?.name).bg,
-                  color: getCategoryColor(application.event.category?.name).color,
+                  backgroundColor: getCategoryColor(
+                    application.event.category?.name
+                  ).bg,
+                  color: getCategoryColor(application.event.category?.name)
+                    .color,
                   fontWeight: 500,
                 }}
               />
@@ -204,18 +200,24 @@ export default function EventCardToVolunteer({
             <Button
               variant="contained"
               startIcon={<Eye size={18} />}
-              sx={{ color: "#000" }}
+              sx={{ color: "#000", flex: 1 }}
+              fullWidth
             >
               Ver Onganização
             </Button>
-            <Button
-              variant="contained"
-              startIcon={<X size={18} />}
-              color="error"
-              onClick={() => onCancel(application)}
-            >
-              Cancelar
-            </Button>
+            {application.status !== "CANCELLED" &&
+              application.status !== "REJECTED" && (
+                <Button
+                  variant="contained"
+                  startIcon={<X size={18} />}
+                  color="error"
+                  onClick={() => onCancel(application)}
+                  sx={{ flex: 1 }}
+                  fullWidth
+                >
+                  Cancelar
+                </Button>
+              )}
           </Stack>
         </Box>
       </Box>
