@@ -15,6 +15,21 @@ interface EventToVolunteerCardProps {
   onCancel: (application: EventApplication) => Promise<void>;
 }
 
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "PENDING":
+      return { bg: "#ffe082", color: "#795548" };
+    case "ACCEPTED":
+      return { bg: "#c8e6c9", color: "#388e3c" };
+    case "REJECTED":
+      return { bg: "#ffcdd2", color: "#d32f2f" };
+    case "CANCELLED":
+      return { bg: "#e0e0e0", color: "#616161" };
+    default:
+      return { bg: "#eeeeee", color: "#333" };
+  }
+};
+
 export default function EventCardToVolunteer({
   application,
   onCancel,
@@ -59,15 +74,26 @@ export default function EventCardToVolunteer({
             >
               {application.event.title}
             </Typography>
-            <Chip
-              label={application.event.category?.name}
-              size="small"
-              sx={{
-                backgroundColor: getCategoryColor(application.event.category?.name).bg,
-                color: getCategoryColor(application.event.category?.name).color,
-                fontWeight: 500,
-              }}
-            />
+            <Box display="flex" flexDirection="column" gap={0.5}>
+              <Chip
+                label={application.event.category?.name}
+                size="small"
+                sx={{
+                  backgroundColor: getCategoryColor(application.event.category?.name).bg,
+                  color: getCategoryColor(application.event.category?.name).color,
+                  fontWeight: 500,
+                }}
+              />
+              <Chip
+                label={application.status}
+                size="small"
+                sx={{
+                  backgroundColor: getStatusColor(application.status).bg,
+                  color: getStatusColor(application.status).color,
+                  fontWeight: 500,
+                }}
+              />
+            </Box>
           </Box>
           <Typography color="text.common.black" mb={3}>
             {application.event.description}
