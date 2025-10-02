@@ -48,6 +48,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ config, children }) => (
           height: '100%',
           width: '100%',
           overflow: 'auto',
+          pb: { xs: '56px', md: 0 }, // Padding bottom em mobile para a bottom nav
         }}
       >
         {children}

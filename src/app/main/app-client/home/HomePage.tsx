@@ -21,7 +21,7 @@ export default function HomePage() {
         overflow: "hidden",
       }}
     >
-      <Typography variant="h1">Home</Typography>
+      <Typography variant="h1">Início</Typography>
       <Typography variant="body1">
         Somente usuários logados podem ver essa página.
       </Typography>

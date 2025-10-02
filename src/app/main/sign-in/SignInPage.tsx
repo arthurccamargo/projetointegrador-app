@@ -91,7 +91,7 @@ function SignInPage() {
             sx={{
               width: 64,
               height: 64,
-              bgcolor: theme.palette.primary.main,
+              bgcolor: theme.palette.secondary.main,
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
@@ -102,7 +102,7 @@ function SignInPage() {
             <Typography
               variant="h4"
               sx={{
-                color: theme.palette.common.black,
+                color: theme.palette.primary.main,
                 fontWeight: "bold",
               }}
             >
@@ -212,7 +212,7 @@ function SignInPage() {
                   sx={{
                     textTransform: "none",
                     fontSize: 14,
-                    color: theme.palette.primary.contrastText,
+                    color: theme.palette.text.primary,
                     textDecoration: "underline",
                   }}
                 >
@@ -228,8 +228,9 @@ function SignInPage() {
                 sx={{
                   py: 1.5,
                   fontWeight: "bold",
+                  borderRadius: 30,
                   fontSize: 16,
-                  bgcolor: theme.palette.primary.main,
+                  bgcolor: theme.palette.secondary.main,
                   color: theme.palette.common.black,
                   "&:hover": { bgcolor: theme.palette.primary.contrastText },
                 }}
@@ -251,7 +252,7 @@ function SignInPage() {
                     textTransform: "none",
                     fontWeight: "bold",
                     fontSize: 14,
-                    color: theme.palette.primary.contrastText,
+                    color: theme.palette.text.primary,
                     textDecoration: "underline",
                   }}
                 >

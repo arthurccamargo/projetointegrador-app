@@ -4,10 +4,12 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import { HeartHandshake } from 'lucide-react';
+import { useTheme } from '@mui/material/styles';
 
 
 function StartPage() {
   const navigate = useNavigate();
+  const theme = useTheme();
 
   return (
     <Box
@@ -17,8 +19,7 @@ function StartPage() {
         justifyContent: "space-between",
         alignItems: "center",
         minHeight: "100vh",
-        bgcolor: '#faffb4ff',
-        // bgcolor: '#ecf297ff',
+        bgcolor: theme.palette.background.default,
         background: "linear-gradient(135deg, #faffb4ff 0%, #ecf297ff' 100%)",
         p: 3,
       }}

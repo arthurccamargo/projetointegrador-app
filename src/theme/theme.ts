@@ -7,12 +7,12 @@ const theme = createTheme({
 
   palette: {
     primary: {
-      main: '#ff7a27ff',
+      main: '#22223b',
       contrastText: '#faffb4ff',
     },
     secondary: {
       main: '#faffb4ff',
-      contrastText: '#e6e6e6ff',
+      contrastText: '#22223b',
     },
     error: {
       main: '#E53935',
@@ -27,7 +27,7 @@ const theme = createTheme({
       contrastText: '#fff',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#faffb4ff',
       paper: '#fff',
     },
     text: {
