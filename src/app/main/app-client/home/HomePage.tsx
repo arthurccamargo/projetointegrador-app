@@ -1,11 +1,14 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useTheme } from '@mui/material/styles';
 
 export default function HomePage() {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
-        backgroundColor: "green",
+        backgroundColor: theme.palette.background.default,
         flex: 1,
         width: "100%",
         height: "100%",
