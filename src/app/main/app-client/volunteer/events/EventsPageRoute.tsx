@@ -1,5 +1,5 @@
-import authRoles from '../../../auth/authRoles';
-import type { AppRoute } from '../../../routes/types';
+import authRoles from '../../../../auth/authRoles';
+import type { AppRoute } from '../../../../routes/types';
 import EventsPage from './EventsPage';
 
 const EventsPageRoute: AppRoute = {

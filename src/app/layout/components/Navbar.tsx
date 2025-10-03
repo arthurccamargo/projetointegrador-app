@@ -83,11 +83,14 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
       <Paper
         sx={{
           position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
+          bottom: 16,
+          left: "50%",
+          transform: "translateX(-50%)",
           display: { xs: "block", md: "none" },
           zIndex: 1000,
+          borderRadius: 50,
+          width: "auto",
+          maxWidth: "90%",
         }}
         elevation={3}
       >
@@ -96,12 +99,18 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
           onChange={handleChange}
           showLabels={false}
           sx={{
-            bgcolor: "#22223b",
+            bgcolor: theme.palette.primary.main,
+            borderRadius: 50,
+            padding: "8px 16px",
             "& .MuiBottomNavigationAction-root": {
               color: "#9ca3af",
               minWidth: "auto",
+              borderRadius: 50,
+              padding: "8px 24px",
+              transition: "all 0.3s ease",
               "&.Mui-selected": {
                 color: "#fff",
+                bgcolor: "rgba(255, 255, 255, 0.1)",
               },
             },
           }}

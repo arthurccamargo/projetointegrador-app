@@ -27,22 +27,24 @@ export default function ProfilePage() {
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "center",
-            p: 0,
+            p: 3,
+            pt: 2,
             m: 0,
             minHeight: "100vh",
             minWidth: "100%",
             boxSizing: "border-box",
-            overflow: "hidden",
+            overflow: "auto",
         }}
         >
-        <Typography variant="h1">Perfil</Typography>
+        <Typography variant="h3" sx={{ mt: 4, mb: 8, mr: 32 }}>Perfil</Typography>
         <Typography variant="body1">
             <div>
+                <p>Name: {user.volunteerProfile?.fullName}</p>
                 <p>Email: {user.email}</p>
+                <p>Telefone: {user.volunteerProfile?.phone}</p>
                 <p>Role: {user.role}</p>
-                <p>ID: {user.id}</p>
             </div>
         </Typography>
 
@@ -52,15 +54,38 @@ export default function ProfilePage() {
             size="large"
             sx={{
               borderRadius: 30,
+              mt: 40,
               py: 1.8,
+              px: 4,
               fontSize: "1.1rem",
               fontWeight: "bold",
-              borderWidth: 1,  
+              borderWidth: 1,
+              minWidth: 200,
+              maxWidth: 400,
             }}
-            fullWidth
             onClick={() => navigate("/")}
           >
             Log out
+          </Button>
+
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            sx={{
+              borderRadius: 30,
+              py: 1.8,
+              px: 4,
+              mt: 1,
+              fontSize: "1.1rem",
+              fontWeight: "bold",
+              borderWidth: 1,
+              minWidth: 200,
+              maxWidth: 400,
+            }}
+            // onClick={() => }
+          >
+            Excluir conta
           </Button>
         </Box>
 
