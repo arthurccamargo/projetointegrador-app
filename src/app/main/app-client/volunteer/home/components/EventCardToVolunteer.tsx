@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
+import { Box, Button, Divider, Stack, Typography, Chip, useTheme } from "@mui/material";
 import {
   Building,
   Calendar,
@@ -23,6 +23,7 @@ export default function EventCardToVolunteer({
 }: EventToVolunteerCardProps) {
   const availableVacancies = event.currentCandidates;
   const totalVacancies = event.maxCandidates;
+  const theme = useTheme();
 
   // Format date and duration
   const startDateObj = new Date(event.startDate);
@@ -190,11 +191,12 @@ export default function EventCardToVolunteer({
             <Button
               variant="contained"
               startIcon={<Eye size={18} />}
-              sx={{ color: "#000" }}
+              sx={{ borderRadius: 9, color: theme.palette.text.secondary }}
             >
               Ver Onganização
             </Button>
             <Button
+              sx={{ borderRadius: 9, color: theme.palette.text.secondary }}
               variant="contained"
               startIcon={<Users2 size={18} />}
               color="success"

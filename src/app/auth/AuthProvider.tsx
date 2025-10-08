@@ -2,7 +2,7 @@ import { useState, useEffect, type ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
 import type { AuthContextType, User } from "./auth.type";
 
-const BASEAPI_URL = import.meta.env.VITE_BASEAPI_URL;
+const BASEAPI_URL = import.meta.env.VITE_BASE_API_URL;
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
