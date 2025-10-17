@@ -46,7 +46,7 @@ export default function HomePage() {
     >
       <Box mb={8}>
         <Typography variant="h4" fontWeight="bold" color="text.primary" mb={2}>
-          Buscar Opotunidades
+          Buscar Oportunidades
         </Typography>
         <Typography color="text.common.black" mb={3}>
           Encontre oportunidades para fazer a diferença

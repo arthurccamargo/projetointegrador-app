@@ -193,7 +193,7 @@ export default function EventCardToVolunteer({
               startIcon={<Eye size={18} />}
               sx={{ borderRadius: 9, color: theme.palette.text.secondary }}
             >
-              Ver Onganização
+              Ver ONG
             </Button>
             <Button
               sx={{ borderRadius: 9, color: theme.palette.text.secondary }}
