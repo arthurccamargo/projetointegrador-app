@@ -12,6 +12,7 @@ import Paper from "@mui/material/Paper";
 import { useTheme } from '@mui/material/styles';
 import { useNavigate, useLocation } from "react-router-dom";
 import { Home, CalendarIcon, User, Calendar } from "lucide-react";
+import { useAuth } from "../../auth/useAuth";
 
 type NavbarProps = {
   drawerWidth: number;
@@ -22,6 +23,10 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);
+  const { user } = useAuth();
+
+  // rota inicial baseada no role
+  const homeRoute = user?.role === "ONG" ? "/dashboard" : "/home";
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -56,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
           </Typography>
           <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/home")}>
+              <ListItemButton onClick={() => navigate(homeRoute)}>
                 <Home size={24} style={{ marginRight: 16 }} />
                 <ListItemText primary="Início" sx={{ color: theme.palette.text.secondary }} />
               </ListItemButton>
@@ -116,7 +121,7 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
           }}
         >
           <BottomNavigationAction
-            value="/home"
+            value={homeRoute}
             icon={<Home size={24} />}
           />
           <BottomNavigationAction

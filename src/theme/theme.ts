@@ -15,11 +15,11 @@ const theme = createTheme({
       contrastText: '#22223b',
     },
     error: {
-      main: '#E53935',
+      main: 'hsla(8, 82%, 60%, 1.00)',
       contrastText: '#fff',
     },
     success: {
-      main: '#43A047',
+      main: 'hsla(156, 67%, 40%, 1.00)',
       contrastText: '#fff',
     },
     warning: {

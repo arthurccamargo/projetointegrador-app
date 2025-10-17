@@ -203,7 +203,7 @@ export default function EventCardToVolunteer({
               sx={{ color: "#000", flex: 1 }}
               fullWidth
             >
-              Ver Onganização
+              Ver ONG
             </Button>
             {application.status !== "CANCELLED" &&
               application.status !== "REJECTED" && (

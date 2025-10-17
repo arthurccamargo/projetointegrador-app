@@ -3,12 +3,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useAuth } from "../../../auth/useAuth";
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
-    const { user, isLoading } = useAuth();
+    const { user, isLoading, signOut } = useAuth();
     const theme = useTheme();
-    const navigate = useNavigate();
 
     if (isLoading) {
         return <div>Carregando...</div>;
@@ -63,7 +61,7 @@ export default function ProfilePage() {
               minWidth: 200,
               maxWidth: 400,
             }}
-            onClick={() => navigate("/")}
+            onClick={() => signOut()}
           >
             Log out
           </Button>

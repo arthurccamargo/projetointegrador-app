@@ -3,6 +3,8 @@ import { Calendar, Clock, Edit3, MapPin, Trash, Users } from "lucide-react";
 import type { Event } from "../../../../../../types/events.type";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { getVacancyColor } from "../../../../../shared-components/functions/getVacancyColor";
+import { useTheme } from '@mui/material/styles';
+
 
 interface EventCardProps {
   event: Event;
@@ -13,6 +15,7 @@ interface EventCardProps {
 export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
   const availableVacancies = event.currentCandidates;
   const totalVacancies = event.maxCandidates;
+  const theme = useTheme();
 
   // Format date and duration
   const startDateObj = new Date(event.startDate);
@@ -170,7 +173,7 @@ return (
             <Button
               variant="contained"
               startIcon={<Edit3 size={18} />}
-              sx={{ color: "#000" }}
+              sx={{ color: theme.palette.text.secondary , bgcolor: "hsl(240 63% 29%)" }}
               onClick={onEdit}
             >
               Editar
