@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   typography: {
-    fontFamily: '"Special Gothic", "EB Garamond"'
+    fontFamily: '"Special Gothic", "BBH Sans Bartle"'
   },
 
   palette: {

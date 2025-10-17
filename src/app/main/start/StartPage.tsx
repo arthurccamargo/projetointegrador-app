@@ -46,10 +46,10 @@ function StartPage() {
         </Typography>
         <HeartHandshake />
         <Typography
-          variant="h4"
+          variant="subtitle1"
           color="text"
           align="center"
-          sx={{ mb: 4, mt: 4, width: "100%", fontFamily: '"EB Garamond", serif' }}
+          sx={{ mb: 4, mt: 4, width: "100%", fontFamily: '"BBH Sans Bartle", serif' }}
         >
           Onde a ajuda encontra o caminho.
         </Typography>
