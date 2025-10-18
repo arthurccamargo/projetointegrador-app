@@ -22,6 +22,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetCategoriesQuery } from "../../../../../api/CategoryApi";
 import type { Event } from "../../../../../../types/events.type";
+import { convertUTCToBrazilTime } from "../../../../../shared-components/functions/dateUtils";
 
 interface EditEventModalProps {
   open: boolean;
@@ -66,7 +67,9 @@ type EventFormValues = z.infer<typeof eventSchema> & {
 };
 
 function combineDateTime(dateStr: string, timeStr: string): string {
-  return `${dateStr}T${timeStr}:00`;
+  // Cria data no fuso horário local do Brasil
+  const localDate = new Date(`${dateStr}T${timeStr}:00`);
+  return localDate.toISOString();
 }
 
 function calculateDurationMinutes(startTime: string, endTime: string): number {
@@ -109,11 +112,9 @@ export default function EditEventModal({
 
   useEffect(() => {
     if (event && open) {
-      const startDateObj = new Date(event.startDate);
-      const dateStr = startDateObj.toISOString().slice(0, 10);
-      const timeStr = startDateObj.toISOString().slice(11, 16);
+      const { dateStr, timeStr } = convertUTCToBrazilTime(event.startDate);
 
-      // Calcula hora de término somando durationMinutes ao horário de início
+      // Calcula hora de término somando durationMinutes ao horário de início convertido
       const [startHour, startMinute] = timeStr.split(":").map(Number);
       const totalStartMinutes = startHour * 60 + startMinute;
       const totalEndMinutes = totalStartMinutes + event.durationMinutes;
