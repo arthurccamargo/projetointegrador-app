@@ -204,9 +204,7 @@ export const CreateEventModal = ({
             />
           </Box>
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Categoria
-            </Typography>
+            <Typography variant="subtitle2">Categoria</Typography>
             <FormControl fullWidth error={!!errors.categoryId}>
               <Controller
                 name="categoryId"
@@ -231,9 +229,7 @@ export const CreateEventModal = ({
             </FormControl>
           </Box>
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Descrição
-            </Typography>
+            <Typography variant="subtitle2">Descrição</Typography>
             <Controller
               name="description"
               control={control}
@@ -260,9 +256,7 @@ export const CreateEventModal = ({
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Data de Início
-              </Typography>
+              <Typography variant="subtitle2">Data de Início</Typography>
               <Controller
                 name="startDate"
                 control={control}
@@ -277,14 +271,15 @@ export const CreateEventModal = ({
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    inputProps={{
+                      min: new Date().toISOString().split("T")[0],
+                    }}
                   />
                 )}
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Hora de Início
-              </Typography>
+              <Typography variant="subtitle2">Hora de Início</Typography>
               <Controller
                 name="startTime"
                 control={control}
@@ -313,9 +308,7 @@ export const CreateEventModal = ({
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Hora de Término
-              </Typography>
+              <Typography variant="subtitle2">Hora de Término</Typography>
               <Controller
                 name="endTime"
                 control={control}
@@ -335,9 +328,7 @@ export const CreateEventModal = ({
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Máx. Candidatos
-              </Typography>
+              <Typography variant="subtitle2">Máx. Candidatos</Typography>
               <Controller
                 name="maxCandidates"
                 control={control}
@@ -357,9 +348,7 @@ export const CreateEventModal = ({
             </Box>
           </Box>
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Local
-            </Typography>
+            <Typography variant="subtitle2">Local</Typography>
             <Controller
               name="location"
               control={control}

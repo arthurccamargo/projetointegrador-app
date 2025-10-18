@@ -220,9 +220,7 @@ export default function EditEventModal({
             />
           </Box>
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Categoria
-            </Typography>
+            <Typography variant="subtitle2">Categoria</Typography>
             <FormControl fullWidth error={!!errors.categoryId}>
               <Controller
                 name="categoryId"
@@ -247,9 +245,7 @@ export default function EditEventModal({
             </FormControl>
           </Box>
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Descrição
-            </Typography>
+            <Typography variant="subtitle2">Descrição</Typography>
             <Controller
               name="description"
               control={control}
@@ -276,9 +272,7 @@ export default function EditEventModal({
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Data de Início
-              </Typography>
+              <Typography variant="subtitle2">Data de Início</Typography>
               <Controller
                 name="startDate"
                 control={control}
@@ -293,14 +287,15 @@ export default function EditEventModal({
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    inputProps={{
+                      min: new Date().toISOString().split("T")[0],
+                    }}
                   />
                 )}
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Hora de Início
-              </Typography>
+              <Typography variant="subtitle2">Hora de Início</Typography>
               <Controller
                 name="startTime"
                 control={control}
@@ -329,9 +324,7 @@ export default function EditEventModal({
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Hora de Término
-              </Typography>
+              <Typography variant="subtitle2">Hora de Término</Typography>
               <Controller
                 name="endTime"
                 control={control}
@@ -351,9 +344,7 @@ export default function EditEventModal({
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Máx. Candidatos
-              </Typography>
+              <Typography variant="subtitle2">Máx. Candidatos</Typography>
               <Controller
                 name="maxCandidates"
                 control={control}
@@ -375,9 +366,7 @@ export default function EditEventModal({
 
           {/* Local */}
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Local
-            </Typography>
+            <Typography variant="subtitle2">Local</Typography>
             <Controller
               name="location"
               control={control}
