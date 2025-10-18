@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Search, Plus } from "lucide-react";
 import {
   useCreateEventMutation,
-  useGetEventsByOngIdQuery,
   useDeleteEventMutation,
   useUpdateEventMutation,
+  useGetActiveEventsByOngIdQuery,
 } from "../../../../api/EventApi";
 import {
   Container,
@@ -28,7 +28,7 @@ export default function DashboardPage() {
   const [createEvent, { isLoading: isLoadingCreate }] = useCreateEventMutation();
   const [deleteEvent, { isLoading: isLoadingDelete }] = useDeleteEventMutation();
   const [updateEvent, { isLoading: isLoadingUpdate }] = useUpdateEventMutation();
-  const { data: events = [], isLoading: isLoadingEvents } = useGetEventsByOngIdQuery();
+  const { data: events = [], isLoading: isLoadingEvents } = useGetActiveEventsByOngIdQuery();
 
   const filteredEvents = events.filter(
     (event: Event) =>

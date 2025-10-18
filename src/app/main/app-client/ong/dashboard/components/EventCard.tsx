@@ -3,6 +3,7 @@ import { Calendar, Clock, Edit3, MapPin, Trash, Users } from "lucide-react";
 import type { Event } from "../../../../../../types/events.type";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { getVacancyColor } from "../../../../../shared-components/functions/getVacancyColor";
+import { getStatusColor } from "../../../../../shared-components/functions/getStatusEvent";
 import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
 import { useTheme } from '@mui/material/styles';
 
@@ -20,8 +21,9 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
 
   const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(event.startDate);
   const formattedDuration = `${event.durationMinutes / 60} horas`;
+  const statusInfo = getStatusColor(event.status);
 
-return (
+  return (
     <Box
       key={event.id}
       sx={{
@@ -58,6 +60,15 @@ return (
               sx={{
                 backgroundColor: getCategoryColor(event.category?.name).bg,
                 color: getCategoryColor(event.category?.name).color,
+                fontWeight: 500,
+              }}
+            />
+            <Chip
+              label={statusInfo.label}
+              size="small"
+              sx={{
+                backgroundColor: statusInfo.bg,
+                color: statusInfo.color,
                 fontWeight: 500,
               }}
             />
@@ -179,7 +190,7 @@ return (
               color="error"
               onClick={onDelete}
             >
-              Excluir
+              Cancelar
             </Button>
           </Stack>
         </Box>
