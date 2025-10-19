@@ -23,12 +23,18 @@ import EditEventModal from "./components/EditEventModal";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [openModal, setOpenModal] = useState<null | "create" | "edit" | "delete">(null);
+  const [openModal, setOpenModal] = useState<
+    null | "create" | "edit" | "delete"
+  >(null);
   const [eventSelected, setEventSelected] = useState<Event | null>(null);
-  const [createEvent, { isLoading: isLoadingCreate }] = useCreateEventMutation();
-  const [deleteEvent, { isLoading: isLoadingDelete }] = useDeleteEventMutation();
-  const [updateEvent, { isLoading: isLoadingUpdate }] = useUpdateEventMutation();
-  const { data: events = [], isLoading: isLoadingEvents } = useGetActiveEventsByOngIdQuery();
+  const [createEvent, { isLoading: isLoadingCreate }] =
+    useCreateEventMutation();
+  const [deleteEvent, { isLoading: isLoadingDelete }] =
+    useDeleteEventMutation();
+  const [updateEvent, { isLoading: isLoadingUpdate }] =
+    useUpdateEventMutation();
+  const { data: events = [], isLoading: isLoadingEvents } =
+    useGetActiveEventsByOngIdQuery();
 
   const filteredEvents = events.filter(
     (event: Event) =>
@@ -56,8 +62,9 @@ export default function DashboardPage() {
       await deleteEvent({ id: eventSelected.id }).unwrap();
       setOpenModal(null);
       setEventSelected(null);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error("Erro ao deletar evento:", error);
+      throw error;
     }
   };
 
@@ -72,8 +79,9 @@ export default function DashboardPage() {
       await updateEvent({ id: eventSelected.id, dto: formData }).unwrap();
       setOpenModal(null);
       setEventSelected(null);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error("Erro ao atualizar evento:", error);
+      throw error;
     }
   };
 

@@ -7,9 +7,11 @@ import {
   Typography,
   Box,
   Divider,
+  Alert,
 } from "@mui/material";
 import type { ReactNode } from "react";
 import { Check, Close } from "@mui/icons-material";
+import { useState } from "react";
 
 interface ConfirmModalProps {
   open: boolean;
@@ -36,6 +38,8 @@ export default function ConfirmModal({
   color = "info",
   loading = false,
 }: ConfirmModalProps) {
+  const [error, setError] = useState<string | null>(null);
+
   const colorMap = {
     success: {
       bg: "bg-green-300",
@@ -65,8 +69,36 @@ export default function ConfirmModal({
 
   const style = colorMap[color];
 
+  const handleConfirm = async () => {
+    try {
+      setError(null);
+      await onConfirm();
+    } catch (err: any) {
+      const errorMessage =
+        err?.data?.message ||
+        err?.message ||
+        "Ocorreu um erro ao processar sua solicitação.";
+      setError(errorMessage);
+    }
+  };
+
+  const handleClose = () => {
+    setError(null);
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 4,
+        },
+      }}
+    >
       <DialogTitle
         sx={{
           display: "flex",
@@ -86,7 +118,7 @@ export default function ConfirmModal({
           </Box>
         </Box>
         <Button
-          onClick={onClose}
+          onClick={handleClose}
           sx={{
             minWidth: "auto",
             p: 1,
@@ -98,10 +130,15 @@ export default function ConfirmModal({
         </Button>
       </DialogTitle>
       <Divider sx={{ mb: 2 }} />
-      <DialogContent sx={{ textAlign: "left", pt: 0}}>
+      <DialogContent sx={{ textAlign: "left", pt: 0 }}>
         <Typography variant="subtitle2" sx={{ fontWeight: 400 }}>
           {message}
         </Typography>
+        {error && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {error}
+          </Alert>
+        )}
         {loading && (
           <Box sx={{ mt: 3 }}>
             <Typography variant="body2" sx={{ mb: 1 }}>
@@ -144,7 +181,7 @@ export default function ConfirmModal({
         }}
       >
         <Button
-          onClick={onClose}
+          onClick={handleClose}
           variant="outlined"
           disabled={loading}
           sx={{
@@ -162,7 +199,7 @@ export default function ConfirmModal({
         </Button>
         <Button
           variant="contained"
-          onClick={onConfirm}
+          onClick={handleConfirm}
           disabled={loading}
           endIcon={icon || <Check sx={{ color: "#fff", fontSize: 20 }} />}
           sx={{

@@ -34,8 +34,9 @@ export default function HomePage() {
       await applyToEvent({ eventId: eventSelected.id }).unwrap();
       setOpenModal(false);
       setEventSelected(null);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error("Erro ao se candidatar:", error);
+      throw error;
     }
   };
 
@@ -75,7 +76,11 @@ export default function HomePage() {
           <Typography>Carregando eventos...</Typography>
         ) : (
           filteredEvents.map((event: Event) => (
-            <EventCardToVolunteer key={event.id} event={event} onApplyClick={async () => handleApplyClick(event)} />
+            <EventCardToVolunteer
+              key={event.id}
+              event={event}
+              onApplyClick={async () => handleApplyClick(event)}
+            />
           ))
         )}
       </Stack>
