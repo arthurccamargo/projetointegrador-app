@@ -43,9 +43,9 @@ export const eventApplicationApi = createApi({
       invalidatesTags: ["EventApplication"],
     }),
     // Exemplo de query para listar candidaturas do voluntario logado
-    getAllApplicationsByVolunteer: builder.query<any[], void>({
+    getAllActiveApplicationsByVolunteer: builder.query<any[], void>({
       query: () => ({
-        url: "/applications",
+        url: "/applications/active",
         method: "GET",
       }),
       providesTags: ["EventApplication"],
@@ -57,5 +57,5 @@ export const {
   useApplyMutation,
   useUpdateStatusMutation,
   useCancelMutation,
-  useGetAllApplicationsByVolunteerQuery,
+  useGetAllActiveApplicationsByVolunteerQuery,
 } = eventApplicationApi;

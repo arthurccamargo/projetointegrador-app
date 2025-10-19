@@ -1,4 +1,3 @@
-import type { VolunteerProfile } from "../app/auth/auth.type";
 import type { Event } from "./events.type";
 
 export enum ApplicationStatus {
@@ -8,13 +7,7 @@ export enum ApplicationStatus {
   CANCELLED = "CANCELLED",
 }
 
-export interface EventApplication {
-  id: string;
-  eventId: string;
-  event: Event;
-  volunteerId: string;
-  volunteer: VolunteerProfile;
-  status: ApplicationStatus;
-  createdAt: Date;
-  updatedAt: Date;
+export interface EventApplication extends Event {
+  applicationStatus: ApplicationStatus;
+  applicationId: string;
 }
