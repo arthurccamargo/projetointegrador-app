@@ -9,7 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Paper from "@mui/material/Paper";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Home, CalendarIcon, User, Calendar } from "lucide-react";
 import { useAuth } from "../../auth/useAuth";
@@ -27,6 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
 
   // rota inicial baseada no role
   const homeRoute = user?.role === "ONG" ? "/dashboard" : "/home";
+  const eventRoute = user?.role === "ONG" ? "/events" : "/applications";
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -55,20 +56,37 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
           elevation: 3,
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", height: "100%", p: 2 }}>
-          <Typography variant="h6" sx={{ mb: 4, fontWeight: "bold", color: theme.palette.background.default }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+            p: 2,
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 4,
+              fontWeight: "bold",
+              color: theme.palette.background.default,
+            }}
+          >
             HelpHub
           </Typography>
           <List>
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate(homeRoute)}>
                 <Home size={24} style={{ marginRight: 16 }} />
-                <ListItemText primary="Início" sx={{ color: theme.palette.text.secondary }} />
+                <ListItemText
+                  primary="Início"
+                  sx={{ color: theme.palette.text.secondary }}
+                />
               </ListItemButton>
             </ListItem>
-  
+
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/events")}>
+              <ListItemButton onClick={() => navigate(eventRoute)}>
                 <CalendarIcon size={24} style={{ marginRight: 16 }} />
                 <ListItemText primary="Eventos" sx={{ color: "#fff" }} />
               </ListItemButton>
@@ -120,18 +138,12 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
             },
           }}
         >
+          <BottomNavigationAction value={homeRoute} icon={<Home size={24} />} />
           <BottomNavigationAction
-            value={homeRoute}
-            icon={<Home size={24} />}
-          />
-          <BottomNavigationAction
-            value="/events"
+            value={eventRoute}
             icon={<Calendar size={24} />}
           />
-          <BottomNavigationAction
-            value="/profile"
-            icon={<User size={24} />}
-          />
+          <BottomNavigationAction value="/profile" icon={<User size={24} />} />
         </BottomNavigation>
       </Paper>
     </>

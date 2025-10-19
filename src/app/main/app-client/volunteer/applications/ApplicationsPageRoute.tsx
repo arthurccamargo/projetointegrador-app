@@ -6,7 +6,7 @@ const ApplicationsPageRoute: AppRoute = {
   path: '/applications',
   element: <ApplicationsPage />,
   settings: {
-    layout: { config: { navbar: false, toolbar: false, footer: false } },
+    layout: { config: { navbar: true, toolbar: false, footer: false } },
   },
   auth: authRoles.volunteer,
 };

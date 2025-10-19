@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 import {
   useCancelMutation,
-  useGetAllApplicationsByVolunteerQuery,
+  useGetAllActiveApplicationsByVolunteerQuery,
 } from "../../../../api/EventApplicationApi";
 import type { EventApplication } from "../../../../../types/event-applications.type";
 import ApplicationCard from "./components/ApplicationCard";
@@ -17,17 +17,13 @@ export default function ApplicationsPage() {
   const [applicationSelected, setApplicationSelected] =
     useState<EventApplication | null>(null);
   const [cancel, { isLoading: isLoadingCancel }] = useCancelMutation();
-  const { data: applications = [], isLoading: isLoadingApplications } =
-    useGetAllApplicationsByVolunteerQuery();
+  const { data: applications = [], isLoading: isLoadingApplications, refetch } =
+    useGetAllActiveApplicationsByVolunteerQuery();
 
   const filteredEvents = applications.filter(
-    (application: { event: { title: string; category: { name: string } } }) =>
-      application.event.title
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      application.event.category?.name
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase())
+    (application: EventApplication) =>
+      application.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleCancelClick = (application: EventApplication) => {
@@ -38,10 +34,13 @@ export default function ApplicationsPage() {
   const handleConfirmCancel = async () => {
     if (!applicationSelected) return;
     try {
-      await cancel({ id: applicationSelected.id }).unwrap();
+      await cancel({ id: applicationSelected.applicationId }).unwrap();
+      await refetch();
       setOpenModal(false);
-    } catch (error) {
-      console.error("Error cancelling application:", error);
+      setApplicationSelected(null);
+    } catch (error: any) {
+      console.error("Erro ao cancelar candidatura:", error);
+      throw error;
     }
   };
 

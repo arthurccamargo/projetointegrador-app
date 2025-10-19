@@ -22,6 +22,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetCategoriesQuery } from "../../../../../api/CategoryApi";
 import type { Event } from "../../../../../../types/events.type";
+import { convertUTCToBrazilTime } from "../../../../../shared-components/functions/dateUtils";
 
 interface EditEventModalProps {
   open: boolean;
@@ -66,7 +67,9 @@ type EventFormValues = z.infer<typeof eventSchema> & {
 };
 
 function combineDateTime(dateStr: string, timeStr: string): string {
-  return `${dateStr}T${timeStr}:00`;
+  // Cria data no fuso horário local do Brasil
+  const localDate = new Date(`${dateStr}T${timeStr}:00`);
+  return localDate.toISOString();
 }
 
 function calculateDurationMinutes(startTime: string, endTime: string): number {
@@ -109,11 +112,9 @@ export default function EditEventModal({
 
   useEffect(() => {
     if (event && open) {
-      const startDateObj = new Date(event.startDate);
-      const dateStr = startDateObj.toISOString().slice(0, 10);
-      const timeStr = startDateObj.toISOString().slice(11, 16);
+      const { dateStr, timeStr } = convertUTCToBrazilTime(event.startDate);
 
-      // Calcula hora de término somando durationMinutes ao horário de início
+      // Calcula hora de término somando durationMinutes ao horário de início convertido
       const [startHour, startMinute] = timeStr.split(":").map(Number);
       const totalStartMinutes = startHour * 60 + startMinute;
       const totalEndMinutes = totalStartMinutes + event.durationMinutes;
@@ -220,9 +221,7 @@ export default function EditEventModal({
             />
           </Box>
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Categoria
-            </Typography>
+            <Typography variant="subtitle2">Categoria</Typography>
             <FormControl fullWidth error={!!errors.categoryId}>
               <Controller
                 name="categoryId"
@@ -247,9 +246,7 @@ export default function EditEventModal({
             </FormControl>
           </Box>
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Descrição
-            </Typography>
+            <Typography variant="subtitle2">Descrição</Typography>
             <Controller
               name="description"
               control={control}
@@ -276,9 +273,7 @@ export default function EditEventModal({
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Data de Início
-              </Typography>
+              <Typography variant="subtitle2">Data de Início</Typography>
               <Controller
                 name="startDate"
                 control={control}
@@ -293,14 +288,15 @@ export default function EditEventModal({
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    inputProps={{
+                      min: new Date().toISOString().split("T")[0],
+                    }}
                   />
                 )}
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Hora de Início
-              </Typography>
+              <Typography variant="subtitle2">Hora de Início</Typography>
               <Controller
                 name="startTime"
                 control={control}
@@ -329,9 +325,7 @@ export default function EditEventModal({
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Hora de Término
-              </Typography>
+              <Typography variant="subtitle2">Hora de Término</Typography>
               <Controller
                 name="endTime"
                 control={control}
@@ -351,9 +345,7 @@ export default function EditEventModal({
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle2">
-                Máx. Candidatos
-              </Typography>
+              <Typography variant="subtitle2">Máx. Candidatos</Typography>
               <Controller
                 name="maxCandidates"
                 control={control}
@@ -375,9 +367,7 @@ export default function EditEventModal({
 
           {/* Local */}
           <Box sx={{ width: "100%" }}>
-            <Typography variant="subtitle2">
-              Local
-            </Typography>
+            <Typography variant="subtitle2">Local</Typography>
             <Controller
               name="location"
               control={control}

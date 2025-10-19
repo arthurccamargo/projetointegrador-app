@@ -31,6 +31,20 @@ export const eventApi = createApi({
       }),
       providesTags: ["Events"],
     }),
+    getActiveEventsByOngId: builder.query<any, void>({
+      query: () => ({
+        url: "/events/my/active",
+        method: "GET",
+      }),
+      providesTags: ["Events"],
+    }),
+    getPastEventsByOngId: builder.query<any, void>({
+      query: () => ({
+        url: "/events/my/past",
+        method: "GET",
+      }),
+      providesTags: ["Events"],
+    }),
     getAllEvents: builder.query<any, void>({
       query: () => ({
         url: "/events",
@@ -59,6 +73,8 @@ export const eventApi = createApi({
 export const {
   useCreateEventMutation,
   useGetEventsByOngIdQuery,
+  useGetActiveEventsByOngIdQuery,
+  useGetPastEventsByOngIdQuery,
   useDeleteEventMutation,
   useUpdateEventMutation,
   useGetAllEventsQuery,

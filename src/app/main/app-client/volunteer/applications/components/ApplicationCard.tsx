@@ -1,6 +1,7 @@
 import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
 import { Building, Calendar, Clock, Eye, MapPin, X } from "lucide-react";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
+import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
 import type { EventApplication } from "../../../../../../types/event-applications.type";
 
 interface EventToVolunteerCardProps {
@@ -8,52 +9,18 @@ interface EventToVolunteerCardProps {
   onCancel: (application: EventApplication) => Promise<void>;
 }
 
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return { bg: "#ffe082", color: "#795548" };
-    case "ACCEPTED":
-      return { bg: "#c8e6c9", color: "#388e3c" };
-    case "REJECTED":
-      return { bg: "#ffcdd2", color: "#d32f2f" };
-    case "CANCELLED":
-      return { bg: "#e0e0e0", color: "#616161" };
-    default:
-      return { bg: "#eeeeee", color: "#333" };
-  }
-};
-
-const translateStatus = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return "Pendente";
-    case "ACCEPTED":
-      return "Aceita";
-    case "REJECTED":
-      return "Recusada";
-    case "CANCELLED":
-      return "Cancelada";
-    default:
-      return status;
-  }
-};
-
 export default function EventCardToVolunteer({
   application,
   onCancel,
 }: EventToVolunteerCardProps) {
-  // Format date and duration
-  const startDateObj = new Date(application.event.startDate);
-  const formattedDate = startDateObj.toLocaleDateString("pt-BR");
-  const formattedTime = startDateObj.toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  const formattedDuration = `${application.event.durationMinutes / 60} horas`;
+  const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(
+    application.startDate
+  );
+  const formattedDuration = `${application.durationMinutes / 60} horas`;
 
   return (
     <Box
-      key={application.event.id}
+      key={application.id}
       sx={{
         bgcolor: "#F8F8F8",
         borderRadius: 2,
@@ -80,34 +47,23 @@ export default function EventCardToVolunteer({
               fontWeight="bold"
               color="text.common.black"
             >
-              {application.event.title}
+              {application.title}
             </Typography>
-            <Box display="flex" flexDirection="column" gap={0.5}>
+            <Box display="flex" gap={0.5}>
               <Chip
-                label={application.event.category?.name}
+                label={application.category?.name}
                 size="small"
                 sx={{
-                  backgroundColor: getCategoryColor(
-                    application.event.category?.name
-                  ).bg,
-                  color: getCategoryColor(application.event.category?.name)
-                    .color,
-                  fontWeight: 500,
-                }}
-              />
-              <Chip
-                label={translateStatus(application.status)}
-                size="small"
-                sx={{
-                  backgroundColor: getStatusColor(application.status).bg,
-                  color: getStatusColor(application.status).color,
+                  backgroundColor: getCategoryColor(application.category?.name)
+                    .bg,
+                  color: getCategoryColor(application.category?.name).color,
                   fontWeight: 500,
                 }}
               />
             </Box>
           </Box>
           <Typography color="text.common.black" mb={3}>
-            {application.event.description}
+            {application.description}
           </Typography>
           <Box
             display="grid"
@@ -183,9 +139,9 @@ export default function EventCardToVolunteer({
                   width: "100%",
                   display: "block",
                 }}
-                title={application.event.location}
+                title={application.location}
               >
-                {application.event.location}
+                {application.location}
               </Typography>
             </Box>
           </Box>
@@ -193,7 +149,7 @@ export default function EventCardToVolunteer({
           <Box display="flex" alignItems="center" gap={1} mb={2}>
             <Building size={16} style={{ color: "#6b7280" }} />
             <Typography variant="body2" color="text.common.black">
-              {application.event.ong?.name}
+              {application.ong?.name}
             </Typography>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -205,8 +161,8 @@ export default function EventCardToVolunteer({
             >
               Ver ONG
             </Button>
-            {application.status !== "CANCELLED" &&
-              application.status !== "REJECTED" && (
+            {application.applicationStatus !== "CANCELLED" &&
+              application.applicationStatus !== "REJECTED" && (
                 <Button
                   variant="contained"
                   startIcon={<X size={18} />}

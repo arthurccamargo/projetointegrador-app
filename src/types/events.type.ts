@@ -10,6 +10,7 @@ export interface Event {
   location: string;
   maxCandidates: number;
   currentCandidates: number;
+  status: "SCHEDULED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
   createdAt: string; // ISO 8601
   updatedAt: string; // ISO 8601
   ongId: string;

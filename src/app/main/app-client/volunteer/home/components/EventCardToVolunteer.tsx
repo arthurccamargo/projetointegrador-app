@@ -1,4 +1,12 @@
-import { Box, Button, Divider, Stack, Typography, Chip, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  Chip,
+  useTheme,
+} from "@mui/material";
 import {
   Building,
   Calendar,
@@ -11,6 +19,7 @@ import {
 import type { Event } from "../../../../../../types/events.type";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { getVacancyColor } from "../../../../../shared-components/functions/getVacancyColor";
+import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
 
 interface EventToVolunteerCardProps {
   event: Event;
@@ -25,15 +34,10 @@ export default function EventCardToVolunteer({
   const totalVacancies = event.maxCandidates;
   const theme = useTheme();
 
-  // Format date and duration
-  const startDateObj = new Date(event.startDate);
-  const formattedDate = startDateObj.toLocaleDateString("pt-BR");
-  const formattedTime = startDateObj.toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(
+    event.startDate
+  );
   const formattedDuration = `${event.durationMinutes / 60} horas`;
-
   return (
     <Box
       key={event.id}

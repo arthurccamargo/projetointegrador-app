@@ -14,7 +14,7 @@ export const navigationSlice = createSlice({
 	name: 'navigation',
 	initialState,
 	reducers: {
-		setNavigation(state, action: PayloadAction<NavigationItem[]>) {
+		setNavigation(_state, action: PayloadAction<NavigationItem[]>) {
 			return action.payload;
 		},
 		resetNavigation: () => initialState
