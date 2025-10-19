@@ -14,7 +14,7 @@ export default function HomePage() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [eventSelected, setEventSelected] = useState<Event | null>(null);
   const [applyToEvent, { isLoading: isLoadingApply }] = useApplyMutation();
-  const { data: events = [], isLoading: isLoadingEvents } =
+  const { data: events = [], isLoading: isLoadingEvents, refetch } =
     useGetAllEventsQuery();
 
   const filteredEvents = events.filter(
@@ -32,6 +32,7 @@ export default function HomePage() {
     if (!eventSelected) return;
     try {
       await applyToEvent({ eventId: eventSelected.id }).unwrap();
+      await refetch();
       setOpenModal(false);
       setEventSelected(null);
     } catch (error: any) {
@@ -94,9 +95,6 @@ export default function HomePage() {
             mb={1}
           >
             Nenhum evento encontrado
-          </Typography>
-          <Typography color="text.secondary">
-            Tente buscar com outros termos ou crie um novo evento
           </Typography>
         </Box>
       )}
