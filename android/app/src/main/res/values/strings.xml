@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">HelpHub</string>
+    <string name="title_activity_main">HelpHub</string>
+    <string name="package_name">com.helphub.app</string>
+    <string name="custom_url_scheme">com.helphub.app</string>
+</resources>
