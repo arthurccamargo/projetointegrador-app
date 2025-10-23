@@ -60,6 +60,11 @@ export default function ApplicationsPage() {
           <TextField
             fullWidth
             variant="outlined"
+            sx={{ 
+              '& .MuiOutlinedInput-root': {
+              borderRadius: 5 
+              }
+            }}
             placeholder="Buscar eventos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}

@@ -421,7 +421,7 @@ export default function EditEventModal({
             borderRadius: 2,
             fontWeight: 500,
             backgroundColor: "theme.palette.primary.main",
-            color: "#000",
+            color: theme.palette.text.secondary,
             "&:hover": {
               backgroundColor: "theme.palette.primary.dark",
             },

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -8,10 +9,12 @@ import IconButton from "@mui/material/IconButton";
 import { useAuth } from "../../../auth/useAuth";
 import { useTheme } from '@mui/material/styles';
 import { Settings, LogOut, Trash2, Camera } from "lucide-react";
+import EditProfileModal from "./components/EditProfileModal";
 
 export default function ProfilePage() {
     const { user, isLoading, signOut } = useAuth();
     const theme = useTheme();
+    const [openEditModal, setOpenEditModal] = useState(false);
 
     if (isLoading) {
         return (
@@ -234,6 +237,7 @@ export default function ProfilePage() {
                 <Button
                     variant="outlined"
                     fullWidth
+                    onClick={() => setOpenEditModal(true)}
                     sx={{
                         borderRadius: 15,
                         py: 1,
@@ -401,6 +405,13 @@ export default function ProfilePage() {
 
             {/* Espaço extra no final */}
             <Box sx={{ height: 40 }} />
+
+            {/* Modal de Edição */}
+            <EditProfileModal
+                open={openEditModal}
+                onClose={() => setOpenEditModal(false)}
+                user={user}
+            />
         </Box>
     );
 }

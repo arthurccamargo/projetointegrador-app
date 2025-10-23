@@ -28,7 +28,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
       key={event.id}
       sx={{
         bgcolor: "background.paper",
-        borderRadius: 2,
+        borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
         borderColor: "grey.200",
@@ -179,7 +179,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
             <Button
               variant="contained"
               startIcon={<Edit3 size={18} />}
-              sx={{ color: theme.palette.text.secondary , bgcolor: "hsl(240 63% 29%)" }}
+              sx={{ borderRadius: 8, color: theme.palette.text.secondary , bgcolor: theme.palette.primary.main }}
               onClick={onEdit}
             >
               Editar
@@ -187,7 +187,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
             <Button
               variant="contained"
               startIcon={<Trash size={18} />}
-              color="error"
+              sx={{ borderRadius: 8, color: theme.palette.text.secondary, bgcolor: theme.palette.error.main}}
               onClick={onDelete}
             >
               Cancelar

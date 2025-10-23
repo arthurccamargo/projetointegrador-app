@@ -55,6 +55,7 @@ export interface AuthContextType {
   token: string | null;
   signIn: (email: string, password: string) => Promise<User>;
   signOut: () => void;
+  updateUser: (updatedData: Partial<User>) => void;
   isTokenValid: (token: string) => boolean;
   isLoading: boolean;
 }

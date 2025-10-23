@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
+import { Box, Button, Divider, Stack, Typography, Chip, useTheme } from "@mui/material";
 import { Building, Calendar, Clock, Eye, MapPin, X } from "lucide-react";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
@@ -17,13 +17,14 @@ export default function EventCardToVolunteer({
     application.startDate
   );
   const formattedDuration = `${application.durationMinutes / 60} horas`;
+  const theme = useTheme();
 
   return (
     <Box
       key={application.id}
       sx={{
         bgcolor: "#F8F8F8",
-        borderRadius: 2,
+        borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
         borderColor: "grey.200",
@@ -156,7 +157,7 @@ export default function EventCardToVolunteer({
             <Button
               variant="contained"
               startIcon={<Eye size={18} />}
-              sx={{ color: "#000", flex: 1 }}
+              sx={{ borderRadius: 9, color: theme.palette.text.secondary, flex: 1 }}
               fullWidth
             >
               Ver ONG
@@ -168,7 +169,7 @@ export default function EventCardToVolunteer({
                   startIcon={<X size={18} />}
                   color="error"
                   onClick={() => onCancel(application)}
-                  sx={{ flex: 1 }}
+                  sx={{ flex: 1, borderRadius: 9 }}
                   fullWidth
                 >
                   Cancelar

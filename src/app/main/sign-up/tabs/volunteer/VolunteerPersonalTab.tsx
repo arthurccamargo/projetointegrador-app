@@ -261,7 +261,7 @@ function VolunteerPersonalTab({ defaultValues, onNext, onBack, error, success, l
             disabled={loading}
             sx={{
               bgcolor: "theme.palette.primary.main",
-              color: theme.palette.common.black,
+              color: theme.palette.text.secondary,
             }}
           >
             {loading ? "Cadastrando..." : "Finalizar"}

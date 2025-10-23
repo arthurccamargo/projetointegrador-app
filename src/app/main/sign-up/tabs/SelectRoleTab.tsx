@@ -52,9 +52,9 @@ function SelectRoleStep({ onSelectRole }: Props) {
             <VolunteerActivismIcon sx={{ fontSize: 30, color: theme.palette.common.black }} />
           </Box>
           <Box>
-            <Typography variant="h6" fontWeight="bold">Sou Voluntário</Typography>
+            <Typography variant="h6" fontWeight="bold">Voluntário</Typography>
             <Typography variant="body2" color="common.black">
-              Quero ajudar ONGs e participar de ações voluntárias
+              Quero ajudar ONGs e participar de ações voluntárias.
             </Typography>
           </Box>
         </CardContent>
@@ -87,9 +87,9 @@ function SelectRoleStep({ onSelectRole }: Props) {
             <BusinessIcon sx={{ fontSize: 30, color: theme.palette.common.black }} />
           </Box>
           <Box>
-            <Typography variant="h6" fontWeight="bold">Sou ONG</Typography>
+            <Typography variant="h6" fontWeight="bold">ONG</Typography>
             <Typography variant="body2" color="common.black">
-              Quero encontrar voluntários para nossas causas sociais
+              Quero encontrar voluntários para nossas causas sociais.
             </Typography>
           </Box>
         </CardContent>

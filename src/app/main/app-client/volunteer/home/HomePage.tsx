@@ -56,6 +56,11 @@ export default function HomePage() {
         <Box maxWidth={400}>
           <TextField
             fullWidth
+            sx={{ 
+              '& .MuiOutlinedInput-root': {
+              borderRadius: 5 
+              }
+            }}
             variant="outlined"
             placeholder="Buscar eventos..."
             value={searchTerm}
@@ -94,7 +99,7 @@ export default function HomePage() {
             color="text.primary"
             mb={1}
           >
-            Nenhum evento encontrado
+            Nenhum evento encontrado.
           </Typography>
         </Box>
       )}
