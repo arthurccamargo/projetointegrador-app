@@ -43,7 +43,7 @@ export default function EventCardToVolunteer({
       key={event.id}
       sx={{
         bgcolor: "#F8F8F8",
-        borderRadius: 2,
+        borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
         borderColor: "grey.200",

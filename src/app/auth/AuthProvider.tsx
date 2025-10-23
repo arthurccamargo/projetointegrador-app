@@ -57,6 +57,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     sessionStorage.removeItem("user");
   }
 
+  function updateUser(updatedData: Partial<User>) {
+    if (!user) return;
+
+    // Mescla os dados atuais com os novos
+    const updatedUser = {
+      ...user,
+      ...updatedData,
+      // Se houver perfil atualizado, mescla também
+      volunteerProfile: updatedData.volunteerProfile
+        ? { ...user.volunteerProfile, ...updatedData.volunteerProfile }
+        : user.volunteerProfile,
+      ongProfile: updatedData.ongProfile
+        ? { ...user.ongProfile, ...updatedData.ongProfile }
+        : user.ongProfile,
+    };
+
+    setUser(updatedUser);
+    sessionStorage.setItem("user", JSON.stringify(updatedUser));
+  }
+
   function isTokenValid(token: string): boolean {
     try {
       const [, payloadBase64] = token.split(".");
@@ -68,7 +88,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const value: AuthContextType = { user, token, signIn, signOut, isTokenValid, isLoading };
+  const value: AuthContextType = { 
+    user, 
+    token, 
+    signIn, 
+    signOut, 
+    updateUser,
+    isTokenValid, 
+    isLoading 
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
