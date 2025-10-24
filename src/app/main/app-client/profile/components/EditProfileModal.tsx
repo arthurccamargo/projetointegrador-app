@@ -167,6 +167,14 @@ export default function EditProfileModal({
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
                 },
+                "& .MuiInputLabel-root": {
+                    color: "#666",  // Cor quando não focado
+                    opacity: 0.7
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#535353ff",  // Cor quando não focado
+                    opacity: 1.0
+                },
               }}
             />
 
@@ -181,6 +189,14 @@ export default function EditProfileModal({
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
+                },
+                "& .MuiInputLabel-root": {
+                    color: "#666",  // Cor quando não focado
+                    opacity: 0.7
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#535353ff",  // Cor quando não focado
+                    opacity: 1.0
                 },
               }}
             />
@@ -199,6 +215,14 @@ export default function EditProfileModal({
                     "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
                     },
+                    "& .MuiInputLabel-root": {
+                    color: "#666",  // Cor quando não focado
+                    opacity: 0.7
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#535353ff",  // Cor quando não focado
+                        opacity: 1.0
+                    },
                   }}
                 />
 
@@ -214,6 +238,14 @@ export default function EditProfileModal({
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
+                    },
+                    "& .MuiInputLabel-root": {
+                    color: "#666",  // Cor quando não focado
+                    opacity: 0.7
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#535353ff",  // Cor quando não focado
+                        opacity: 1.0
                     },
                   }}
                 />
@@ -234,7 +266,15 @@ export default function EditProfileModal({
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: 2,
-                  },
+                    },
+                  "& .MuiInputLabel-root": {
+                        color: "#666",  // Cor quando não focado
+                        opacity: 0.7
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#535353ff",  // Cor quando não focado
+                        opacity: 1.0
+                    },
                 }}
               />
             )}

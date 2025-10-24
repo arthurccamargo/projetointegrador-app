@@ -195,12 +195,20 @@ export default function EventCardToVolunteer({
             <Button
               variant="contained"
               startIcon={<Eye size={18} />}
-              sx={{ borderRadius: 9, color: theme.palette.text.secondary }}
+              sx={{ 
+                borderRadius: 9, 
+                color: theme.palette.text.secondary,
+                width: { xs: '100%', sm: 'auto' }
+              }}
             >
               Ver ONG
             </Button>
             <Button
-              sx={{ borderRadius: 9, color: theme.palette.text.secondary }}
+              sx={{ 
+                borderRadius: 9, 
+                color: theme.palette.text.secondary,
+                width: { xs: '100%', sm: 'auto' }
+              }}
               variant="contained"
               startIcon={<Users2 size={18} />}
               color="success"

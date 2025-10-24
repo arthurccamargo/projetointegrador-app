@@ -20,9 +20,12 @@ import type { Event } from "../../../../../types/events.type";
 import type { CreateEventPayload } from "./components/CreateEventModal";
 import ConfirmModal from "../../../../shared-components/ConfirmModal";
 import EditEventModal from "./components/EditEventModal";
+import { useTheme } from '@mui/material/styles';
+
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
+    const theme = useTheme();
   const [openModal, setOpenModal] = useState<
     null | "create" | "edit" | "delete"
   >(null);
@@ -100,6 +103,11 @@ export default function DashboardPage() {
         <Box maxWidth={400}>
           <TextField
             fullWidth
+            sx={{ 
+              '& .MuiOutlinedInput-root': {
+              borderRadius: 5 
+              }
+            }}
             variant="outlined"
             placeholder="Buscar eventos..."
             value={searchTerm}
@@ -148,18 +156,27 @@ export default function DashboardPage() {
       )}
 
       <Fab
-        color="primary"
+        variant="extended"
         sx={{
+          color: theme.palette.text.secondary,
+          bgcolor: theme.palette.primary.main,
           position: "fixed",
-          bottom: 32,
+          borderRadius: 30,
+          bottom: { xs: 88, sm: 32 },
           right: 32,
-          width: 56,
           height: 56,
           zIndex: 1000,
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            bgcolor: theme.palette.primary.dark,
+            transform: 'scale(1.03)',
+            boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.3)',
+          },
         }}
         onClick={() => setOpenModal("create")}
       >
-        <Plus size={28} />
+        <Plus size={20} style={{ marginRight: 8 }}/>
+        Criar Evento
       </Fab>
 
       <CreateEventModal

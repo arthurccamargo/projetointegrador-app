@@ -32,7 +32,7 @@ export default function EventCardToVolunteer({
         transition: "box-shadow 0.3s, transform 0.3s",
         "&:hover": {
           boxShadow: 3,
-          transform: "translateY(-4px)",
+          transform: "translateY(-3px)",
         },
       }}
     >
@@ -157,8 +157,11 @@ export default function EventCardToVolunteer({
             <Button
               variant="contained"
               startIcon={<Eye size={18} />}
-              sx={{ borderRadius: 9, color: theme.palette.text.secondary, flex: 1 }}
-              fullWidth
+              sx={{ 
+                borderRadius: 9, 
+                color: theme.palette.text.secondary,
+                width: { xs: '100%', sm: 'auto' }
+              }}
             >
               Ver ONG
             </Button>
@@ -167,10 +170,12 @@ export default function EventCardToVolunteer({
                 <Button
                   variant="contained"
                   startIcon={<X size={18} />}
-                  color="error"
                   onClick={() => onCancel(application)}
-                  sx={{ flex: 1, borderRadius: 9 }}
-                  fullWidth
+                  sx={{ borderRadius: 9, 
+                    bgcolor: theme.palette.error.main, 
+                    color: theme.palette.text.secondary,
+                    width: { xs: '100%', sm: 'auto' }  
+                  }}
                 >
                   Cancelar
                 </Button>
