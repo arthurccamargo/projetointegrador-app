@@ -2,6 +2,7 @@ import { Box, Button, Divider, Stack, Typography, Chip, useTheme } from "@mui/ma
 import { Building, Calendar, Clock, Eye, MapPin, X } from "lucide-react";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
+import { useNavigate } from "react-router-dom";
 import type { EventApplication } from "../../../../../../types/event-applications.type";
 
 interface EventToVolunteerCardProps {
@@ -18,6 +19,7 @@ export default function EventCardToVolunteer({
   );
   const formattedDuration = `${application.durationMinutes / 60} horas`;
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -162,6 +164,8 @@ export default function EventCardToVolunteer({
                 color: theme.palette.text.secondary,
                 width: { xs: '100%', sm: 'auto' }
               }}
+              onClick={() => navigate(`/profile/${application.ong?.userId}`)}
+
             >
               Ver ONG
             </Button>

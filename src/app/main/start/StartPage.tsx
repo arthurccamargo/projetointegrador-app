@@ -19,7 +19,7 @@ function StartPage() {
         justifyContent: "space-between",
         alignItems: "center",
         minHeight: "100vh",
-        bgcolor: theme.palette.background.default,
+        bgcolor: theme.palette.secondary.main,
         background: "linear-gradient(135deg, #faffb4ff 0%, #ecf297ff' 100%)",
         p: 3,
       }}

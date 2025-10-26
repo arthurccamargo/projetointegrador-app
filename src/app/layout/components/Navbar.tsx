@@ -69,14 +69,24 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
             sx={{
               mb: 4,
               fontWeight: "bold",
-              color: theme.palette.background.default,
+              color: theme.palette.secondary.main,
             }}
           >
             HelpHub
           </Typography>
           <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate(homeRoute)}>
+              <ListItemButton 
+                onClick={() => navigate(homeRoute)}
+                sx={{
+                  bgcolor: location.pathname === homeRoute ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                  borderRadius: 10,
+                  mb: 1,
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.05)',
+                  },
+                }}
+              >
                 <Home size={24} style={{ marginRight: 16 }} />
                 <ListItemText
                   primary="Início"
@@ -86,14 +96,33 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
             </ListItem>
 
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate(eventRoute)}>
+              <ListItemButton 
+                onClick={() => navigate(eventRoute)}
+                sx={{
+                  bgcolor: location.pathname === eventRoute ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                  borderRadius: 10,
+                  mb: 1,
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.05)',
+                  },
+                }}
+              >
                 <CalendarIcon size={24} style={{ marginRight: 16 }} />
                 <ListItemText primary="Eventos" sx={{ color: "#fff" }} />
               </ListItemButton>
             </ListItem>
 
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/profile")}>
+              <ListItemButton 
+                onClick={() => navigate("/profile")}
+                sx={{
+                  bgcolor: location.pathname === '/profile' ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                  borderRadius: 10,
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.05)',
+                  },
+                }}
+              >
                 <User size={24} style={{ marginRight: 16 }} />
                 <ListItemText primary="Perfil" sx={{ color: "#fff" }} />
               </ListItemButton>

@@ -16,6 +16,7 @@ import {
   Users,
   Users2,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { Event } from "../../../../../../types/events.type";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { getVacancyColor } from "../../../../../shared-components/functions/getVacancyColor";
@@ -33,6 +34,8 @@ export default function EventCardToVolunteer({
   const availableVacancies = event.currentCandidates;
   const totalVacancies = event.maxCandidates;
   const theme = useTheme();
+  const navigate = useNavigate();
+
 
   const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(
     event.startDate
@@ -200,6 +203,7 @@ export default function EventCardToVolunteer({
                 color: theme.palette.text.secondary,
                 width: { xs: '100%', sm: 'auto' }
               }}
+              onClick={() => navigate(`/profile/${event.ong?.userId}`)}
             >
               Ver ONG
             </Button>
