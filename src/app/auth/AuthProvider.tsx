@@ -11,8 +11,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Para que o login seja reconhecido mesmo após recarregar a página
   useEffect(() => {
-    const savedToken = sessionStorage.getItem("token");
-    const savedUser = sessionStorage.getItem("user");
+    const savedToken = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("user");
 
     if (savedToken && savedUser) {
       // Verifica se o token ainda é válido
@@ -20,7 +20,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setToken(savedToken);
         setUser(JSON.parse(savedUser));
       } else {
-        sessionStorage.clear(); // limpa token expirado
+        localStorage.clear(); // limpa token expirado
       }
     }
 
@@ -44,8 +44,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(data.access_token);
     setUser(data.user);
 
-    sessionStorage.setItem("token", data.access_token);
-    sessionStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("token", data.access_token);
+    localStorage.setItem("user", JSON.stringify(data.user));
 
     return data.user;
   }
@@ -53,8 +53,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function signOut() {
     setToken(null);
     setUser(null);
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   }
 
   function updateUser(updatedData: Partial<User>) {
@@ -74,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     setUser(updatedUser);
-    sessionStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("user", JSON.stringify(updatedUser));
   }
 
   function isTokenValid(token: string): boolean {
