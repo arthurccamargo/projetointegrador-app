@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -5,11 +6,40 @@ import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import { HeartHandshake } from 'lucide-react';
 import { useTheme } from '@mui/material/styles';
-
+import { useAuth } from "../../auth/useAuth";
+import LoadingSpinner from "../../shared-components/LoadingSpinner";
 
 function StartPage() {
   const navigate = useNavigate();
   const theme = useTheme();
+  const { user, isLoading } = useAuth();
+
+  // Redireciona se já estiver logado
+  useEffect(() => {
+    if (!isLoading && user) {
+      if (user.role === "ONG") {
+        navigate("/dashboard", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
+    }
+  }, [user, isLoading, navigate]);
+
+  // Mostra LoadingSpinner enquanto verifica autenticação
+  if (isLoading) {
+    return (
+      <LoadingSpinner 
+        text="Verificando sessão..." 
+        fullScreen={true}
+        size={50}
+      />
+    );
+  }
+
+  // Se já estiver autenticado, não renderiza nada (vai redirecionar)
+  if (user) {
+    return null;
+  }
 
   return (
     <Box

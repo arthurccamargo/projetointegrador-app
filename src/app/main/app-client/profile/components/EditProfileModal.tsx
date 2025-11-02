@@ -47,8 +47,8 @@ export default function EditProfileModal({
     try {
       setLoading(true);
 
-      // Pega o token do sessionStorage
-      const token = sessionStorage.getItem("token");
+      // Pega o token do localStorage
+      const token = localStorage.getItem("token");
       if (!token) {
         alert("Você precisa estar logado para editar o perfil");
         return;
