@@ -8,9 +8,12 @@ import { useGetAllEventsQuery } from "../../../../api/EventApi";
 import EventCardToVolunteer from "./components/EventCardToVolunteer";
 import ConfirmModal from "../../../../shared-components/ConfirmModal";
 import { useApplyMutation } from "../../../../api/EventApplicationApi";
+import { useTheme } from '@mui/material/styles';
+
 
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const theme = useTheme();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [eventSelected, setEventSelected] = useState<Event | null>(null);
   const [applyToEvent, { isLoading: isLoadingApply }] = useApplyMutation();
@@ -44,13 +47,13 @@ export default function HomePage() {
   return (
     <Container
       maxWidth="lg"
-      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2 }}
+      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2, bgcolor: theme.palette.background.default }}
     >
-      <Box mb={8}>
-        <Typography variant="h4" fontWeight="bold" color="text.primary" mb={2}>
+      <Box mb={8} color={ theme.palette.text.primary }>
+        <Typography variant="h4" fontWeight="bold" mb={2}>
           Buscar Oportunidades
         </Typography>
-        <Typography color="text.common.black" mb={3}>
+        <Typography mb={3}>
           Encontre oportunidades para fazer a diferença
         </Typography>
         <Box maxWidth={400}>

@@ -1,10 +1,10 @@
 import authRoles from '../../../../auth/authRoles';
 import type { AppRoute } from '../../../../routes/types';
-import EventsPage from './EventsPage';
+import HistoryPage from './HistoryPage';
 
 const EventsPageRoute: AppRoute = {
-  path: '/events',
-  element: <EventsPage />,
+  path: '/history',
+  element: <HistoryPage />,
   settings: {
     layout: { config: { navbar: true, toolbar: false, footer: false } },
   },

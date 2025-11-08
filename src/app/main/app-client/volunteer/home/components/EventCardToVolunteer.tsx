@@ -40,7 +40,9 @@ export default function EventCardToVolunteer({
   const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(
     event.startDate
   );
-  const formattedDuration = `${event.durationMinutes / 60} horas`;
+  const hours = Math.floor(event.durationMinutes / 60);
+  const minutes = event.durationMinutes % 60;
+  const formattedDuration = minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
   return (
     <Box
       key={event.id}

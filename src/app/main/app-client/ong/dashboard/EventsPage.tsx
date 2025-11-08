@@ -91,13 +91,13 @@ export default function DashboardPage() {
   return (
     <Container
       maxWidth="lg"
-      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2 }}
+      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2, bgcolor: theme.palette.background.default }}
     >
       <Box mb={8}>
         <Typography variant="h4" fontWeight="bold" color="text.primary" mb={2}>
           Meus Eventos
         </Typography>
-        <Typography color="text.common.black" mb={3}>
+        <Typography color="text.primary" mb={3}>
           Gerencie seus eventos e candidatos
         </Typography>
         <Box maxWidth={400}>
@@ -149,7 +149,7 @@ export default function DashboardPage() {
           >
             Nenhum evento encontrado
           </Typography>
-          <Typography color="text.secondary">
+          <Typography color="text.primary">
             Tente buscar com outros termos ou crie um novo evento
           </Typography>
         </Box>
