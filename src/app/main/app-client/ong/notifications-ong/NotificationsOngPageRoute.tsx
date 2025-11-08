@@ -2,7 +2,7 @@ import authRoles from '../../../../auth/authRoles';
 import type { AppRoute } from '../../../../routes/types';
 import NotificationsOngPage from './NotificationsOngPage';
 
-const NotificationsPageRoute: AppRoute = {
+const NotificationsOngPageRoute: AppRoute = {
   path: '/notifications-ong',
   element: <NotificationsOngPage />,
   settings: {
@@ -11,4 +11,4 @@ const NotificationsPageRoute: AppRoute = {
   auth: authRoles.user, // VOLUNTEER ou ONG
 };
 
-export default NotificationsPageRoute;
+export default NotificationsOngPageRoute;
