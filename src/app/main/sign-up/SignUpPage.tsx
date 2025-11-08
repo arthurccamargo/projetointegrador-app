@@ -152,14 +152,11 @@ function SignUpPage() {
 
   return (
     <div
-      className="flex min-w-0 flex-1 flex-col items-center"
+      className="flex min-w-0 flex-1 flex-col items-center justify-center"
       style={{
         overflow: "auto",
         minHeight: "100vh",
-        background:
-          window.innerWidth >= 600
-            ? `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`
-            : theme.palette.background.paper,
+        background: theme.palette.background.default,
         padding: window.innerWidth >= 600 ? "16px" : "0",
       }}
     >
@@ -234,7 +231,7 @@ function SignUpPage() {
                   <StepLabel StepIconComponent={CustomStepIcon}>
                     <Typography
                       variant="body1"
-                      sx={{ color: theme.palette.common.black }}
+                      sx={{ color: theme.palette.text.primary }}
                     >
                       {label}
                     </Typography>

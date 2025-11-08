@@ -10,9 +10,12 @@ import {
 import type { EventApplication } from "../../../../../types/event-applications.type";
 import ApplicationCard from "./components/ApplicationCard";
 import ConfirmModal from "../../../../shared-components/ConfirmModal";
+import { useTheme } from '@mui/material/styles';
+
 
 export default function ApplicationsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const theme = useTheme();
   const [openModal, setOpenModal] = useState(false);
   const [applicationSelected, setApplicationSelected] =
     useState<EventApplication | null>(null);
@@ -47,13 +50,13 @@ export default function ApplicationsPage() {
   return (
     <Container
       maxWidth="lg"
-      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2 }}
+      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2, bgcolor: theme.palette.background.default }}
     >
-      <Box mb={8}>
-        <Typography variant="h4" fontWeight="bold" color="text.primary" mb={2}>
+      <Box color={ theme.palette.text.primary } mb={8}>
+        <Typography variant="h4" fontWeight="bold" mb={2}>
           Minhas Candidaturas
         </Typography>
-        <Typography color="text.common.black" mb={3}>
+        <Typography mb={3}>
           Acompanhe suas candidaturas e atividades
         </Typography>
         <Box maxWidth={400}>
@@ -100,7 +103,7 @@ export default function ApplicationsPage() {
           >
             Nenhuma candidatura encontrada
           </Typography>
-          <Typography color="text.secondary">
+          <Typography color={ theme.palette.text.primary }>
             Tente buscar com outros termos ou crie uma nova candidatura
           </Typography>
         </Box>

@@ -15,7 +15,7 @@ function SelectRoleStep({ onSelectRole }: Props) {
   const theme = useTheme();
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={3} width="100%">
+    <Box display="flex" flexDirection="column" alignItems="center" gap={3} width="100%" color={ theme.palette.background.default }>
       <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.text.primary }} align="center" gutterBottom>
         Como você deseja se cadastrar?
       </Typography>
@@ -30,6 +30,7 @@ function SelectRoleStep({ onSelectRole }: Props) {
           width: '100%', 
           mb: 2, 
           borderRadius: 2,
+          bgcolor: theme.palette.background.paper,
           transition: 'transform 0.2s',
           cursor: 'pointer',
           '&:hover': {
@@ -41,7 +42,7 @@ function SelectRoleStep({ onSelectRole }: Props) {
       >
         <CardContent sx={{ display: 'flex', alignItems: 'center', p: 3 }}>
           <Box sx={{ 
-            bgcolor: theme.palette.primary.main, 
+            bgcolor: theme.palette.secondary.main,
             borderRadius: '50%', 
             p: 1.5,
             mr: 2,
@@ -53,7 +54,7 @@ function SelectRoleStep({ onSelectRole }: Props) {
           </Box>
           <Box>
             <Typography variant="h6" fontWeight="bold">Voluntário</Typography>
-            <Typography variant="body2" color="common.black">
+            <Typography variant="body2" color={ theme.palette.text.primary }>
               Quero ajudar ONGs e participar de ações voluntárias.
             </Typography>
           </Box>
@@ -76,7 +77,7 @@ function SelectRoleStep({ onSelectRole }: Props) {
       >
         <CardContent sx={{ display: 'flex', alignItems: 'center', p: 3 }}>
           <Box sx={{ 
-            bgcolor: theme.palette.primary.main, 
+            bgcolor: theme.palette.secondary.main, 
             borderRadius: '50%', 
             p: 1.5,
             mr: 2,
@@ -88,7 +89,7 @@ function SelectRoleStep({ onSelectRole }: Props) {
           </Box>
           <Box>
             <Typography variant="h6" fontWeight="bold">ONG</Typography>
-            <Typography variant="body2" color="common.black">
+            <Typography variant="body2" color={ theme.palette.text.primary }>
               Quero encontrar voluntários para nossas causas sociais.
             </Typography>
           </Box>

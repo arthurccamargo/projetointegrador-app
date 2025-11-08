@@ -40,12 +40,14 @@ export default function EventCardToVolunteer({
   const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(
     event.startDate
   );
-  const formattedDuration = `${event.durationMinutes / 60} horas`;
+  const hours = Math.floor(event.durationMinutes / 60);
+  const minutes = event.durationMinutes % 60;
+  const formattedDuration = minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
   return (
     <Box
       key={event.id}
       sx={{
-        bgcolor: "#F8F8F8",
+        bgcolor: theme.palette.background.paper,
         borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
@@ -68,7 +70,7 @@ export default function EventCardToVolunteer({
             <Typography
               variant="h6"
               fontWeight="bold"
-              color="text.common.black"
+              color="text.primary"
             >
               {event.title}
             </Typography>
@@ -82,7 +84,7 @@ export default function EventCardToVolunteer({
               }}
             />
           </Box>
-          <Typography color="text.common.black" mb={3}>
+          <Typography color="text.primary" mb={3}>
             {event.description}
           </Typography>
           <Box
@@ -109,7 +111,7 @@ export default function EventCardToVolunteer({
               <Calendar size={16} style={{ color: "#6b7280" }} />
               <Typography
                 variant="body2"
-                color="text.common.black"
+                color="text.primary"
                 sx={{ whiteSpace: "nowrap" }}
               >
                 {formattedDate}
@@ -124,7 +126,7 @@ export default function EventCardToVolunteer({
               <Clock size={16} style={{ color: "#6b7280" }} />
               <Typography
                 variant="body2"
-                color="text.common.black"
+                color="text.primary"
                 sx={{ ml: 0 }}
               >
                 Hora de Início: {formattedTime}
@@ -137,7 +139,7 @@ export default function EventCardToVolunteer({
               gap={1}
             >
               <Clock size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.common.black">
+              <Typography variant="body2" color="text.primary">
                 Duração: {formattedDuration}
               </Typography>
             </Box>
@@ -151,7 +153,7 @@ export default function EventCardToVolunteer({
               <MapPin size={16} style={{ color: "#6b7280", flexShrink: 0 }} />
               <Typography
                 variant="body2"
-                color="text.common.black"
+                color="text.primary"
                 sx={{
                   whiteSpace: "nowrap",
                   overflow: "hidden",
@@ -173,7 +175,7 @@ export default function EventCardToVolunteer({
               <Users
                 size={16}
                 style={{
-                  color: getVacancyColor(availableVacancies, totalVacancies),
+                  color: '#6b7280',
                 }}
               />
               <Typography
@@ -190,7 +192,7 @@ export default function EventCardToVolunteer({
           <Divider sx={{ mb: 2 }} />
           <Box display="flex" alignItems="center" gap={1} mb={2}>
             <Building size={16} style={{ color: "#6b7280" }} />
-            <Typography variant="body2" color="text.common.black">
+            <Typography variant="body2" color="text.primary">
               {event.ong?.name}
             </Typography>
           </Box>
@@ -200,7 +202,7 @@ export default function EventCardToVolunteer({
               startIcon={<Eye size={18} />}
               sx={{ 
                 borderRadius: 9, 
-                color: theme.palette.text.secondary,
+                color: theme.palette.primary.contrastText,
                 width: { xs: '100%', sm: 'auto' }
               }}
               onClick={() => navigate(`/profile/${event.ong?.userId}`)}

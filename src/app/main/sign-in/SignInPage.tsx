@@ -69,10 +69,7 @@ function SignInPage() {
       style={{
         overflow: "auto",
         minHeight: "100vh",
-        background:
-          window.innerWidth >= 600
-            ? `linear-gradient(135deg, ${theme.palette.primary.main} 10%, ${theme.palette.background.default} 90%)`
-            : theme.palette.background.paper,
+        background: theme.palette.background.default,
         padding: window.innerWidth >= 600 ? "16px" : "0",
       }}
     >
@@ -189,7 +186,7 @@ function SignInPage() {
                             aria-label="toggle password visibility"
                             onClick={() => setShowPassword((show) => !show)}
                             edge="end"
-                            sx={{ color: theme.palette.primary.main }}
+                            sx={{ color: theme.palette.text.primary }}
                           >
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>

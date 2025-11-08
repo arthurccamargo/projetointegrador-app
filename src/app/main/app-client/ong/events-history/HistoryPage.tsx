@@ -24,9 +24,9 @@ export default function EventsPage() {
             overflow: "hidden",
         }}
         >
-        <Typography variant="h1">Eventos</Typography>
+        <Typography variant="h1">Histórico</Typography>
         <Typography variant="body1">
-            Página de eventos.
+            Página de histórico eventos.
         </Typography>
         </Box>
     );

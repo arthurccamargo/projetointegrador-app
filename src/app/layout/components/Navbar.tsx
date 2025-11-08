@@ -27,7 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
 
   // rota inicial baseada no role
   const homeRoute = user?.role === "ONG" ? "/dashboard" : "/home";
-  const eventRoute = user?.role === "ONG" ? "/events" : "/applications";
+  const eventRoute = user?.role === "ONG" ? "/history" : "/applications"; // alterar /events
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -47,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            bgcolor: "#22223b",
+            bgcolor: theme.palette.primary.main,
             color: "#fff",
             borderRight: 0,
           },
@@ -90,7 +90,7 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
                 <Home size={24} style={{ marginRight: 16 }} />
                 <ListItemText
                   primary="Início"
-                  sx={{ color: theme.palette.text.secondary }}
+                  sx={{ color: theme.palette.success.contrastText }}
                 />
               </ListItemButton>
             </ListItem>
@@ -108,9 +108,9 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
                 }}
               >
                 <CalendarIcon size={24} style={{ marginRight: 16 }} />
-                <ListItemText primary="Eventos" sx={{ color: "#fff" }} />
+                <ListItemText primary= { user?.role === "ONG" ? "Histórico" : "Candidaturas"} sx={{ color: "#fff" }} />
               </ListItemButton>
-            </ListItem>
+            </ListItem> 
 
             <ListItem disablePadding>
               <ListItemButton 

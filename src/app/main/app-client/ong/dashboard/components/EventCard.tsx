@@ -20,7 +20,9 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
   const theme = useTheme();
 
   const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(event.startDate);
-  const formattedDuration = `${event.durationMinutes / 60} horas`;
+  const hours = Math.floor(event.durationMinutes / 60);
+  const minutes = event.durationMinutes % 60;
+  const formattedDuration = minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
   const statusInfo = getStatusColor(event.status);
 
   return (
@@ -46,11 +48,11 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
         alignItems="flex-start"
       >
         <Box flex={1}>
-          <Box display="flex" alignItems="center" gap={2} mb={2}>
+          <Box display="flex" alignItems="center" gap={2} mb={2} bgcolor={ theme.palette.background.paper }>
             <Typography
               variant="h6"
               fontWeight="bold"
-              color="text.common.black"
+              color="text.primary"
             >
               {event.title}
             </Typography>
@@ -73,7 +75,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               }}
             />
           </Box>
-          <Typography color="text.common.black" mb={3}>
+          <Typography color="text.primary" mb={3}>
             {event.description}
           </Typography>
           <Box
@@ -98,7 +100,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               sx={{ minWidth: "fit-content" }}
             >
               <Calendar size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.common.black" sx={{ whiteSpace: "nowrap" }}>
+              <Typography variant="body2" color="text.primary" sx={{ whiteSpace: "nowrap" }}>
                 {formattedDate}
               </Typography>
             </Box>
@@ -111,7 +113,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               <Clock size={16} style={{ color: "#6b7280" }} />
               <Typography
                 variant="body2"
-                color="text.common.black"
+                color="text.primary"
                 sx={{ ml: 0 }}
               >
                 Hora de Início: {formattedTime}
@@ -124,7 +126,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               gap={1}
             >
               <Clock size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.common.black">
+              <Typography variant="body2" color="text.primary">
                 Duração: {formattedDuration}
               </Typography>
             </Box>
@@ -138,7 +140,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               <MapPin size={16} style={{ color: "#6b7280", flexShrink: 0 }} />
               <Typography
                 variant="body2"
-                color="text.common.black"
+                color="text.primary"
                 sx={{
                   whiteSpace: "nowrap",
                   overflow: "hidden",
@@ -160,7 +162,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               <Users
                 size={16}
                 style={{
-                  color: getVacancyColor(availableVacancies, totalVacancies),
+                  color: '#6b7280',
                 }}
               />
               <Typography
@@ -183,6 +185,14 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               onClick={onEdit}
             >
               Editar
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<Users size={18} />}
+              sx={{ borderRadius: 8, color: theme.palette.text.secondary, bgcolor: theme.palette.warning.main}}
+              onClick={onDelete}
+            >
+              Ver candidatos
             </Button>
             <Button
               variant="contained"
