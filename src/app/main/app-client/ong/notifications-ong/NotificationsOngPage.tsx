@@ -61,7 +61,7 @@ export default function NotificationsOngPage() {
           Notificações
         </Typography>
         <Typography color="black">
-          Códigos de check-in dos eventos ativos
+          Acompanhe suas notificações
         </Typography>
       </Box>
 
@@ -77,7 +77,7 @@ export default function NotificationsOngPage() {
               Nenhuma notificação
             </Typography>
             <Typography color="black">
-              Não há eventos ativos no momento
+              Não há notificações no momento
             </Typography>
           </Box>
         ) : (
