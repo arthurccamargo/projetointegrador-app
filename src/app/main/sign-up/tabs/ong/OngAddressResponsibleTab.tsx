@@ -333,7 +333,7 @@ function OngAddressResponsibleTab({ defaultValues, onNext, onBack }: Props) {
           type="submit"
           sx={{
             bgcolor: "theme.palette.primary.main",
-            color: theme.palette.common.black,
+            color: theme.palette.text.secondary,
           }}
         >
           Próximo

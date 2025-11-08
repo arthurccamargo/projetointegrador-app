@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import { useParams, useNavigate } from "react-router-dom";
 import { Settings, LogOut, Trash2, Camera, ChevronLeft } from "lucide-react";
 import EditProfileModal from "./components/EditProfileModal";
+import SettingsModal from "./components/SettingsModal";
 import type { User } from "../../../auth/auth.type";
 
 const BASEAPI_URL = import.meta.env.VITE_BASE_API_URL;
@@ -21,6 +22,7 @@ export default function ProfilePage() {
     const theme = useTheme();
     const navigate = useNavigate();
     const [openEditModal, setOpenEditModal] = useState(false);
+    const [openSettingsModal, setOpenSettingsModal] = useState(false);
     const [profileUser, setProfileUser] = useState<User | null>(null);
     const [profileLoading, setProfileLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -152,7 +154,7 @@ export default function ProfilePage() {
     return (
         <Box
             sx={{
-                backgroundColor: theme.palette.background.paper,
+                backgroundColor: theme.palette.background.default,
                 minHeight: "100vh",
                 width: "100%",
                 display: "flex",
@@ -178,14 +180,14 @@ export default function ProfilePage() {
                     variant="h5" 
                     sx={{ 
                         fontWeight: "bold",
-                        color: theme.palette.primary.main,
+                        color: theme.palette.text.primary,
                     }}
                 >
                     {isOwnProfile ? "Meu perfil" : backButton}
                 </Typography>
                 {isOwnProfile && (
-                <IconButton>
-                    <Settings size={24} color={theme.palette.primary.main} />
+                <IconButton onClick={() => setOpenSettingsModal(true)}>
+                    <Settings size={24} color={theme.palette.text.primary} />
                 </IconButton>
                 )}
             </Box>
@@ -252,18 +254,18 @@ export default function ProfilePage() {
                             >
                                 {profileUser.role === "VOLUNTEER" ? "0" : "0"}
                             </Typography>
-                            <Typography variant="caption" sx={{ opacity: 0.7 }}>
+                            <Typography variant="caption" sx={{ opacity: 0.7, color: theme.palette.text.primary }}>
                                 {profileUser.role === "VOLUNTEER" ? "participações" : "eventos criados"}
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: "center" }}>
                             <Typography 
                                 variant="h6" 
-                                sx={{ fontWeight: "bold", color: theme.palette.primary.main }}
+                                sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
                             >
                                 {profileUser.status === "ACTIVE" ? "Ativo" : "Pendente"}
                             </Typography>
-                            <Typography variant="caption" sx={{ opacity: 0.7 }}>
+                            <Typography variant="caption" sx={{ opacity: 0.7, color: theme.palette.text.primary }}>
                                 status
                             </Typography>
                         </Box>
@@ -276,7 +278,7 @@ export default function ProfilePage() {
                         variant="h6" 
                         sx={{ 
                             fontWeight: "bold",
-                            color: theme.palette.primary.main,
+                            color: theme.palette.text.primary,
                             mb: 0.5
                         }}
                     >
@@ -341,7 +343,7 @@ export default function ProfilePage() {
                             fontWeight: "bold",
                             textTransform: "none",
                             borderColor: "#dbdbdb",
-                            color: theme.palette.primary.main,
+                            color: theme.palette.text.primary,
                             "&:hover": {
                                 borderColor: theme.palette.primary.main,
                                 bgcolor: "transparent",
@@ -368,7 +370,7 @@ export default function ProfilePage() {
                     variant="subtitle2" 
                     sx={{ 
                         fontWeight: "bold",
-                        color: theme.palette.primary.main,
+                        color: theme.palette.text.primary,
                         mb: 2,
                         textTransform: "uppercase",
                         fontSize: "0.75rem",
@@ -379,7 +381,7 @@ export default function ProfilePage() {
                 </Typography>
 
                 <Stack spacing={2}>
-                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", color: theme.palette.text.primary }}>
                         <Typography variant="body2" sx={{ opacity: 0.7 }}>
                             Tipo de conta
                         </Typography>
@@ -388,7 +390,7 @@ export default function ProfilePage() {
                         </Typography>
                     </Box>
 
-                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", color: theme.palette.text.primary }}>
                         <Typography variant="body2" sx={{ opacity: 0.7 }}>
                             Membro desde
                         </Typography>
@@ -399,7 +401,7 @@ export default function ProfilePage() {
 
                     {profileUser.role === "VOLUNTEER" && profileUser.volunteerProfile?.city && (
                         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                            <Typography variant="body2" sx={{ opacity: 0.7, color: theme.palette.text.primary }}>
                                 Localização
                             </Typography>
                             <Typography variant="body2" sx={{ fontWeight: 500 }}>
@@ -410,10 +412,10 @@ export default function ProfilePage() {
 
                     {profileUser.role === "ONG" && profileUser.ongProfile?.city && (
                         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                            <Typography variant="body2" sx={{ opacity: 0.7, color: theme.palette.text.primary }}>
                                 Localização
                             </Typography>
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            <Typography variant="body2" sx={{ fontWeight: 500, color: theme.palette.text.primary }}>
                                 {profileUser.ongProfile.city}, {profileUser.ongProfile.state}
                             </Typography>
                         </Box>
@@ -421,10 +423,10 @@ export default function ProfilePage() {
 
                     {profileUser.role === "ONG" && profileUser.ongProfile?.responsibleName && (
                         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                            <Typography variant="body2" sx={{ opacity: 0.7, color: theme.palette.text.primary }}>
                                 Responsável
                             </Typography>
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            <Typography variant="body2" sx={{ fontWeight: 500, color: theme.palette.text.primary }}>
                                 {profileUser.ongProfile.responsibleName}
                             </Typography>
                         </Box>
@@ -450,7 +452,7 @@ export default function ProfilePage() {
                             variant="subtitle2" 
                             sx={{ 
                                 fontWeight: "bold",
-                                color: theme.palette.primary.main,
+                                color: theme.palette.text.primary,
                                 mb: 2,
                                 textTransform: "uppercase",
                                 fontSize: "0.75rem",
@@ -470,8 +472,8 @@ export default function ProfilePage() {
                                     py: 1.5,
                                     fontWeight: "bold",
                                     textTransform: "none",
-                                    borderColor: theme.palette.primary.main,
-                                    color: theme.palette.primary.main,
+                                    borderColor: theme.palette.text.primary,
+                                    color: theme.palette.text.primary,
                                     "&:hover": {
                                         borderColor: theme.palette.primary.main,
                                         bgcolor: "rgba(34, 34, 59, 0.04)",
@@ -516,6 +518,14 @@ export default function ProfilePage() {
                     open={openEditModal}
                     onClose={() => setOpenEditModal(false)}
                     user={profileUser}
+                />
+            )}
+
+            {/* Modal de Configurações */}
+            {isOwnProfile && (
+                <SettingsModal
+                    open={openSettingsModal}
+                    onClose={() => setOpenSettingsModal(false)}
                 />
             )}
         </Box>

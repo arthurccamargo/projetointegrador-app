@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+export const lightTheme = createTheme({
   typography: {
     fontFamily: '"Special Gothic", "BBH Sans Bartle"'
   },
@@ -37,4 +37,41 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+export const darkTheme = createTheme({
+  typography: {
+    fontFamily: '"Special Gothic", "BBH Sans Bartle"'
+  },
+
+  palette: {
+    primary: {
+      main: '#22223b',
+      contrastText: '#faffb4ff',
+    },
+    secondary: {
+      main: '#faffb4ff',
+      contrastText: '#f1f1f1ff',
+    },
+    error: {
+      main: 'hsla(8, 82%, 60%, 1.00)',
+      contrastText: '#fff',
+    },
+    success: {
+      main: 'hsla(156, 67%, 40%, 1.00)',
+      contrastText: '#fff',
+    },
+    warning: {
+      main: '#FFA726',
+      contrastText: '#fff',
+    },
+    background: {
+      default: '#1b1b1bff',
+      paper: '#1b1b1bff',
+    },
+    text: {
+      primary: '#f1f1f1ff',
+      secondary: '#121212ff',
+    },
+  },
+});
+
+
