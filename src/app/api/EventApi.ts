@@ -67,6 +67,13 @@ export const eventApi = createApi({
       }),
       invalidatesTags: ["Events"],
     }),
+    getEventNotificationsOng: builder.query<any, void>({
+      query: () => ({
+        url: "/events/notifications",
+        method: "GET",
+      }),
+      providesTags: ["Events"],
+    }),
   }),
 });
 
@@ -78,4 +85,5 @@ export const {
   useDeleteEventMutation,
   useUpdateEventMutation,
   useGetAllEventsQuery,
+  useGetEventNotificationsOngQuery,
 } = eventApi;
