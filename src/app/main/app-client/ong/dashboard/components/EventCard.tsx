@@ -75,7 +75,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               }}
             />
           </Box>
-          <Typography color="text.common.black" mb={3}>
+          <Typography color="text.primary" mb={3}>
             {event.description}
           </Typography>
           <Box
