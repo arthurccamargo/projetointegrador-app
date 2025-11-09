@@ -32,7 +32,7 @@ export const lightTheme = createTheme({
     },
     text: {
       primary: '#121212ff',
-      secondary: '#f1f1f1ff',
+      secondary: '#808080',
     },
   },
 });

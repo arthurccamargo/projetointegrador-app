@@ -50,6 +50,20 @@ export const eventApplicationApi = createApi({
       }),
       providesTags: ["EventApplication"],
     }),
+    getEventNotificationsVolunteer: builder.query<any, void>({
+      query: () => ({
+        url: "/applications/notifications",
+        method: "GET",
+      }),
+      providesTags: ["EventApplication"],
+    }),
+    checkIn: builder.mutation<any, { eventId: string; code: string }>({
+      query: ({ eventId, code }) => ({
+        url: `/applications/check-in/${eventId}`,
+        method: "POST",
+        body: { code },
+      }),
+    }),
   }),
 });
 
@@ -58,4 +72,6 @@ export const {
   useUpdateStatusMutation,
   useCancelMutation,
   useGetAllActiveApplicationsByVolunteerQuery,
+  useGetEventNotificationsVolunteerQuery,
+  useCheckInMutation,
 } = eventApplicationApi;

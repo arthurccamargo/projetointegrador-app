@@ -11,7 +11,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Paper from "@mui/material/Paper";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, CalendarIcon, User, Calendar } from "lucide-react";
+import { Home, CalendarIcon, User, Calendar, Bell } from "lucide-react";
 import { useAuth } from "../../auth/useAuth";
 
 type NavbarProps = {
@@ -28,6 +28,8 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
   // rota inicial baseada no role
   const homeRoute = user?.role === "ONG" ? "/dashboard" : "/home";
   const eventRoute = user?.role === "ONG" ? "/history" : "/applications"; // alterar /events
+  const notificationsRoute =
+    user?.role === "ONG" ? "/notifications-ong" : "/notifications-volunteer";
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -76,14 +78,17 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
           </Typography>
           <List>
             <ListItem disablePadding>
-              <ListItemButton 
+              <ListItemButton
                 onClick={() => navigate(homeRoute)}
                 sx={{
-                  bgcolor: location.pathname === homeRoute ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                  bgcolor:
+                    location.pathname === homeRoute
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "transparent",
                   borderRadius: 10,
                   mb: 1,
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.05)',
+                  "&:hover": {
+                    bgcolor: "rgba(255, 255, 255, 0.05)",
                   },
                 }}
               >
@@ -96,30 +101,62 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
             </ListItem>
 
             <ListItem disablePadding>
-              <ListItemButton 
+              <ListItemButton
                 onClick={() => navigate(eventRoute)}
                 sx={{
-                  bgcolor: location.pathname === eventRoute ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                  bgcolor:
+                    location.pathname === eventRoute
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "transparent",
                   borderRadius: 10,
                   mb: 1,
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.05)',
+                  "&:hover": {
+                    bgcolor: "rgba(255, 255, 255, 0.05)",
                   },
                 }}
               >
                 <CalendarIcon size={24} style={{ marginRight: 16 }} />
-                <ListItemText primary= { user?.role === "ONG" ? "Histórico" : "Candidaturas"} sx={{ color: "#fff" }} />
+                <ListItemText
+                  primary={user?.role === "ONG" ? "Histórico" : "Candidaturas"}
+                  sx={{ color: "#fff" }}
+                />
               </ListItemButton>
-            </ListItem> 
+            </ListItem>
 
             <ListItem disablePadding>
-              <ListItemButton 
+              <ListItemButton
+                onClick={() => navigate(notificationsRoute)}
+                sx={{
+                  bgcolor:
+                    location.pathname === notificationsRoute
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "transparent",
+                  borderRadius: 10,
+                  mb: 1,
+                  "&:hover": {
+                    bgcolor: "rgba(255, 255, 255, 0.05)",
+                  },
+                }}
+              >
+                <Bell size={24} style={{ marginRight: 16 }} />
+                <ListItemText
+                  primary="Notificações"
+                  sx={{ color: theme.palette.success.contrastText }}
+                />
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemButton
                 onClick={() => navigate("/profile")}
                 sx={{
-                  bgcolor: location.pathname === '/profile' ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                  bgcolor:
+                    location.pathname === "/profile"
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "transparent",
                   borderRadius: 10,
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.05)',
+                  "&:hover": {
+                    bgcolor: "rgba(255, 255, 255, 0.05)",
                   },
                 }}
               >
@@ -171,6 +208,10 @@ const Navbar: React.FC<NavbarProps> = ({ drawerWidth }) => {
           <BottomNavigationAction
             value={eventRoute}
             icon={<Calendar size={24} />}
+          />
+          <BottomNavigationAction
+            value={notificationsRoute}
+            icon={<Bell size={24} />}
           />
           <BottomNavigationAction value="/profile" icon={<User size={24} />} />
         </BottomNavigation>
