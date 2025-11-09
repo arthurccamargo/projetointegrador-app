@@ -24,11 +24,22 @@ import {
   BatteryFull,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 export default function StartPageWeb() {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const benefitsRef = React.useRef<HTMLDivElement>(null);
+  const stepsRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToBenefits = () => {
+    benefitsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const scrollToSteps = () => {
+    stepsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const features = [
     {
@@ -225,6 +236,7 @@ export default function StartPageWeb() {
 
       {/* Como o HelpHub Funciona */}
       <Box
+        ref={stepsRef}
         sx={{
           py: { xs: 10, md: 14 },
           bgcolor: theme.palette.background.default,
@@ -243,7 +255,6 @@ export default function StartPageWeb() {
               Três passos simples para começar a fazer diferença
             </Typography>
           </Box>
-
           <Box
             sx={{
               display: "flex",
@@ -643,8 +654,9 @@ export default function StartPageWeb() {
 
       {/* Benefits */}
       <Box
+        ref={benefitsRef}
         sx={{
-          py: { xs: 10, md: 14 },
+          py: { xs: 6 },
           bgcolor: theme.palette.background.default,
         }}
       >
@@ -863,10 +875,15 @@ export default function StartPageWeb() {
                     variant="body2"
                     component="a"
                     href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToBenefits();
+                    }}
                     sx={{
                       color: "inherit",
                       opacity: 0.8,
                       textDecoration: "none",
+                      cursor: "pointer",
                       "&:hover": { color: theme.palette.secondary.main },
                     }}
                   >
@@ -886,10 +903,15 @@ export default function StartPageWeb() {
                     variant="body2"
                     component="a"
                     href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSteps();
+                    }}
                     sx={{
                       color: "inherit",
                       opacity: 0.8,
                       textDecoration: "none",
+                      cursor: "pointer",
                       "&:hover": { color: theme.palette.secondary.main },
                     }}
                   >
