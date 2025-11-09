@@ -177,7 +177,7 @@ export default function StartPageWeb() {
                 variant="contained"
                 size="large"
                 endIcon={<ArrowForward />}
-                onClick={() => navigate('/sign-up')}
+                onClick={() => navigate("/sign-up")}
                 sx={{
                   bgcolor: theme.palette.secondary.main,
                   color: theme.palette.secondary.contrastText,
@@ -638,6 +638,7 @@ export default function StartPageWeb() {
                   variant="contained"
                   size="large"
                   endIcon={<ArrowForward />}
+                  onClick={() => navigate("/sign-up")}
                   sx={{
                     bgcolor: theme.palette.primary.main,
                     color: theme.palette.primary.contrastText,
@@ -682,13 +683,29 @@ export default function StartPageWeb() {
             </Typography>
           </Box>
 
-          <Grid container spacing={3}>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
             {benefits.map((benefit, i) => (
-              <Grid item xs={12} sm={6} lg={4} key={i}>
+              <Box
+                key={i}
+                sx={{
+                  width: { xs: "100%", sm: "33.3333%" },
+                  p: 2,
+                  display: "flex",
+                }}
+              >
                 <Card
                   elevation={0}
                   sx={{
-                    height: "100%",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
                     bgcolor: theme.palette.background.paper,
                     border: "1px solid",
                     borderColor:
@@ -696,9 +713,10 @@ export default function StartPageWeb() {
                         ? "rgba(255, 255, 255, 0.12)"
                         : "rgba(0, 0, 0, 0.12)",
                     borderRadius: 3,
-                    transition: "border-color 0.3s",
+                    transition: "border-color 0.3s, transform 0.18s",
                     "&:hover": {
                       borderColor: theme.palette.secondary.main,
+                      transform: "translateY(-4px)",
                     },
                   }}
                 >
@@ -732,9 +750,9 @@ export default function StartPageWeb() {
                     </Typography>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
@@ -790,6 +808,7 @@ export default function StartPageWeb() {
               variant="contained"
               size="large"
               endIcon={<ArrowForward />}
+              onClick={() => navigate("/sign-up")}
               sx={{
                 bgcolor: theme.palette.secondary.main,
                 color: theme.palette.secondary.contrastText,
@@ -843,14 +862,6 @@ export default function StartPageWeb() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Security />
               <span>100% Seguro e Confiável</span>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <People />
-              <span>+10k Voluntários Ativos</span>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <TrackChanges />
-              <span>+500 ONGs Parceiras</span>
             </Box>
           </Stack>
         </Container>
