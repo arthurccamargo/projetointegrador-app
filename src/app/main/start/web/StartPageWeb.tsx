@@ -37,15 +37,15 @@ export default function StartPageWeb() {
     },
     {
       title: "Gestão Simplificada",
-      description: "Acompanhe suas candidaturas e doações em tempo real",
+      description: "Acompanhe suas candidaturas em tempo real",
     },
     {
-      title: "Comunicação Direta",
-      description: "Chat integrado com ONGs e outros voluntários",
+      title: "Confiabilidade Garantida",
+      description: "As ONGs são verificadas para sua segurança",
     },
     {
-      title: "Impacto Visível",
-      description: "Veja o resultado concreto de suas ações",
+      title: "Avaliações e Feedbacks",
+      description: "Veja avaliações de outros voluntários",
     },
   ];
 
@@ -60,25 +60,25 @@ export default function StartPageWeb() {
       icon: <Security sx={{ fontSize: 32 }} />,
       title: "Avaliações Confiáveis",
       description:
-        "Avaliações verificadas de voluntários e ONGs criam um ambiente de confiança e segurança.",
+        "Avaliações verificadas de voluntários criam um ambiente de confiança e segurança.",
     },
     {
       icon: <FlashOn sx={{ fontSize: 32 }} />,
-      title: "Comunicação Facilitada",
+      title: "Busca Rápida e Eficiente",
       description:
-        "Chat integrado e notificações mantêm voluntários e ONGs sempre conectados e informados.",
+        "Ferramentas de busca avançadas ajudam você a encontrar oportunidades que realmente importam.",
     },
     {
       icon: <Favorite sx={{ fontSize: 32 }} />,
       title: "Impacto Mensurável",
       description:
-        "Acompanhe e visualize o impacto real que suas ações e doações geram nas comunidades.",
+        "Acompanhe e visualize o impacto real que suas ações geram nas comunidades.",
     },
     {
       icon: <People sx={{ fontSize: 32 }} />,
-      title: "Comunidade Engajada",
+      title: "Conexão com ONGs",
       description:
-        "Conecte-se com pessoas que compartilham seus valores e causas que você apoiar.",
+        "Conecte-se com ONGs para colaborar em causas que você valoriza.",
     },
     {
       icon: <TrackChanges sx={{ fontSize: 32 }} />,
@@ -804,27 +804,7 @@ export default function StartPageWeb() {
                 },
               }}
             >
-              Começar Agora
-            </Button>
-            <Button
-              variant="outlined"
-              size="large"
-              sx={{
-                borderColor: theme.palette.primary.contrastText,
-                color: theme.palette.primary.contrastText,
-                px: 4,
-                py: 1.5,
-                fontSize: { xs: "1rem", md: "1.125rem" },
-                fontWeight: 600,
-                borderRadius: 3,
-                borderWidth: 2,
-                "&:hover": {
-                  borderWidth: 2,
-                  bgcolor: "rgba(255, 255, 255, 0.1)",
-                },
-              }}
-            >
-              Saiba Mais
+              Quero Fazer a Diferença
             </Button>
           </Stack>
 
@@ -841,6 +821,14 @@ export default function StartPageWeb() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Security />
               <span>100% Seguro e Confiável</span>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Favorite />
+              <span>Feito com ❤️ para a Comunidade</span>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <FlashOn />
+              <span>Rápido e Fácil de Usar</span>
             </Box>
           </Stack>
         </Container>
