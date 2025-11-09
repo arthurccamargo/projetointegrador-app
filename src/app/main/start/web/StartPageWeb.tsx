@@ -334,6 +334,7 @@ export default function StartPageWeb() {
       </Box>
 
       {/* App Showcase */}
+      {/* App Showcase */}
       <Box
         sx={{
           py: { xs: 10, md: 14 },
@@ -341,6 +342,7 @@ export default function StartPageWeb() {
         }}
       >
         <Container maxWidth="lg">
+          {/* Título e subtítulo */}
           <Box sx={{ textAlign: "center", mb: 8 }}>
             <Typography
               variant={isMobile ? "h4" : "h3"}
@@ -355,324 +357,287 @@ export default function StartPageWeb() {
             </Typography>
           </Box>
 
-          <Grid container spacing={6} alignItems="center">
+          {/* Container principal com mockup + features lado a lado */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: "center",
+              justifyContent: "center",
+              gap: { xs: 8, md: 12 },
+            }}
+          >
             {/* Phone Mockup */}
-            <Grid
-              item
-              xs={12}
-              md={6}
+            <Box
               sx={{
-                display: "flex",
-                justifyContent: { xs: "center", md: "flex-end" },
+                position: "relative",
+                width: { xs: 260, sm: 300, md: 320 },
+                flexShrink: 0,
               }}
             >
-              <Box sx={{ position: "relative", width: 320 }}>
-                <Paper
-                  elevation={8}
-                  sx={{
-                    bgcolor: theme.palette.primary.main,
-                    borderRadius: 6,
-                    p: 1.5,
-                    position: "relative",
-                    aspectRatio: "9/19.5",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      bgcolor: theme.palette.background.default,
-                      borderRadius: 4,
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {/* Phone header */}
-                    <Box
-                      sx={{
-                        bgcolor: theme.palette.primary.main,
-                        height: 32,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        px: 2,
-                        color: theme.palette.primary.contrastText,
-                        fontSize: "0.75rem",
-                      }}
-                    >
-                      <span>9:41</span>
-                      <BatteryFull sx={{ fontSize: 16 }} />
-                    </Box>
-                    {/* App content */}
-                    <Box
-                      sx={{
-                        flex: 1,
-                        p: 2,
-                        bgcolor: theme.palette.background.default,
-                        overflow: "auto",
-                      }}
-                    >
-                      <Box sx={{ mb: 2 }}>
-                        <Box
-                          sx={{
-                            height: 12,
-                            bgcolor: theme.palette.primary.main,
-                            borderRadius: 1,
-                            width: 96,
-                            mb: 1,
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            height: 8,
-                            bgcolor:
-                              theme.palette.mode === "dark"
-                                ? "rgba(255, 255, 255, 0.12)"
-                                : "rgba(0, 0, 0, 0.12)",
-                            borderRadius: 1,
-                            width: 128,
-                          }}
-                        />
-                      </Box>
-                      <Stack spacing={1.5}>
-                        <Paper
-                          sx={{
-                            bgcolor:
-                              theme.palette.mode === "dark"
-                                ? "rgba(250, 255, 180, 0.1)"
-                                : "rgba(250, 255, 180, 0.3)",
-                            p: 1.5,
-                            borderRadius: 2,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              height: 8,
-                              bgcolor:
-                                theme.palette.mode === "dark"
-                                  ? "rgba(34, 34, 59, 0.3)"
-                                  : "rgba(34, 34, 59, 0.2)",
-                              borderRadius: 1,
-                              width: 80,
-                              mb: 1,
-                            }}
-                          />
-                          <Box
-                            sx={{
-                              height: 6,
-                              bgcolor:
-                                theme.palette.mode === "dark"
-                                  ? "rgba(255, 255, 255, 0.12)"
-                                  : "rgba(0, 0, 0, 0.12)",
-                              borderRadius: 1,
-                              width: 96,
-                            }}
-                          />
-                        </Paper>
-                        <Paper
-                          sx={{
-                            bgcolor: theme.palette.background.paper,
-                            p: 1.5,
-                            borderRadius: 2,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              height: 8,
-                              bgcolor:
-                                theme.palette.mode === "dark"
-                                  ? "rgba(34, 34, 59, 0.3)"
-                                  : "rgba(34, 34, 59, 0.2)",
-                              borderRadius: 1,
-                              width: 112,
-                              mb: 1,
-                            }}
-                          />
-                          <Box
-                            sx={{
-                              height: 6,
-                              bgcolor:
-                                theme.palette.mode === "dark"
-                                  ? "rgba(255, 255, 255, 0.12)"
-                                  : "rgba(0, 0, 0, 0.12)",
-                              borderRadius: 1,
-                              width: 128,
-                            }}
-                          />
-                        </Paper>
-                        <Paper
-                          sx={{
-                            bgcolor: theme.palette.background.paper,
-                            p: 1.5,
-                            borderRadius: 2,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              height: 8,
-                              bgcolor:
-                                theme.palette.mode === "dark"
-                                  ? "rgba(34, 34, 59, 0.3)"
-                                  : "rgba(34, 34, 59, 0.2)",
-                              borderRadius: 1,
-                              width: 96,
-                              mb: 1,
-                            }}
-                          />
-                          <Box
-                            sx={{
-                              height: 6,
-                              bgcolor:
-                                theme.palette.mode === "dark"
-                                  ? "rgba(255, 255, 255, 0.12)"
-                                  : "rgba(0, 0, 0, 0.12)",
-                              borderRadius: 1,
-                              width: 112,
-                            }}
-                          />
-                        </Paper>
-                      </Stack>
-                    </Box>
-                    {/* Bottom nav */}
-                    <Box
-                      sx={{
-                        height: 64,
-                        borderTop: 1,
-                        borderColor:
-                          theme.palette.mode === "dark"
-                            ? "rgba(255, 255, 255, 0.12)"
-                            : "rgba(0, 0, 0, 0.12)",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        px: 1,
-                      }}
-                    >
-                      {[true, false, false, false].map((active, i) => (
-                        <Box
-                          key={i}
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            gap: 0.5,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              width: 20,
-                              height: 20,
-                              bgcolor: active
-                                ? theme.palette.secondary.main
-                                : theme.palette.mode === "dark"
-                                  ? "rgba(255, 255, 255, 0.3)"
-                                  : "rgba(0, 0, 0, 0.3)",
-                              borderRadius: 0.5,
-                            }}
-                          />
-                          {active && (
-                            <Box
-                              sx={{
-                                height: 4,
-                                bgcolor: theme.palette.primary.main,
-                                borderRadius: 1,
-                                width: 16,
-                              }}
-                            />
-                          )}
-                        </Box>
-                      ))}
-                    </Box>
-                  </Box>
-                </Paper>
+              <Paper
+                elevation={8}
+                sx={{
+                  bgcolor: theme.palette.primary.main,
+                  borderRadius: 6,
+                  p: 1.5,
+                  position: "relative",
+                  aspectRatio: "9/19.5",
+                }}
+              >
                 <Box
                   sx={{
-                    position: "absolute",
-                    inset: -16,
-                    background: `linear-gradient(to right, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
-                    borderRadius: 6,
-                    filter: "blur(40px)",
-                    opacity: 0.2,
-                    zIndex: -1,
-                  }}
-                />
-              </Box>
-            </Grid>
-
-            {/* Features List */}
-            <Grid item xs={12} md={6}>
-              <Box>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    fontWeight: 700,
-                    color: theme.palette.text.primary,
-                    mb: 1,
+                    bgcolor: theme.palette.background.default,
+                    borderRadius: 4,
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    overflow: "hidden",
                   }}
                 >
-                  Tudo que você precisa em um app
-                </Typography>
-                <Typography color="text.secondary" sx={{ mb: 3 }}>
-                  HelpHub oferece uma experiência completa e moderna para
-                  conectar você com oportunidades de impacto social.
-                </Typography>
+                  {/* Phone header */}
+                  <Box
+                    sx={{
+                      bgcolor: theme.palette.primary.main,
+                      height: 32,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      px: 2,
+                      color: theme.palette.primary.contrastText,
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    <span>9:41</span>
+                    <BatteryFull sx={{ fontSize: 16 }} />
+                  </Box>
 
-                <Stack spacing={2} sx={{ mb: 4 }}>
-                  {features.map((feature, i) => (
-                    <Box key={i} sx={{ display: "flex", gap: 2 }}>
-                      <Avatar
+                  {/* App content */}
+                  <Box
+                    sx={{
+                      flex: 1,
+                      p: 2,
+                      bgcolor: theme.palette.background.default,
+                      overflow: "auto",
+                    }}
+                  >
+                    <Box sx={{ mb: 2 }}>
+                      <Box
                         sx={{
-                          bgcolor: theme.palette.secondary.main,
-                          color: theme.palette.secondary.contrastText,
-                          width: 40,
-                          height: 40,
+                          height: 12,
+                          bgcolor: theme.palette.primary.main,
+                          borderRadius: 1,
+                          width: 96,
+                          mb: 1,
                         }}
-                      >
-                        <Check sx={{ fontWeight: "bold" }} />
-                      </Avatar>
-                      <Box>
-                        <Typography
-                          variant="subtitle1"
+                      />
+                      <Box
+                        sx={{
+                          height: 8,
+                          bgcolor:
+                            theme.palette.mode === "dark"
+                              ? "rgba(255, 255, 255, 0.12)"
+                              : "rgba(0, 0, 0, 0.12)",
+                          borderRadius: 1,
+                          width: 128,
+                        }}
+                      />
+                    </Box>
+
+                    <Stack spacing={1.5}>
+                      {[...Array(3)].map((_, i) => (
+                        <Paper
+                          key={i}
                           sx={{
-                            fontWeight: 600,
-                            color: theme.palette.text.primary,
+                            bgcolor:
+                              i === 0
+                                ? theme.palette.mode === "dark"
+                                  ? "rgba(250, 255, 180, 0.1)"
+                                  : "rgba(250, 255, 180, 0.3)"
+                                : theme.palette.background.paper,
+                            p: 1.5,
+                            borderRadius: 2,
                           }}
                         >
-                          {feature.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {feature.description}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Stack>
+                          <Box
+                            sx={{
+                              height: 8,
+                              bgcolor:
+                                theme.palette.mode === "dark"
+                                  ? "rgba(34, 34, 59, 0.3)"
+                                  : "rgba(34, 34, 59, 0.2)",
+                              borderRadius: 1,
+                              width: 96 + i * 16,
+                              mb: 1,
+                            }}
+                          />
+                          <Box
+                            sx={{
+                              height: 6,
+                              bgcolor:
+                                theme.palette.mode === "dark"
+                                  ? "rgba(255, 255, 255, 0.12)"
+                                  : "rgba(0, 0, 0, 0.12)",
+                              borderRadius: 1,
+                              width: 112 + i * 16,
+                            }}
+                          />
+                        </Paper>
+                      ))}
+                    </Stack>
+                  </Box>
 
-                <Button
-                  variant="contained"
-                  size="large"
-                  endIcon={<ArrowForward />}
-                  onClick={() => navigate("/sign-up")}
-                  sx={{
-                    bgcolor: theme.palette.primary.main,
-                    color: theme.palette.primary.contrastText,
-                    px: 3,
-                    py: 1.5,
-                    borderRadius: 3,
-                    fontWeight: 600,
-                    "&:hover": {
-                      bgcolor:
-                        theme.palette.primary.dark ||
-                        theme.palette.primary.main,
-                      filter: "brightness(0.9)",
-                    },
-                  }}
-                >
-                  Começar Agora
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
+                  {/* Bottom nav */}
+                  <Box
+                    sx={{
+                      height: 64,
+                      borderTop: 1,
+                      borderColor:
+                        theme.palette.mode === "dark"
+                          ? "rgba(255, 255, 255, 0.12)"
+                          : "rgba(0, 0, 0, 0.12)",
+                      display: "flex",
+                      justifyContent: "space-around",
+                      alignItems: "center",
+                      px: 1,
+                    }}
+                  >
+                    {[true, false, false, false].map((active, i) => (
+                      <Box
+                        key={i}
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: 0.5,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: 20,
+                            height: 20,
+                            bgcolor: active
+                              ? theme.palette.secondary.main
+                              : theme.palette.mode === "dark"
+                                ? "rgba(255, 255, 255, 0.3)"
+                                : "rgba(0, 0, 0, 0.3)",
+                            borderRadius: 0.5,
+                          }}
+                        />
+                        {active && (
+                          <Box
+                            sx={{
+                              height: 4,
+                              bgcolor: theme.palette.primary.main,
+                              borderRadius: 1,
+                              width: 16,
+                            }}
+                          />
+                        )}
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              </Paper>
+
+              {/* Glow */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: -16,
+                  background: `linear-gradient(to right, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
+                  borderRadius: 6,
+                  filter: "blur(40px)",
+                  opacity: 0.2,
+                  zIndex: -1,
+                }}
+              />
+            </Box>
+
+            {/* Features list */}
+            <Box
+              sx={{
+                maxWidth: 460,
+                textAlign: { xs: "center", md: "left" },
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 700,
+                  color: theme.palette.text.primary,
+                  mb: 1,
+                }}
+              >
+                Tudo que você precisa em um app
+              </Typography>
+              <Typography color="text.secondary" sx={{ mb: 3 }}>
+                HelpHub oferece uma experiência completa e moderna para conectar
+                você com oportunidades de impacto social.
+              </Typography>
+
+              <Stack spacing={2} sx={{ mb: 4 }}>
+                {features.map((feature, i) => (
+                  <Box
+                    key={i}
+                    sx={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 2,
+                      justifyContent: { xs: "center", md: "flex-start" },
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: theme.palette.secondary.main,
+                        color: theme.palette.secondary.contrastText,
+                        width: 40,
+                        height: 40,
+                      }}
+                    >
+                      <Check sx={{ fontWeight: "bold" }} />
+                    </Avatar>
+                    <Box>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          fontWeight: 600,
+                          color: theme.palette.text.primary,
+                        }}
+                      >
+                        {feature.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {feature.description}
+                      </Typography>
+                    </Box>
+                  </Box>
+                ))}
+              </Stack>
+
+              <Button
+                variant="contained"
+                size="large"
+                endIcon={<ArrowForward />}
+                onClick={() => navigate("/sign-up")}
+                sx={{
+                  bgcolor: theme.palette.primary.main,
+                  color: theme.palette.primary.contrastText,
+                  px: 3,
+                  py: 1.5,
+                  borderRadius: 3,
+                  fontWeight: 600,
+                  "&:hover": {
+                    bgcolor:
+                      theme.palette.primary.dark || theme.palette.primary.main,
+                    filter: "brightness(0.9)",
+                  },
+                }}
+              >
+                Começar Agora
+              </Button>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
