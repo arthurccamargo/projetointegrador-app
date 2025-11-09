@@ -223,7 +223,7 @@ export default function StartPageWeb() {
       </Box>
       */}
 
-      {/* How it Works */}
+      {/* Como o HelpHub Funciona */}
       <Box
         sx={{
           py: { xs: 10, md: 14 },
@@ -244,7 +244,15 @@ export default function StartPageWeb() {
             </Typography>
           </Box>
 
-          <Grid container spacing={4}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 4,
+            }}
+          >
             {[
               {
                 step: 1,
@@ -265,57 +273,63 @@ export default function StartPageWeb() {
                   "Conexões são feitas, voluntários e ONGs colaboram, e o impacto social real começa a acontecer.",
               },
             ].map((item) => (
-              <Grid item xs={12} md={4} key={item.step}>
-                <Card
-                  elevation={0}
+              <Box
+                key={item.step}
+                sx={{
+                  width: { xs: 250, sm: 280, md: 330 },
+                  height: { xs: 250, sm: 280, md: 300 },
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  bgcolor: theme.palette.background.paper,
+                  border: "2px solid",
+                  borderColor:
+                    theme.palette.mode === "dark"
+                      ? "rgba(255, 255, 255, 0.12)"
+                      : "rgba(0, 0, 0, 0.12)",
+                  borderRadius: 4,
+                  transition: "all 0.3s",
+                  "&:hover": {
+                    boxShadow: 6,
+                    borderColor: theme.palette.secondary.main,
+                    transform: "translateY(-4px)",
+                  },
+                }}
+              >
+                <Avatar
                   sx={{
-                    height: "100%",
-                    bgcolor: theme.palette.background.paper,
-                    border: "2px solid",
-                    borderColor:
-                      theme.palette.mode === "dark"
-                        ? "rgba(255, 255, 255, 0.12)"
-                        : "rgba(0, 0, 0, 0.12)",
-                    borderRadius: 4,
-                    transition: "all 0.3s",
-                    "&:hover": {
-                      boxShadow: 6,
-                      borderColor: theme.palette.secondary.main,
-                    },
+                    width: 64,
+                    height: 64,
+                    bgcolor: theme.palette.primary.main,
+                    color: theme.palette.secondary.main,
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    mb: 2,
                   }}
                 >
-                  <CardContent sx={{ p: 3 }}>
-                    <Avatar
-                      sx={{
-                        width: 64,
-                        height: 64,
-                        bgcolor: theme.palette.primary.main,
-                        color: theme.palette.secondary.main,
-                        fontSize: "1.5rem",
-                        fontWeight: 700,
-                        mb: 2,
-                      }}
-                    >
-                      {item.step}
-                    </Avatar>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        color: theme.palette.text.primary,
-                        fontWeight: 600,
-                        mb: 1,
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-                    <Typography color="text.secondary">
-                      {item.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
+                  {item.step}
+                </Avatar>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: theme.palette.text.primary,
+                    fontWeight: 600,
+                    mb: 1,
+                  }}
+                >
+                  {item.title}
+                </Typography>
+                <Typography
+                  color="text.secondary"
+                  sx={{ px: 2, fontSize: "0.95rem" }}
+                >
+                  {item.description}
+                </Typography>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
