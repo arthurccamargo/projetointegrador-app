@@ -10,8 +10,8 @@ import {
   Stack,
   Avatar,
   useTheme,
-  useMediaQuery
-} from '@mui/material';
+  useMediaQuery,
+} from "@mui/material";
 import {
   Favorite,
   People,
@@ -21,12 +21,14 @@ import {
   Security,
   Public,
   Check,
-  BatteryFull
-} from '@mui/icons-material';
+  BatteryFull,
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 export default function StartPageWeb() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const features = [
     {
@@ -51,145 +53,157 @@ export default function StartPageWeb() {
     {
       icon: <Public sx={{ fontSize: 32 }} />,
       title: "Centralização das Oportunidades",
-      description: "Encontre todas as oportunidades de voluntariado em um único lugar, organizado e fácil de filtrar."
+      description:
+        "Encontre todas as oportunidades de voluntariado em um único lugar, organizado e fácil de filtrar.",
     },
     {
       icon: <Security sx={{ fontSize: 32 }} />,
       title: "Avaliações Confiáveis",
-      description: "Avaliações verificadas de voluntários e ONGs criam um ambiente de confiança e segurança."
+      description:
+        "Avaliações verificadas de voluntários e ONGs criam um ambiente de confiança e segurança.",
     },
     {
       icon: <FlashOn sx={{ fontSize: 32 }} />,
       title: "Comunicação Facilitada",
-      description: "Chat integrado e notificações mantêm voluntários e ONGs sempre conectados e informados."
+      description:
+        "Chat integrado e notificações mantêm voluntários e ONGs sempre conectados e informados.",
     },
     {
       icon: <Favorite sx={{ fontSize: 32 }} />,
       title: "Impacto Mensurável",
-      description: "Acompanhe e visualize o impacto real que suas ações e doações geram nas comunidades."
+      description:
+        "Acompanhe e visualize o impacto real que suas ações e doações geram nas comunidades.",
     },
     {
       icon: <People sx={{ fontSize: 32 }} />,
       title: "Comunidade Engajada",
-      description: "Conecte-se com pessoas que compartilham seus valores e causas que você apoiar."
+      description:
+        "Conecte-se com pessoas que compartilham seus valores e causas que você apoiar.",
     },
     {
       icon: <TrackChanges sx={{ fontSize: 32 }} />,
       title: "Fácil de Usar",
-      description: "Interface intuitiva e mobile-first que funciona perfeitamente em qualquer dispositivo."
+      description:
+        "Interface intuitiva e mobile-first que funciona perfeitamente em qualquer dispositivo.",
     },
   ];
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'white' }}>
+    <Box sx={{ minHeight: "100vh", bgcolor: theme.palette.background.default }}>
       {/* Hero Section */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 50%, #0d47a1 100%)',
-          color: 'white',
-          position: 'relative',
-          overflow: 'hidden',
-          py: { xs: 10, md: 14 }
+          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark || theme.palette.primary.main} 100%)`,
+          color: theme.palette.primary.contrastText,
+          position: "relative",
+          overflow: "hidden",
+          py: { xs: 10, md: 14 },
         }}
       >
         {/* Decorative background */}
         <Box
           sx={{
-            position: 'absolute',
+            position: "absolute",
             inset: 0,
             opacity: 0.1,
-            '&::before, &::after': {
+            "&::before, &::after": {
               content: '""',
-              position: 'absolute',
+              position: "absolute",
               width: 288,
               height: 288,
-              bgcolor: '#ff9800',
-              borderRadius: '50%',
-              filter: 'blur(60px)',
-              mixBlendMode: 'multiply'
+              bgcolor: theme.palette.secondary.main,
+              borderRadius: "50%",
+              filter: "blur(60px)",
+              mixBlendMode: "multiply",
             },
-            '&::before': {
+            "&::before": {
               top: 40,
-              right: 40
+              right: 40,
             },
-            '&::after': {
+            "&::after": {
               bottom: -32,
-              left: 40
-            }
+              left: 40,
+            },
           }}
         />
 
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Box sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+          <Box
+            sx={{
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
             <Box sx={{ maxWidth: 900 }}>
               <Typography
-                variant={isMobile ? 'h3' : 'h2'}
+                variant={isMobile ? "h3" : "h2"}
                 component="h1"
                 sx={{
                   fontWeight: 700,
                   mb: 2,
-                  lineHeight: 1.2
+                  lineHeight: 1.2,
                 }}
               >
                 Conecte-se a causas reais.
-                <Box component="span" sx={{ display: 'block', color: '#ff9800', mt: 1 }}>
+                <Box
+                  component="span"
+                  sx={{
+                    display: "block",
+                    color: theme.palette.secondary.main,
+                    mt: 1,
+                  }}
+                >
                   Faça a diferença
                 </Box>
               </Typography>
-              <Typography variant="h6" sx={{ opacity: 0.95, maxWidth: 800, mx: 'auto' }}>
-                Uma plataforma que une ONGs e voluntários em um só lugar. Transforme sua vontade de ajudar em ações
-                concretas.
+              <Typography
+                variant="h6"
+                sx={{ opacity: 0.95, maxWidth: 800, mx: "auto" }}
+              >
+                Uma plataforma que une ONGs e voluntários em um só lugar.
+                Transforme sua vontade de ajudar em ações concretas.
               </Typography>
             </Box>
 
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              sx={{ pt: 2, width: { xs: "100%", sm: "auto" } }}
+            >
               <Button
                 variant="contained"
                 size="large"
                 endIcon={<ArrowForward />}
+                onClick={() => navigate('/sign-up')}
                 sx={{
-                  bgcolor: '#ff9800',
-                  color: 'white',
+                  bgcolor: theme.palette.secondary.main,
+                  color: theme.palette.secondary.contrastText,
                   px: 4,
                   py: 1.5,
-                  fontSize: { xs: '1rem', md: '1.125rem' },
+                  fontSize: { xs: "1rem", md: "1.125rem" },
                   fontWeight: 600,
                   borderRadius: 3,
                   boxShadow: 3,
-                  '&:hover': {
-                    bgcolor: '#f57c00'
-                  }
+                  "&:hover": {
+                    bgcolor:
+                      theme.palette.secondary.dark ||
+                      theme.palette.secondary.main,
+                    filter: "brightness(0.9)",
+                  },
                 }}
               >
-                Quero Ajudar
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                sx={{
-                  borderColor: 'white',
-                  color: 'white',
-                  px: 4,
-                  py: 1.5,
-                  fontSize: { xs: '1rem', md: '1.125rem' },
-                  fontWeight: 600,
-                  borderRadius: 3,
-                  borderWidth: 2,
-                  '&:hover': {
-                    borderWidth: 2,
-                    bgcolor: 'rgba(255, 255, 255, 0.1)'
-                  }
-                }}
-              >
-                Sou uma ONG
+                Quero Fazer a Diferença
               </Button>
             </Stack>
           </Box>
         </Container>
       </Box>
 
-      {/* Hero Image */}
-      <Box sx={{ py: { xs: 6, md: 8 }, bgcolor: 'white' }}>
+      {/* Hero Image 
+      <Box sx={{ py: { xs: 6, md: 8 }, bgcolor: theme.palette.background.default }}>
         <Container maxWidth="lg">
           <Box
             component="img"
@@ -207,12 +221,22 @@ export default function StartPageWeb() {
           />
         </Container>
       </Box>
+      */}
 
       {/* How it Works */}
-      <Box sx={{ py: { xs: 10, md: 14 }, bgcolor: 'white' }}>
+      <Box
+        sx={{
+          py: { xs: 10, md: 14 },
+          bgcolor: theme.palette.background.default,
+        }}
+      >
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 8 }}>
-            <Typography variant={isMobile ? 'h4' : 'h3'} component="h2" sx={{ fontWeight: 700, color: '#1976d2', mb: 2 }}>
+          <Box sx={{ textAlign: "center", mb: 8 }}>
+            <Typography
+              variant={isMobile ? "h4" : "h3"}
+              component="h2"
+              sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 2 }}
+            >
               Como o HelpHub Funciona
             </Typography>
             <Typography variant="h6" color="text.secondary">
@@ -225,32 +249,39 @@ export default function StartPageWeb() {
               {
                 step: 1,
                 title: "ONGs Cadastram Ações",
-                description: "Organizações publicam suas oportunidades de voluntariado, detalham as necessidades e compartilham seu propósito social."
+                description:
+                  "Organizações publicam suas oportunidades de voluntariado, detalham as necessidades e compartilham seu propósito social.",
               },
               {
                 step: 2,
                 title: "Voluntários se Candidatam",
-                description: "Pessoas interessadas em ajudar encontram oportunidades que combinam com seus interesses e disponibilidade."
+                description:
+                  "Pessoas interessadas em ajudar encontram oportunidades que combinam com seus interesses e disponibilidade.",
               },
               {
                 step: 3,
                 title: "Ajudas Acontecem",
-                description: "Conexões são feitas, voluntários e ONGs colaboram, e o impacto social real começa a acontecer."
-              }
+                description:
+                  "Conexões são feitas, voluntários e ONGs colaboram, e o impacto social real começa a acontecer.",
+              },
             ].map((item) => (
               <Grid item xs={12} md={4} key={item.step}>
                 <Card
                   elevation={0}
                   sx={{
-                    height: '100%',
-                    border: '2px solid',
-                    borderColor: 'grey.200',
+                    height: "100%",
+                    bgcolor: theme.palette.background.paper,
+                    border: "2px solid",
+                    borderColor:
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 255, 255, 0.12)"
+                        : "rgba(0, 0, 0, 0.12)",
                     borderRadius: 4,
-                    transition: 'all 0.3s',
-                    '&:hover': {
+                    transition: "all 0.3s",
+                    "&:hover": {
                       boxShadow: 6,
-                      borderColor: '#ff9800'
-                    }
+                      borderColor: theme.palette.secondary.main,
+                    },
                   }}
                 >
                   <CardContent sx={{ p: 3 }}>
@@ -258,16 +289,23 @@ export default function StartPageWeb() {
                       sx={{
                         width: 64,
                         height: 64,
-                        bgcolor: '#1976d2',
-                        color: '#ff9800',
-                        fontSize: '1.5rem',
+                        bgcolor: theme.palette.primary.main,
+                        color: theme.palette.secondary.main,
+                        fontSize: "1.5rem",
                         fontWeight: 700,
-                        mb: 2
+                        mb: 2,
                       }}
                     >
                       {item.step}
                     </Avatar>
-                    <Typography variant="h6" sx={{ color: '#1976d2', fontWeight: 600, mb: 1 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: theme.palette.text.primary,
+                        fontWeight: 600,
+                        mb: 1,
+                      }}
+                    >
                       {item.title}
                     </Typography>
                     <Typography color="text.secondary">
@@ -285,66 +323,249 @@ export default function StartPageWeb() {
       <Box
         sx={{
           py: { xs: 10, md: 14 },
-          background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, white 50%, rgba(255, 152, 0, 0.05) 100%)'
+          bgcolor: theme.palette.background.paper,
         }}
       >
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 8 }}>
-            <Typography variant={isMobile ? 'h4' : 'h3'} component="h2" sx={{ fontWeight: 700, color: '#1976d2', mb: 2 }}>
+          <Box sx={{ textAlign: "center", mb: 8 }}>
+            <Typography
+              variant={isMobile ? "h4" : "h3"}
+              component="h2"
+              sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 2 }}
+            >
               Uma Plataforma Moderna e Intuitiva
             </Typography>
             <Typography variant="h6" color="text.secondary">
-              Design mobile-first pensado para você. Simples, rápido e eficiente.
+              Design mobile-first pensado para você. Simples, rápido e
+              eficiente.
             </Typography>
           </Box>
 
           <Grid container spacing={6} alignItems="center">
             {/* Phone Mockup */}
-            <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-end' } }}>
-              <Box sx={{ position: 'relative', width: 320 }}>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", md: "flex-end" },
+              }}
+            >
+              <Box sx={{ position: "relative", width: 320 }}>
                 <Paper
                   elevation={8}
                   sx={{
-                    bgcolor: 'black',
+                    bgcolor: theme.palette.primary.main,
                     borderRadius: 6,
                     p: 1.5,
-                    position: 'relative',
-                    aspectRatio: '9/19.5'
+                    position: "relative",
+                    aspectRatio: "9/19.5",
                   }}
                 >
-                  <Box sx={{ bgcolor: 'white', borderRadius: 4, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                  <Box
+                    sx={{
+                      bgcolor: theme.palette.background.default,
+                      borderRadius: 4,
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      overflow: "hidden",
+                    }}
+                  >
                     {/* Phone header */}
-                    <Box sx={{ bgcolor: '#1976d2', height: 32, display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, color: 'white', fontSize: '0.75rem' }}>
+                    <Box
+                      sx={{
+                        bgcolor: theme.palette.primary.main,
+                        height: 32,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        px: 2,
+                        color: theme.palette.primary.contrastText,
+                        fontSize: "0.75rem",
+                      }}
+                    >
                       <span>9:41</span>
                       <BatteryFull sx={{ fontSize: 16 }} />
                     </Box>
                     {/* App content */}
-                    <Box sx={{ flex: 1, p: 2, bgcolor: 'white', overflow: 'auto' }}>
+                    <Box
+                      sx={{
+                        flex: 1,
+                        p: 2,
+                        bgcolor: theme.palette.background.default,
+                        overflow: "auto",
+                      }}
+                    >
                       <Box sx={{ mb: 2 }}>
-                        <Box sx={{ height: 12, bgcolor: '#1976d2', borderRadius: 1, width: 96, mb: 1 }} />
-                        <Box sx={{ height: 8, bgcolor: 'grey.200', borderRadius: 1, width: 128 }} />
+                        <Box
+                          sx={{
+                            height: 12,
+                            bgcolor: theme.palette.primary.main,
+                            borderRadius: 1,
+                            width: 96,
+                            mb: 1,
+                          }}
+                        />
+                        <Box
+                          sx={{
+                            height: 8,
+                            bgcolor:
+                              theme.palette.mode === "dark"
+                                ? "rgba(255, 255, 255, 0.12)"
+                                : "rgba(0, 0, 0, 0.12)",
+                            borderRadius: 1,
+                            width: 128,
+                          }}
+                        />
                       </Box>
                       <Stack spacing={1.5}>
-                        <Paper sx={{ bgcolor: 'rgba(255, 152, 0, 0.2)', p: 1.5, borderRadius: 2 }}>
-                          <Box sx={{ height: 8, bgcolor: 'rgba(25, 118, 210, 0.3)', borderRadius: 1, width: 80, mb: 1 }} />
-                          <Box sx={{ height: 6, bgcolor: 'grey.200', borderRadius: 1, width: 96 }} />
+                        <Paper
+                          sx={{
+                            bgcolor:
+                              theme.palette.mode === "dark"
+                                ? "rgba(250, 255, 180, 0.1)"
+                                : "rgba(250, 255, 180, 0.3)",
+                            p: 1.5,
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              height: 8,
+                              bgcolor:
+                                theme.palette.mode === "dark"
+                                  ? "rgba(34, 34, 59, 0.3)"
+                                  : "rgba(34, 34, 59, 0.2)",
+                              borderRadius: 1,
+                              width: 80,
+                              mb: 1,
+                            }}
+                          />
+                          <Box
+                            sx={{
+                              height: 6,
+                              bgcolor:
+                                theme.palette.mode === "dark"
+                                  ? "rgba(255, 255, 255, 0.12)"
+                                  : "rgba(0, 0, 0, 0.12)",
+                              borderRadius: 1,
+                              width: 96,
+                            }}
+                          />
                         </Paper>
-                        <Paper sx={{ bgcolor: 'grey.100', p: 1.5, borderRadius: 2 }}>
-                          <Box sx={{ height: 8, bgcolor: 'rgba(25, 118, 210, 0.3)', borderRadius: 1, width: 112, mb: 1 }} />
-                          <Box sx={{ height: 6, bgcolor: 'grey.200', borderRadius: 1, width: 128 }} />
+                        <Paper
+                          sx={{
+                            bgcolor: theme.palette.background.paper,
+                            p: 1.5,
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              height: 8,
+                              bgcolor:
+                                theme.palette.mode === "dark"
+                                  ? "rgba(34, 34, 59, 0.3)"
+                                  : "rgba(34, 34, 59, 0.2)",
+                              borderRadius: 1,
+                              width: 112,
+                              mb: 1,
+                            }}
+                          />
+                          <Box
+                            sx={{
+                              height: 6,
+                              bgcolor:
+                                theme.palette.mode === "dark"
+                                  ? "rgba(255, 255, 255, 0.12)"
+                                  : "rgba(0, 0, 0, 0.12)",
+                              borderRadius: 1,
+                              width: 128,
+                            }}
+                          />
                         </Paper>
-                        <Paper sx={{ bgcolor: 'grey.100', p: 1.5, borderRadius: 2 }}>
-                          <Box sx={{ height: 8, bgcolor: 'rgba(25, 118, 210, 0.3)', borderRadius: 1, width: 96, mb: 1 }} />
-                          <Box sx={{ height: 6, bgcolor: 'grey.200', borderRadius: 1, width: 112 }} />
+                        <Paper
+                          sx={{
+                            bgcolor: theme.palette.background.paper,
+                            p: 1.5,
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              height: 8,
+                              bgcolor:
+                                theme.palette.mode === "dark"
+                                  ? "rgba(34, 34, 59, 0.3)"
+                                  : "rgba(34, 34, 59, 0.2)",
+                              borderRadius: 1,
+                              width: 96,
+                              mb: 1,
+                            }}
+                          />
+                          <Box
+                            sx={{
+                              height: 6,
+                              bgcolor:
+                                theme.palette.mode === "dark"
+                                  ? "rgba(255, 255, 255, 0.12)"
+                                  : "rgba(0, 0, 0, 0.12)",
+                              borderRadius: 1,
+                              width: 112,
+                            }}
+                          />
                         </Paper>
                       </Stack>
                     </Box>
                     {/* Bottom nav */}
-                    <Box sx={{ height: 64, borderTop: 1, borderColor: 'grey.200', display: 'flex', justifyContent: 'space-around', alignItems: 'center', px: 1 }}>
+                    <Box
+                      sx={{
+                        height: 64,
+                        borderTop: 1,
+                        borderColor:
+                          theme.palette.mode === "dark"
+                            ? "rgba(255, 255, 255, 0.12)"
+                            : "rgba(0, 0, 0, 0.12)",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        px: 1,
+                      }}
+                    >
                       {[true, false, false, false].map((active, i) => (
-                        <Box key={i} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-                          <Box sx={{ width: 20, height: 20, bgcolor: active ? '#ff9800' : 'grey.300', borderRadius: 0.5 }} />
-                          {active && <Box sx={{ height: 4, bgcolor: '#1976d2', borderRadius: 1, width: 16 }} />}
+                        <Box
+                          key={i}
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              width: 20,
+                              height: 20,
+                              bgcolor: active
+                                ? theme.palette.secondary.main
+                                : theme.palette.mode === "dark"
+                                  ? "rgba(255, 255, 255, 0.3)"
+                                  : "rgba(0, 0, 0, 0.3)",
+                              borderRadius: 0.5,
+                            }}
+                          />
+                          {active && (
+                            <Box
+                              sx={{
+                                height: 4,
+                                bgcolor: theme.palette.primary.main,
+                                borderRadius: 1,
+                                width: 16,
+                              }}
+                            />
+                          )}
                         </Box>
                       ))}
                     </Box>
@@ -352,13 +573,13 @@ export default function StartPageWeb() {
                 </Paper>
                 <Box
                   sx={{
-                    position: 'absolute',
+                    position: "absolute",
                     inset: -16,
-                    background: 'linear-gradient(to right, #ff9800, rgba(25, 118, 210, 0.3))',
+                    background: `linear-gradient(to right, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
                     borderRadius: 6,
-                    filter: 'blur(40px)',
+                    filter: "blur(40px)",
                     opacity: 0.2,
-                    zIndex: -1
+                    zIndex: -1,
                   }}
                 />
               </Box>
@@ -367,21 +588,42 @@ export default function StartPageWeb() {
             {/* Features List */}
             <Grid item xs={12} md={6}>
               <Box>
-                <Typography variant="h4" sx={{ fontWeight: 700, color: '#1976d2', mb: 1 }}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: 700,
+                    color: theme.palette.text.primary,
+                    mb: 1,
+                  }}
+                >
                   Tudo que você precisa em um app
                 </Typography>
                 <Typography color="text.secondary" sx={{ mb: 3 }}>
-                  HelpHub oferece uma experiência completa e moderna para conectar você com oportunidades de impacto social.
+                  HelpHub oferece uma experiência completa e moderna para
+                  conectar você com oportunidades de impacto social.
                 </Typography>
 
                 <Stack spacing={2} sx={{ mb: 4 }}>
                   {features.map((feature, i) => (
-                    <Box key={i} sx={{ display: 'flex', gap: 2 }}>
-                      <Avatar sx={{ bgcolor: '#ff9800', color: '#1976d2', width: 40, height: 40 }}>
-                        <Check sx={{ fontWeight: 'bold' }} />
+                    <Box key={i} sx={{ display: "flex", gap: 2 }}>
+                      <Avatar
+                        sx={{
+                          bgcolor: theme.palette.secondary.main,
+                          color: theme.palette.secondary.contrastText,
+                          width: 40,
+                          height: 40,
+                        }}
+                      >
+                        <Check sx={{ fontWeight: "bold" }} />
                       </Avatar>
                       <Box>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1976d2' }}>
+                        <Typography
+                          variant="subtitle1"
+                          sx={{
+                            fontWeight: 600,
+                            color: theme.palette.text.primary,
+                          }}
+                        >
                           {feature.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
@@ -397,14 +639,18 @@ export default function StartPageWeb() {
                   size="large"
                   endIcon={<ArrowForward />}
                   sx={{
-                    bgcolor: '#1976d2',
+                    bgcolor: theme.palette.primary.main,
+                    color: theme.palette.primary.contrastText,
                     px: 3,
                     py: 1.5,
                     borderRadius: 3,
                     fontWeight: 600,
-                    '&:hover': {
-                      bgcolor: '#1565c0'
-                    }
+                    "&:hover": {
+                      bgcolor:
+                        theme.palette.primary.dark ||
+                        theme.palette.primary.main,
+                      filter: "brightness(0.9)",
+                    },
                   }}
                 >
                   Começar Agora
@@ -416,10 +662,19 @@ export default function StartPageWeb() {
       </Box>
 
       {/* Benefits */}
-      <Box sx={{ py: { xs: 10, md: 14 }, bgcolor: 'grey.50' }}>
+      <Box
+        sx={{
+          py: { xs: 10, md: 14 },
+          bgcolor: theme.palette.background.default,
+        }}
+      >
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 8 }}>
-            <Typography variant={isMobile ? 'h4' : 'h3'} component="h2" sx={{ fontWeight: 700, color: '#1976d2', mb: 2 }}>
+          <Box sx={{ textAlign: "center", mb: 8 }}>
+            <Typography
+              variant={isMobile ? "h4" : "h3"}
+              component="h2"
+              sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 2 }}
+            >
               Por que escolher o HelpHub?
             </Typography>
             <Typography variant="h6" color="text.secondary">
@@ -433,14 +688,18 @@ export default function StartPageWeb() {
                 <Card
                   elevation={0}
                   sx={{
-                    height: '100%',
-                    border: '1px solid',
-                    borderColor: 'grey.300',
+                    height: "100%",
+                    bgcolor: theme.palette.background.paper,
+                    border: "1px solid",
+                    borderColor:
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 255, 255, 0.12)"
+                        : "rgba(0, 0, 0, 0.12)",
                     borderRadius: 3,
-                    transition: 'border-color 0.3s',
-                    '&:hover': {
-                      borderColor: '#ff9800'
-                    }
+                    transition: "border-color 0.3s",
+                    "&:hover": {
+                      borderColor: theme.palette.secondary.main,
+                    },
                   }}
                 >
                   <CardContent sx={{ p: 3 }}>
@@ -448,14 +707,24 @@ export default function StartPageWeb() {
                       sx={{
                         width: 48,
                         height: 48,
-                        bgcolor: 'rgba(255, 152, 0, 0.2)',
-                        color: '#1976d2',
-                        mb: 2
+                        bgcolor:
+                          theme.palette.mode === "dark"
+                            ? "rgba(250, 255, 180, 0.15)"
+                            : "rgba(250, 255, 180, 0.3)",
+                        color: theme.palette.text.primary,
+                        mb: 2,
                       }}
                     >
                       {benefit.icon}
                     </Avatar>
-                    <Typography variant="h6" sx={{ color: '#1976d2', fontWeight: 600, mb: 1 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: theme.palette.text.primary,
+                        fontWeight: 600,
+                        mb: 1,
+                      }}
+                    >
                       {benefit.title}
                     </Typography>
                     <Typography color="text.secondary">
@@ -472,52 +741,69 @@ export default function StartPageWeb() {
       {/* Final CTA */}
       <Box
         sx={{
-          background: 'linear-gradient(to right, #1976d2, #1565c0)',
-          color: 'white',
+          background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.dark || theme.palette.primary.main})`,
+          color: theme.palette.primary.contrastText,
           py: { xs: 10, md: 14 },
-          position: 'relative',
-          overflow: 'hidden'
+          position: "relative",
+          overflow: "hidden",
         }}
       >
         <Box
           sx={{
-            position: 'absolute',
+            position: "absolute",
             top: -40,
             right: -40,
             width: 384,
             height: 384,
-            bgcolor: '#ff9800',
-            borderRadius: '50%',
-            filter: 'blur(60px)',
+            bgcolor: theme.palette.secondary.main,
+            borderRadius: "50%",
+            filter: "blur(60px)",
             opacity: 0.1,
-            mixBlendMode: 'multiply'
+            mixBlendMode: "multiply",
           }}
         />
 
-        <Container maxWidth="lg" sx={{ position: 'relative', textAlign: 'center' }}>
-          <Typography variant={isMobile ? 'h4' : 'h3'} sx={{ fontWeight: 700, mb: 3 }}>
+        <Container
+          maxWidth="lg"
+          sx={{ position: "relative", textAlign: "center" }}
+        >
+          <Typography
+            variant={isMobile ? "h4" : "h3"}
+            sx={{ fontWeight: 700, mb: 3 }}
+          >
             Pronto para Fazer a Diferença?
           </Typography>
-          <Typography variant="h6" sx={{ maxWidth: 800, mx: 'auto', opacity: 0.95, mb: 4 }}>
-            Junte-se a milhares de pessoas e organizações que já estão criando impacto real através do HelpHub.
+          <Typography
+            variant="h6"
+            sx={{ maxWidth: 800, mx: "auto", opacity: 0.95, mb: 4 }}
+          >
+            Junte-se a milhares de pessoas e organizações que já estão criando
+            impacto real através do HelpHub.
           </Typography>
 
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ justifyContent: 'center', mb: 6 }}>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+            sx={{ justifyContent: "center", mb: 6 }}
+          >
             <Button
               variant="contained"
               size="large"
               endIcon={<ArrowForward />}
               sx={{
-                bgcolor: '#ff9800',
-                color: 'white',
+                bgcolor: theme.palette.secondary.main,
+                color: theme.palette.secondary.contrastText,
                 px: 4,
                 py: 1.5,
-                fontSize: { xs: '1rem', md: '1.125rem' },
+                fontSize: { xs: "1rem", md: "1.125rem" },
                 fontWeight: 600,
                 borderRadius: 3,
-                '&:hover': {
-                  bgcolor: '#f57c00'
-                }
+                "&:hover": {
+                  bgcolor:
+                    theme.palette.secondary.dark ||
+                    theme.palette.secondary.main,
+                  filter: "brightness(0.9)",
+                },
               }}
             >
               Começar Agora
@@ -526,18 +812,18 @@ export default function StartPageWeb() {
               variant="outlined"
               size="large"
               sx={{
-                borderColor: 'white',
-                color: 'white',
+                borderColor: theme.palette.primary.contrastText,
+                color: theme.palette.primary.contrastText,
                 px: 4,
                 py: 1.5,
-                fontSize: { xs: '1rem', md: '1.125rem' },
+                fontSize: { xs: "1rem", md: "1.125rem" },
                 fontWeight: 600,
                 borderRadius: 3,
                 borderWidth: 2,
-                '&:hover': {
+                "&:hover": {
                   borderWidth: 2,
-                  bgcolor: 'rgba(255, 255, 255, 0.1)'
-                }
+                  bgcolor: "rgba(255, 255, 255, 0.1)",
+                },
               }}
             >
               Saiba Mais
@@ -545,19 +831,24 @@ export default function StartPageWeb() {
           </Stack>
 
           <Stack
-            direction={{ xs: 'column', sm: 'row' }}
+            direction={{ xs: "column", sm: "row" }}
             spacing={4}
-            sx={{ justifyContent: 'center', alignItems: 'center', opacity: 0.9, fontSize: '0.875rem' }}
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              opacity: 0.9,
+              fontSize: "0.875rem",
+            }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Security />
               <span>100% Seguro e Confiável</span>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <People />
               <span>+10k Voluntários Ativos</span>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <TrackChanges />
               <span>+500 ONGs Parceiras</span>
             </Box>
@@ -566,7 +857,13 @@ export default function StartPageWeb() {
       </Box>
 
       {/* Footer */}
-      <Box sx={{ bgcolor: '#1976d2', color: 'white', py: { xs: 8, md: 10 } }}>
+      <Box
+        sx={{
+          bgcolor: theme.palette.primary.main,
+          color: theme.palette.primary.contrastText,
+          py: { xs: 8, md: 10 },
+        }}
+      >
         <Container maxWidth="lg">
           <Grid container spacing={4} sx={{ mb: 6 }}>
             <Grid item xs={12} md={3}>
@@ -582,17 +879,17 @@ export default function StartPageWeb() {
                 Produto
               </Typography>
               <Stack spacing={1}>
-                {['Para Voluntários', 'Para ONGs', 'Recursos'].map((item) => (
+                {["Para Voluntários", "Para ONGs", "Recursos"].map((item) => (
                   <Typography
                     key={item}
                     variant="body2"
                     component="a"
                     href="#"
                     sx={{
-                      color: 'inherit',
+                      color: "inherit",
                       opacity: 0.8,
-                      textDecoration: 'none',
-                      '&:hover': { color: '#ff9800' }
+                      textDecoration: "none",
+                      "&:hover": { color: theme.palette.secondary.main },
                     }}
                   >
                     {item}
@@ -605,17 +902,17 @@ export default function StartPageWeb() {
                 Empresa
               </Typography>
               <Stack spacing={1}>
-                {['Sobre Nós', 'Blog', 'Contato'].map((item) => (
+                {["Sobre Nós", "Blog", "Contato"].map((item) => (
                   <Typography
                     key={item}
                     variant="body2"
                     component="a"
                     href="#"
                     sx={{
-                      color: 'inherit',
+                      color: "inherit",
                       opacity: 0.8,
-                      textDecoration: 'none',
-                      '&:hover': { color: '#ff9800' }
+                      textDecoration: "none",
+                      "&:hover": { color: theme.palette.secondary.main },
                     }}
                   >
                     {item}
@@ -628,17 +925,17 @@ export default function StartPageWeb() {
                 Legal
               </Typography>
               <Stack spacing={1}>
-                {['Privacidade', 'Termos', 'Cookies'].map((item) => (
+                {["Privacidade", "Termos", "Cookies"].map((item) => (
                   <Typography
                     key={item}
                     variant="body2"
                     component="a"
                     href="#"
                     sx={{
-                      color: 'inherit',
+                      color: "inherit",
                       opacity: 0.8,
-                      textDecoration: 'none',
-                      '&:hover': { color: '#ff9800' }
+                      textDecoration: "none",
+                      "&:hover": { color: theme.palette.secondary.main },
                     }}
                   >
                     {item}
@@ -648,9 +945,13 @@ export default function StartPageWeb() {
             </Grid>
           </Grid>
 
-          <Box sx={{ borderTop: '1px solid rgba(255, 255, 255, 0.2)', pt: 4 }}>
-            <Typography variant="body2" sx={{ textAlign: 'center', opacity: 0.8 }}>
-              © 2025 HelpHub. Todos os direitos reservados. Construído com ❤️ para conectar pessoas que fazem diferença.
+          <Box sx={{ borderTop: "1px solid rgba(255, 255, 255, 0.2)", pt: 4 }}>
+            <Typography
+              variant="body2"
+              sx={{ textAlign: "center", opacity: 0.8 }}
+            >
+              © 2025 HelpHub. Todos os direitos reservados. Construído com ❤️
+              para conectar pessoas que fazem diferença.
             </Typography>
           </Box>
         </Container>
