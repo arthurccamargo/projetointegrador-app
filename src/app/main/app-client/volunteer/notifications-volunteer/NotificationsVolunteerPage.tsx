@@ -12,12 +12,18 @@ import {
   TextField,
   Button,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Rating,
+  IconButton,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { CheckCircle, Star } from "lucide-react";
+import { CheckCircle, Star, X } from "lucide-react";
 import { getStatusColor } from "../../../../shared-components/functions/getStatusEvent";
 import { useCheckInMutation, useGetEventNotificationsVolunteerQuery } from "../../../../api/EventApplicationApi";
-import { useGetEligibleApplicationsQuery, type EligibleApplication } from "../../../../api/ReviewApi";
+import { useGetEligibleApplicationsQuery, type EligibleApplication, useCreateReviewMutation } from "../../../../api/ReviewApi";
 
 interface EventNotification {
   applicationId: string;
@@ -45,11 +51,19 @@ export default function NotificationsVolunteerPage() {
   const theme = useTheme();
   const { data: eventNotifications = [], refetch } =
     useGetEventNotificationsVolunteerQuery();
-  const { data: eligibleApplications = [] } = useGetEligibleApplicationsQuery();
+  const { data: eligibleApplications = [], refetch: refetchEligible } = useGetEligibleApplicationsQuery();
   const [checkIn] = useCheckInMutation();
+  const [createReview, { isLoading: isCreatingReview }] = useCreateReviewMutation();
   const [checkInCodes, setCheckInCodes] = useState<Record<string, string>>({});
   const [checkInErrors, setCheckInErrors] = useState<Record<string, string>>({});
   const [loadingCheckIn, setLoadingCheckIn] = useState<Record<string, boolean>>({});
+  
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedApplication, setSelectedApplication] = useState<EligibleApplication | null>(null);
+  const [rating, setRating] = useState<number | null>(0);
+  const [comment, setComment] = useState("");
+  const [reviewError, setReviewError] = useState("");
+  const [reviewSuccess, setReviewSuccess] = useState(false);
 
   const handleCheckInCodeChange = (eventId: string, value: string) => {
     const numericValue = value.replace(/\D/g, "").slice(0, 6);
@@ -106,6 +120,58 @@ export default function NotificationsVolunteerPage() {
       return `${minutes} minutos`;
     }
     return `${hours.toFixed(1)} horas`;
+  };
+
+  const handleOpenReviewModal = (application: EligibleApplication) => {
+    setSelectedApplication(application);
+    setRating(0);
+    setComment("");
+    setReviewError("");
+    setReviewSuccess(false);
+    setReviewModalOpen(true);
+  };
+
+  const handleCloseReviewModal = () => {
+    setReviewModalOpen(false);
+    setSelectedApplication(null);
+    setRating(0);
+    setComment("");
+    setReviewError("");
+    setReviewSuccess(false);
+  };
+
+  const handleSubmitReview = async () => {
+    if (!selectedApplication) return;
+    
+    if (!rating || rating === 0) {
+      setReviewError("Por favor, selecione uma avaliação");
+      return;
+    }
+
+    setReviewError("");
+    
+    try {
+      await createReview({
+        applicationId: selectedApplication.applicationId,
+        rating: rating,
+        comment: comment.trim() || undefined,
+      }).unwrap();
+      
+      setReviewSuccess(true);
+      await refetchEligible();
+      
+      setTimeout(() => {
+        handleCloseReviewModal();
+      }, 2000);
+    } catch (error: unknown) {
+      const errorMessage = error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'message' in error.data 
+        ? String(error.data.message)
+        : error && typeof error === 'object' && 'message' in error
+        ? String(error.message)
+        : "Erro ao enviar avaliação";
+      setReviewError(errorMessage);
+      console.error("Erro ao enviar avaliação:", error);
+    }
   };
 
   return (
@@ -259,6 +325,7 @@ export default function NotificationsVolunteerPage() {
                             },
                           }}
                           startIcon={<Star size={20} />}
+                          onClick={() => handleOpenReviewModal(application)}
                         >
                           Avaliar Evento
                         </Button>
@@ -554,6 +621,204 @@ export default function NotificationsVolunteerPage() {
           })
         )}
       </Stack>
+
+      <Dialog
+        open={reviewModalOpen}
+        onClose={handleCloseReviewModal}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            bgcolor: theme.palette.background.paper,
+          },
+        }}
+      >
+        <DialogTitle sx={{ pb: 1 }}>
+          <Box display="flex" alignItems="center" justifyContent="space-between">
+            <Box display="flex" alignItems="center" gap={1}>
+              <Star size={24} color={theme.palette.warning.main} fill={theme.palette.warning.main} />
+              <Typography variant="h6" fontWeight="bold">
+                Avaliar Evento
+              </Typography>
+            </Box>
+            <IconButton onClick={handleCloseReviewModal} size="small">
+              <X size={20} />
+            </IconButton>
+          </Box>
+          {selectedApplication && (
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              {selectedApplication.event.title}
+            </Typography>
+          )}
+        </DialogTitle>
+
+        <Divider />
+
+        <DialogContent sx={{ pt: 3 }}>
+          {reviewSuccess ? (
+            <Box textAlign="center" py={3}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mb: 2,
+                }}
+              >
+                <Box
+                  sx={{
+                    bgcolor: theme.palette.success.main,
+                    borderRadius: "50%",
+                    width: 64,
+                    height: 64,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: `0 4px 12px ${theme.palette.success.main}40`,
+                  }}
+                >
+                  <CheckCircle size={40} color="white" />
+                </Box>
+              </Box>
+              <Typography variant="h6" fontWeight="bold" color="success.main" mb={1}>
+                Avaliação Enviada!
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Obrigado por compartilhar sua experiência
+              </Typography>
+            </Box>
+          ) : (
+            <Stack spacing={3}>
+              {reviewError && (
+                <Alert severity="error" onClose={() => setReviewError("")}>
+                  {reviewError}
+                </Alert>
+              )}
+
+              <Box>
+                <Typography
+                  variant="body1"
+                  fontWeight="medium"
+                  color="text.primary"
+                  mb={2}
+                  textAlign="center"
+                >
+                  Como foi sua experiência?
+                </Typography>
+                <Box display="flex" justifyContent="center">
+                  <Rating
+                    value={rating}
+                    onChange={(_, newValue) => {
+                      setRating(newValue);
+                      setReviewError("");
+                    }}
+                    size="large"
+                    sx={{
+                      fontSize: "3rem",
+                      "& .MuiRating-iconEmpty": {
+                        color: theme.palette.action.disabled,
+                      },
+                      "& .MuiRating-iconFilled": {
+                        color: theme.palette.warning.main,
+                      },
+                      "& .MuiRating-iconHover": {
+                        color: theme.palette.warning.dark,
+                      },
+                    }}
+                  />
+                </Box>
+                {rating !== null && rating > 0 && (
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    textAlign="center"
+                    display="block"
+                    mt={1}
+                  >
+                    {rating === 1 && "Muito Insatisfeito"}
+                    {rating === 2 && "Insatisfeito"}
+                    {rating === 3 && "Regular"}
+                    {rating === 4 && "Satisfeito"}
+                    {rating === 5 && "Muito Satisfeito"}
+                  </Typography>
+                )}
+              </Box>
+
+              <Box>
+                <Typography
+                  variant="body2"
+                  fontWeight="medium"
+                  color="text.primary"
+                  mb={1}
+                >
+                  Comentário (opcional)
+                </Typography>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={4}
+                  placeholder="Compartilhe sua experiência com a ONG e o evento..."
+                  value={comment}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 500) {
+                      setComment(e.target.value);
+                    }
+                  }}
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                    },
+                  }}
+                />
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ display: "block", mt: 1 }}
+                >
+                  {comment.length} / 500 caracteres
+                </Typography>
+              </Box>
+            </Stack>
+          )}
+        </DialogContent>
+
+        {!reviewSuccess && (
+          <>
+            <Divider />
+            <DialogActions sx={{ p: 2, gap: 1 }}>
+              <Button
+                onClick={handleCloseReviewModal}
+                variant="outlined"
+                sx={{
+                  borderRadius: 2,
+                  textTransform: "none",
+                  fontWeight: "medium",
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleSubmitReview}
+                variant="contained"
+                disabled={!rating || rating === 0 || isCreatingReview}
+                sx={{
+                  borderRadius: 2,
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  bgcolor: theme.palette.warning.main,
+                  "&:hover": {
+                    bgcolor: theme.palette.warning.dark,
+                  },
+                }}
+              >
+                {isCreatingReview ? "Enviando..." : "Enviar Avaliação"}
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
     </Container>
   );
 }
