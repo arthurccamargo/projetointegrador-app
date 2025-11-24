@@ -2,29 +2,50 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Container, Stack, TextField } from "@mui/material";
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { Event } from "../../../../../types/events.type";
 import { useGetAllEventsQuery } from "../../../../api/EventApi";
 import EventCardToVolunteer from "./components/EventCardToVolunteer";
 import ConfirmModal from "../../../../shared-components/ConfirmModal";
 import { useApplyMutation } from "../../../../api/EventApplicationApi";
 import { useTheme } from '@mui/material/styles';
+import { useGetCategoriesQuery } from "../../../../api/CategoryApi";
+import CategoryFilter from "./components/CategoryFilter";
 
 
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const theme = useTheme();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [eventSelected, setEventSelected] = useState<Event | null>(null);
   const [applyToEvent, { isLoading: isLoadingApply }] = useApplyMutation();
   const { data: events = [], isLoading: isLoadingEvents, refetch } =
     useGetAllEventsQuery();
+  const { data: categories = [], isLoading: isLoadingCategories } =
+    useGetCategoriesQuery();
 
-  const filteredEvents = events.filter(
-    (event: Event) =>
-      event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredEvents = useMemo(() => {
+    let filtered = events;
+
+    // Filtro por categoria
+    if (selectedCategory) {
+      filtered = filtered.filter(
+        (event: Event) => event.categoryId === selectedCategory
+      );
+    }
+
+    // Filtro por busca (título ou categoria)
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (event: Event) =>
+          event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          event.category?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    return filtered;
+  }, [events, selectedCategory, searchTerm]);
 
   const handleApplyClick = (event: Event) => {
     setEventSelected(event);
@@ -38,7 +59,7 @@ export default function HomePage() {
       await refetch();
       setOpenModal(false);
       setEventSelected(null);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erro ao se candidatar:", error);
       throw error;
     }
@@ -56,7 +77,7 @@ export default function HomePage() {
         <Typography mb={3}>
           Encontre oportunidades para fazer a diferença
         </Typography>
-        <Box maxWidth={400}>
+        <Box maxWidth={400} mb={3}>
           <TextField
             fullWidth
             sx={{ 
@@ -78,6 +99,13 @@ export default function HomePage() {
             size="small"
           />
         </Box>
+
+        <CategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          isLoading={isLoadingCategories}
+        />
       </Box>
 
       <Stack spacing={3}>
