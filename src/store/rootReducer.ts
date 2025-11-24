@@ -1,9 +1,10 @@
 import { combineSlices } from '@reduxjs/toolkit';
 import apiService from './apiService';
 import navigationSlice from './navigationSlice';
-import { categoryApi } from '../app/api/CategoryApi'; // adicione o import
+import { categoryApi } from '../app/api/CategoryApi';
 import { eventApi } from '../app/api/EventApi';
 import { eventApplicationApi } from '../app/api/EventApplicationApi';
+import { reviewApi } from '../app/api/ReviewApi';
 
 
 export type LazyLoadedSlices = object
@@ -24,6 +25,7 @@ export const rootReducer = combineSlices(
 		[categoryApi.reducerPath]: categoryApi.reducer,
 		[eventApi.reducerPath]: eventApi.reducer,
 		[eventApplicationApi.reducerPath]: eventApplicationApi.reducer,
+		[reviewApi.reducerPath]: reviewApi.reducer,
 	}
 ).withLazyLoadedSlices<LazyLoadedSlices>();
 
