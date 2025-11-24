@@ -201,7 +201,7 @@ export default function EventCardToVolunteer({
               variant="contained"
               startIcon={<Eye size={18} />}
               sx={{ 
-                borderRadius: 9, 
+                borderRadius: 9,
                 color: theme.palette.primary.contrastText,
                 width: { xs: '100%', sm: 'auto' }
               }}

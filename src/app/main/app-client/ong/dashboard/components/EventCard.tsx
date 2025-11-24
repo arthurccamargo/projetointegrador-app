@@ -1,11 +1,13 @@
 import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
 import { Calendar, Clock, Edit3, MapPin, Trash, Users } from "lucide-react";
+import { useState } from "react";
 import type { Event } from "../../../../../../types/events.type";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { getVacancyColor } from "../../../../../shared-components/functions/getVacancyColor";
 import { getStatusColor } from "../../../../../shared-components/functions/getStatusEvent";
 import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
 import { useTheme } from '@mui/material/styles';
+import ViewCandidatesModal from "./ViewCandidatesModal";
 
 
 interface EventCardProps {
@@ -18,6 +20,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
   const availableVacancies = event.currentCandidates;
   const totalVacancies = event.maxCandidates;
   const theme = useTheme();
+  const [openCandidatesModal, setOpenCandidatesModal] = useState(false);
 
   const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(event.startDate);
   const hours = Math.floor(event.durationMinutes / 60);
@@ -190,7 +193,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
               variant="contained"
               startIcon={<Users size={18} />}
               sx={{ borderRadius: 8, color: theme.palette.text.secondary, bgcolor: theme.palette.warning.main}}
-              onClick={onDelete}
+              onClick={() => setOpenCandidatesModal(true)}
             >
               Ver candidatos
             </Button>
@@ -205,6 +208,14 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
           </Stack>
         </Box>
       </Box>
+
+      {/* Modal de Candidatos */}
+      <ViewCandidatesModal
+        open={openCandidatesModal}
+        onClose={() => setOpenCandidatesModal(false)}
+        eventId={event.id}
+        eventTitle={event.title}
+      />
     </Box>
   );
 }
