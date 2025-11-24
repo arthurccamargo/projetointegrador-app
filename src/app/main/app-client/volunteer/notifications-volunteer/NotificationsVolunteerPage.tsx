@@ -14,9 +14,10 @@ import {
   Alert,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Star } from "lucide-react";
 import { getStatusColor } from "../../../../shared-components/functions/getStatusEvent";
 import { useCheckInMutation, useGetEventNotificationsVolunteerQuery } from "../../../../api/EventApplicationApi";
+import { useGetEligibleApplicationsQuery, type EligibleApplication } from "../../../../api/ReviewApi";
 
 interface EventNotification {
   applicationId: string;
@@ -44,6 +45,7 @@ export default function NotificationsVolunteerPage() {
   const theme = useTheme();
   const { data: eventNotifications = [], refetch } =
     useGetEventNotificationsVolunteerQuery();
+  const { data: eligibleApplications = [] } = useGetEligibleApplicationsQuery();
   const [checkIn] = useCheckInMutation();
   const [checkInCodes, setCheckInCodes] = useState<Record<string, string>>({});
   const [checkInErrors, setCheckInErrors] = useState<Record<string, string>>({});
@@ -64,8 +66,12 @@ export default function NotificationsVolunteerPage() {
         await checkIn({ eventId, code }).unwrap();
         setCheckInCodes(prev => ({ ...prev, [eventId]: "" }));
         await refetch();
-      } catch (error: any) {
-        const errorMessage = error?.data?.message || error?.message || "Erro ao fazer check-in";
+      } catch (error: unknown) {
+        const errorMessage = error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'message' in error.data 
+          ? String(error.data.message)
+          : error && typeof error === 'object' && 'message' in error
+          ? String(error.message)
+          : "Erro ao fazer check-in";
         setCheckInErrors(prev => ({ ...prev, [eventId]: errorMessage }));
         console.error("Erro ao fazer check-in:", error);
       } finally {
@@ -94,6 +100,14 @@ export default function NotificationsVolunteerPage() {
     });
   };
 
+  const formatHoursRemaining = (hours: number) => {
+    if (hours < 1) {
+      const minutes = Math.floor(hours * 60);
+      return `${minutes} minutos`;
+    }
+    return `${hours.toFixed(1)} horas`;
+  };
+
   return (
     <Container
       maxWidth="lg"
@@ -110,6 +124,163 @@ export default function NotificationsVolunteerPage() {
           Notificações
         </Typography>
         <Typography color="black">Acompanhe suas notificações</Typography>
+      </Box>
+
+      {eligibleApplications.length > 0 && (
+        <Box mb={4}>
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            color="text.primary"
+            mb={2}
+            sx={{ display: "flex", alignItems: "center", gap: 1 }}
+          >
+            <Star size={24} color={theme.palette.warning.main} fill={theme.palette.warning.main} />
+            Eventos para Avaliar
+          </Typography>
+          <Stack spacing={2}>
+            {eligibleApplications.map((application: EligibleApplication) => (
+              <Card
+                key={application.applicationId}
+                sx={{
+                  bgcolor: theme.palette.background.paper,
+                  border: `2px solid ${theme.palette.warning.main}`,
+                  boxShadow: theme.shadows[2],
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    boxShadow: theme.shadows[6],
+                    transform: "translateY(-2px)",
+                  },
+                }}
+              >
+                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+                  <Box
+                    display="flex"
+                    gap={{ xs: 2, sm: 3 }}
+                    flexDirection={{ xs: "column", sm: "row" }}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: theme.palette.warning.main,
+                        width: { xs: 56, sm: 64 },
+                        height: { xs: 56, sm: 64 },
+                        fontSize: { xs: 28, sm: 32 },
+                        flexShrink: 0,
+                        alignSelf: { xs: "center", sm: "flex-start" },
+                      }}
+                    >
+                      <Star size={32} />
+                    </Avatar>
+
+                    <Box flex={1} minWidth={0}>
+                      <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        color="text.primary"
+                        sx={{
+                          fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                          mb: 1,
+                        }}
+                      >
+                        {application.event.title}
+                      </Typography>
+
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        gap={1}
+                        mb={2}
+                        flexWrap="wrap"
+                      >
+                        <Chip
+                          label={application.event.category.name}
+                          size="small"
+                          sx={{
+                            bgcolor: theme.palette.primary.main,
+                            color: "white",
+                            fontWeight: "medium",
+                          }}
+                        />
+                        <Chip
+                          label={application.event.ong.name}
+                          size="small"
+                          variant="outlined"
+                          sx={{
+                            fontWeight: "medium",
+                          }}
+                        />
+                      </Box>
+
+                      <Stack spacing={1.5} mb={2}>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Typography variant="body2" color="black">
+                            ⏰ Tempo restante para avaliar: {formatHoursRemaining(application.hoursRemaining)}
+                          </Typography>
+                        </Box>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Typography variant="body2" color="black">
+                            ✓ Check-in realizado em {formatCheckInDate(application.checkInAt)}
+                          </Typography>
+                        </Box>
+                      </Stack>
+
+                      <Divider sx={{ my: 2 }} />
+
+                      <Box
+                        sx={{
+                          bgcolor:
+                            theme.palette.mode === "dark"
+                              ? "rgba(255, 152, 0, 0.15)"
+                              : "rgba(255, 152, 0, 0.08)",
+                          borderRadius: 2,
+                          p: 2,
+                          textAlign: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="body1"
+                          fontWeight="medium"
+                          color="text.primary"
+                          sx={{ mb: 2 }}
+                        >
+                          Você participou deste evento! Que tal compartilhar sua experiência?
+                        </Typography>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          sx={{
+                            bgcolor: theme.palette.warning.main,
+                            color: "white",
+                            borderRadius: 2,
+                            py: 1.5,
+                            fontWeight: "bold",
+                            "&:hover": {
+                              bgcolor: theme.palette.warning.dark,
+                            },
+                          }}
+                          startIcon={<Star size={20} />}
+                        >
+                          Avaliar Evento
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+          </Stack>
+        </Box>
+      )}
+
+      <Box mb={2}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          color="text.primary"
+          mb={2}
+        >
+          Suas Inscrições
+        </Typography>
       </Box>
 
       <Stack spacing={3}>
