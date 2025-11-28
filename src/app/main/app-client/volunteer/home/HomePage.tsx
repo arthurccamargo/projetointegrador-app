@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Container, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { Search } from "lucide-react";
 import { useState, useMemo } from "react";
 import type { Event } from "../../../../../types/events.type";
@@ -8,10 +8,9 @@ import { useGetAllEventsQuery } from "../../../../api/EventApi";
 import EventCardToVolunteer from "./components/EventCardToVolunteer";
 import ConfirmModal from "../../../../shared-components/ConfirmModal";
 import { useApplyMutation } from "../../../../api/EventApplicationApi";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 import { useGetCategoriesQuery } from "../../../../api/CategoryApi";
 import CategoryFilter from "./components/CategoryFilter";
-
 
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,8 +19,11 @@ export default function HomePage() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [eventSelected, setEventSelected] = useState<Event | null>(null);
   const [applyToEvent, { isLoading: isLoadingApply }] = useApplyMutation();
-  const { data: events = [], isLoading: isLoadingEvents, refetch } =
-    useGetAllEventsQuery();
+  const {
+    data: events = [],
+    isLoading: isLoadingEvents,
+    refetch,
+  } = useGetAllEventsQuery();
   const { data: categories = [], isLoading: isLoadingCategories } =
     useGetCategoriesQuery();
 
@@ -66,24 +68,37 @@ export default function HomePage() {
   };
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2, bgcolor: theme.palette.background.default }}
+    <Box
+      sx={{
+        backgroundColor: theme.palette.background.default,
+        minHeight: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        px: { xs: 2, sm: 3, md: 4 },
+        pb: { xs: 12, md: 4 },
+        pt: 2,
+      }}
     >
-      <Box mb={8} color={ theme.palette.text.primary }>
-        <Typography variant="h4" fontWeight="bold" mb={2}>
+      <Box
+        mb={4}
+        width="100%"
+        color={theme.palette.text.primary}
+      >
+        <Typography variant="h4" fontWeight="bold" mb={1}>
           Buscar Oportunidades
         </Typography>
         <Typography mb={3}>
           Encontre oportunidades para fazer a diferença
         </Typography>
-        <Box maxWidth={400} mb={3}>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
           <TextField
-            fullWidth
-            sx={{ 
-              '& .MuiOutlinedInput-root': {
-              borderRadius: 5 
-              }
+            sx={{
+              minWidth: 400,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 5,
+              },
             }}
             variant="outlined"
             placeholder="Buscar eventos..."
@@ -98,19 +113,21 @@ export default function HomePage() {
             }}
             size="small"
           />
-        </Box>
 
-        <CategoryFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          isLoading={isLoadingCategories}
-        />
+          <CategoryFilter
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            isLoading={isLoadingCategories}
+          />
+        </Box>
       </Box>
 
-      <Stack spacing={3}>
+      <Stack spacing={3} width="100%">
         {isLoadingEvents ? (
-          <Typography>Carregando eventos...</Typography>
+          <Typography sx={{ color: "text.primary" }}>
+            Carregando eventos...
+          </Typography>
         ) : (
           filteredEvents.map((event: Event) => (
             <EventCardToVolunteer
@@ -147,6 +164,6 @@ export default function HomePage() {
         color="success"
         loading={isLoadingApply}
       />
-    </Container>
+    </Box>
   );
 }
