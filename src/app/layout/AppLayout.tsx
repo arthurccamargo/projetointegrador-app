@@ -1,5 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
 import Navbar from './components/Navbar';
 import type { LayoutConfig } from '../routes/types';
 
@@ -11,13 +12,17 @@ type AppLayoutProps = {
 
 const drawerWidth = 220;
 
-const AppLayout: React.FC<AppLayoutProps> = ({ config, children }) => (
+const AppLayout: React.FC<AppLayoutProps> = ({ config, children }) => {
+  const theme = useTheme();
+
+  return (
   <Box
     sx={{
       display: 'flex',
       height: '100vh',
       width: '100vw',
       overflow: 'hidden',
+      backgroundColor: theme.palette.background.default,
     }}
   >
     {config?.navbar && (
@@ -34,6 +39,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ config, children }) => (
         p: 0,
         m: 0,
         overflow: 'hidden',
+        backgroundColor: theme.palette.background.default,
       }}
     >
       {/* {config?.toolbar && <Toolbar />} */}
@@ -49,6 +55,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ config, children }) => (
           width: '100%',
           overflow: 'auto',
           pb: { xs: '56px', md: 0 }, // Padding bottom em mobile para a bottom nav
+          backgroundColor: theme.palette.background.default,
         }}
       >
         {children}
@@ -56,6 +63,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ config, children }) => (
       {/* {config?.footer && <Footer />} */}
     </Box>
   </Box>
-);
+  );
+};
 
 export default AppLayout;
