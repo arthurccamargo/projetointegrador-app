@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardContent,
-  Grid,
   Paper,
   Stack,
   Avatar,
@@ -855,16 +854,23 @@ export default function StartPageWeb() {
         }}
       >
         <Container maxWidth="lg">
-          <Grid container spacing={4} sx={{ mb: 6 }}>
-            <Grid item xs={12} md={3}>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              mb: 6,
+              mx: -2,
+            }}
+          >
+            <Box sx={{ width: { xs: "100%", md: "25%" }, p: 2 }}>
               <Typography variant="h5" sx={{ fontWeight: 700, mb: 2 }}>
                 HelpHub
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.8 }}>
                 Conectando ONGs e voluntários para um mundo melhor.
               </Typography>
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
+            </Box>
+            <Box sx={{ width: { xs: "100%", sm: "33.33%", md: "25%" }, p: 2 }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                 Produto
               </Typography>
@@ -891,8 +897,8 @@ export default function StartPageWeb() {
                   </Typography>
                 ))}
               </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
+            </Box>
+            <Box sx={{ width: { xs: "100%", sm: "33.33%", md: "25%" }, p: 2 }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                 Empresa
               </Typography>
@@ -919,8 +925,8 @@ export default function StartPageWeb() {
                   </Typography>
                 ))}
               </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
+            </Box>
+            <Box sx={{ width: { xs: "100%", sm: "33.33%", md: "25%" }, p: 2 }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
                 Legal
               </Typography>
@@ -942,8 +948,8 @@ export default function StartPageWeb() {
                   </Typography>
                 ))}
               </Stack>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
 
           <Box sx={{ borderTop: "1px solid rgba(255, 255, 255, 0.2)", pt: 4 }}>
             <Typography

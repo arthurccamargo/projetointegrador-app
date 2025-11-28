@@ -3,10 +3,8 @@ import {
   Select,
   MenuItem,
   Box,
-  Typography,
   Chip,
 } from "@mui/material";
-import { Filter } from "lucide-react";
 import { useTheme } from "@mui/material/styles";
 
 interface Category {
@@ -34,7 +32,7 @@ export default function CategoryFilter({
   )?.name;
 
   return (
-    <Box sx={{ mb: 3 }}>
+    <Box sx={{ mb: 0 }}>
       <Box
         sx={{
           display: "flex",
@@ -43,17 +41,6 @@ export default function CategoryFilter({
           flexWrap: "wrap",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Filter size={20} color={theme.palette.text.primary} />
-          <Typography
-            variant="body2"
-            fontWeight={600}
-            color={theme.palette.text.primary}
-          >
-            Filtrar por categoria:
-          </Typography>
-        </Box>
-
         <FormControl size="small" sx={{ minWidth: 200 }}>
           <Select
             value={selectedCategory}

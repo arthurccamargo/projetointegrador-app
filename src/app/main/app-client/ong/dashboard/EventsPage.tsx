@@ -6,26 +6,18 @@ import {
   useUpdateEventMutation,
   useGetActiveEventsByOngIdQuery,
 } from "../../../../api/EventApi";
-import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Fab,
-  Stack,
-} from "@mui/material";
+import { Box, Typography, TextField, Fab, Stack } from "@mui/material";
 import EventCard from "./components/EventCard";
 import CreateEventModal from "./components/CreateEventModal";
 import type { Event } from "../../../../../types/events.type";
 import type { CreateEventPayload } from "./components/CreateEventModal";
 import ConfirmModal from "../../../../shared-components/ConfirmModal";
 import EditEventModal from "./components/EditEventModal";
-import { useTheme } from '@mui/material/styles';
-
+import { useTheme } from "@mui/material/styles";
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("");
-    const theme = useTheme();
+  const theme = useTheme();
   const [openModal, setOpenModal] = useState<
     null | "create" | "edit" | "delete"
   >(null);
@@ -89,24 +81,33 @@ export default function DashboardPage() {
   };
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2, bgcolor: theme.palette.background.default }}
+    <Box
+      sx={{
+        backgroundColor: theme.palette.background.default,
+        minHeight: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        px: { xs: 2, sm: 3, md: 4 },
+        pb: { xs: 12, md: 4 },
+        pt: 2,
+      }}
     >
-      <Box mb={8}>
-        <Typography variant="h4" fontWeight="bold" color="text.primary" mb={2}>
+      <Box mb={4} width="100%" maxWidth="400px" color={ theme.palette.text.primary }>
+        <Typography variant="h4" fontWeight="bold" color="text.primary" mb={1}>
           Meus Eventos
         </Typography>
         <Typography color="text.primary" mb={3}>
           Gerencie seus eventos e candidatos
         </Typography>
-        <Box maxWidth={400}>
+        <Box>
           <TextField
             fullWidth
-            sx={{ 
-              '& .MuiOutlinedInput-root': {
-              borderRadius: 5 
-              }
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 5,
+              },
             }}
             variant="outlined"
             placeholder="Buscar eventos..."
@@ -124,9 +125,9 @@ export default function DashboardPage() {
         </Box>
       </Box>
 
-      <Stack spacing={3}>
+      <Stack spacing={3} width="100%">
         {isLoadingEvents ? (
-          <Typography>Carregando eventos...</Typography>
+          <Typography sx={{ color: "text.primary" }}>Carregando eventos...</Typography>
         ) : (
           filteredEvents.map((event: Event) => (
             <EventCard
@@ -166,16 +167,16 @@ export default function DashboardPage() {
           right: 32,
           height: 56,
           zIndex: 1000,
-          transition: 'all 0.3s ease-in-out',
-          '&:hover': {
+          transition: "all 0.3s ease-in-out",
+          "&:hover": {
             bgcolor: theme.palette.primary.dark,
-            transform: 'scale(1.03)',
-            boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.3)',
+            transform: "scale(1.03)",
+            boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.3)",
           },
         }}
         onClick={() => setOpenModal("create")}
       >
-        <Plus size={20} style={{ marginRight: 8 }}/>
+        <Plus size={20} style={{ marginRight: 8 }} />
         Criar Evento
       </Fab>
 
@@ -209,6 +210,6 @@ export default function DashboardPage() {
         event={eventSelected}
         loading={isLoadingUpdate}
       />
-    </Container>
+    </Box>
   );
 }

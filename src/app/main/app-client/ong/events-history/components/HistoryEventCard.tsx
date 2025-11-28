@@ -1,42 +1,37 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Stack,
-  Typography,
-  Chip,
-  useTheme,
-} from "@mui/material";
-import { Building, Calendar, Clock, Eye, MapPin, X } from "lucide-react";
+import { Box, Button, Divider, Stack, Typography, Chip } from "@mui/material";
+import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import { useState } from "react";
+import type { Event } from "../../../../../../types/events.type";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
+import { getStatusColor } from "../../../../../shared-components/functions/getStatusEvent";
 import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
-import { useNavigate } from "react-router-dom";
-import type { EventApplication } from "../../../../../../types/event-applications.type";
+import { useTheme } from "@mui/material/styles";
+import HistoryVolunteersModal from "./HistoryVolunteersModal";
 
-interface EventToVolunteerCardProps {
-  application: EventApplication;
-  onCancel: (application: EventApplication) => Promise<void>;
+interface HistoryEventCardProps {
+  event: Event;
 }
 
-export default function EventCardToVolunteer({
-  application,
-  onCancel,
-}: EventToVolunteerCardProps) {
+export default function HistoryEventCard({ event }: HistoryEventCardProps) {
+  const availableVacancies = event.currentCandidates;
+  const totalVacancies = event.maxCandidates;
+  const theme = useTheme();
+  const [openCandidatesModal, setOpenCandidatesModal] = useState(false);
+
   const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(
-    application.startDate
+    event.startDate
   );
-  const hours = Math.floor(application.durationMinutes / 60);
-  const minutes = application.durationMinutes % 60;
+  const hours = Math.floor(event.durationMinutes / 60);
+  const minutes = event.durationMinutes % 60;
   const formattedDuration =
     minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
-  const theme = useTheme();
-  const navigate = useNavigate();
+  const statusInfo = getStatusColor(event.status);
 
   return (
     <Box
-      key={application.id}
+      key={event.id}
       sx={{
-        backgroundColor: theme.palette.background.paper,
+        bgcolor: "background.paper",
         borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
@@ -45,7 +40,7 @@ export default function EventCardToVolunteer({
         transition: "box-shadow 0.3s, transform 0.3s",
         "&:hover": {
           boxShadow: 3,
-          transform: "translateY(-3px)",
+          transform: "translateY(-4px)",
         },
       }}
     >
@@ -57,23 +52,29 @@ export default function EventCardToVolunteer({
         <Box flex={1}>
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             <Typography variant="h6" fontWeight="bold" color="text.primary">
-              {application.title}
+              {event.title}
             </Typography>
-            <Box display="flex" gap={0.5}>
-              <Chip
-                label={application.category?.name}
-                size="small"
-                sx={{
-                  backgroundColor: getCategoryColor(application.category?.name)
-                    .bg,
-                  color: getCategoryColor(application.category?.name).color,
-                  fontWeight: 500,
-                }}
-              />
-            </Box>
+            <Chip
+              label={event.category?.name}
+              size="small"
+              sx={{
+                backgroundColor: getCategoryColor(event.category?.name).bg,
+                color: getCategoryColor(event.category?.name).color,
+                fontWeight: 500,
+              }}
+            />
+            <Chip
+              label={statusInfo.label}
+              size="small"
+              sx={{
+                backgroundColor: statusInfo.bg,
+                color: statusInfo.color,
+                fontWeight: 500,
+              }}
+            />
           </Box>
           <Typography color="text.primary" mb={3}>
-            {application.description}
+            {event.description}
           </Typography>
           <Box
             display="grid"
@@ -112,11 +113,7 @@ export default function EventCardToVolunteer({
               gap={1}
             >
               <Clock size={16} style={{ color: "#6b7280" }} />
-              <Typography
-                variant="body2"
-                color="text.primary"
-                sx={{ ml: 0 }}
-              >
+              <Typography variant="body2" color="text.primary" sx={{ ml: 0 }}>
                 Hora de Início: {formattedTime}
               </Typography>
             </Box>
@@ -149,51 +146,60 @@ export default function EventCardToVolunteer({
                   width: "100%",
                   display: "block",
                 }}
-                title={application.location}
+                title={event.location}
               >
-                {application.location}
+                {event.location}
+              </Typography>
+            </Box>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              gap={1}
+            >
+              <Users
+                size={16}
+                style={{
+                  color: "#6b7280",
+                }}
+              />
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                sx={{
+                  color: "text.primary",
+                }}
+              >
+                {`${availableVacancies}/${totalVacancies} vagas`}
               </Typography>
             </Box>
           </Box>
-          <Divider sx={{ mb: 2 }} />
-          <Box display="flex" alignItems="center" gap={1} mb={2}>
-            <Building size={16} style={{ color: "#6b7280" }} />
-            <Typography variant="body2" color="text.primary">
-              {application.ong?.name}
-            </Typography>
-          </Box>
+          <Divider sx={{ my: 2 }} />
           <Stack direction="row" spacing={2}>
             <Button
               variant="contained"
-              startIcon={<Eye size={18} />}
+              startIcon={<Users size={18} />}
               sx={{
-                borderRadius: 9,
+                borderRadius: 8,
                 color: theme.palette.text.secondary,
-                width: { xs: "100%", sm: "auto" },
+                bgcolor: theme.palette.warning.main,
               }}
-              onClick={() => navigate(`/profile/${application.ong?.userId}`)}
+              onClick={() => setOpenCandidatesModal(true)}
             >
-              Ver ONG
+              Ver participantes
             </Button>
-            {application.applicationStatus !== "CANCELLED" &&
-              application.applicationStatus !== "REJECTED" && (
-                <Button
-                  variant="contained"
-                  startIcon={<X size={18} />}
-                  onClick={() => onCancel(application)}
-                  sx={{
-                    borderRadius: 9,
-                    bgcolor: theme.palette.error.main,
-                    color: theme.palette.text.secondary,
-                    width: { xs: "100%", sm: "auto" },
-                  }}
-                >
-                  Cancelar
-                </Button>
-              )}
           </Stack>
         </Box>
       </Box>
+
+      {/* Modal de Participantes */}
+      <HistoryVolunteersModal
+        open={openCandidatesModal}
+        onClose={() => setOpenCandidatesModal(false)}
+        eventId={event.id}
+        eventTitle={event.title}
+        applications={event.applications || []}
+      />
     </Box>
   );
 }

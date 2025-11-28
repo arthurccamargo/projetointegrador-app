@@ -51,7 +51,7 @@ export default function EventCardToVolunteer({
         borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
-        borderColor: "grey.200",
+        borderColor: "divider",
         p: 3,
         transition: "box-shadow 0.3s, transform 0.3s",
         "&:hover": {
