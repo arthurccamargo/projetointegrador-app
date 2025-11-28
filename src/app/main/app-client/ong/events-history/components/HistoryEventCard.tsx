@@ -169,7 +169,7 @@ export default function HistoryEventCard({ event }: HistoryEventCardProps) {
                 variant="body2"
                 fontWeight="bold"
                 sx={{
-                  color: 'black',
+                  color: "text.primary",
                 }}
               >
                 {`${availableVacancies}/${totalVacancies} vagas`}
