@@ -4,7 +4,6 @@ import {
   Stack,
   Card,
   CardContent,
-  Avatar,
   Chip,
   Divider,
 } from "@mui/material";
@@ -75,15 +74,7 @@ export default function NotificationsOngPage() {
       <Stack spacing={3} width="100%">
         {eventNotifications.length === 0 ? (
           <Box textAlign="center" mt={8}>
-            <Typography
-              variant="h6"
-              fontWeight="medium"
-              color="text.primary"
-              mb={1}
-            >
-              Nenhuma notificação
-            </Typography>
-            <Typography color="black">
+            <Typography color="text.primary">
               Não há notificações no momento
             </Typography>
           </Box>
@@ -96,12 +87,14 @@ export default function NotificationsOngPage() {
                 key={event.id}
                 sx={{
                   bgcolor: theme.palette.background.paper,
-                  border: `2px solid ${statusInfo.bg}`,
-                  boxShadow: theme.shadows[2],
-                  transition: "all 0.2s ease",
+                  borderRadius: 8,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  boxShadow: 1,
+                  transition: "box-shadow 0.3s, transform 0.3s",
                   "&:hover": {
-                    boxShadow: theme.shadows[6],
-                    transform: "translateY(-2px)",
+                    boxShadow: 3,
+                    transform: "translateY(-4px)",
                   },
                 }}
               >
@@ -111,18 +104,6 @@ export default function NotificationsOngPage() {
                     gap={{ xs: 2, sm: 3 }}
                     flexDirection={{ xs: "column", sm: "row" }}
                   >
-                    <Avatar
-                      sx={{
-                        bgcolor: theme.palette.primary.main,
-                        width: { xs: 56, sm: 64 },
-                        height: { xs: 56, sm: 64 },
-                        fontSize: { xs: 28, sm: 32 },
-                        flexShrink: 0,
-                        alignSelf: { xs: "center", sm: "flex-start" },
-                      }}
-                    >
-                      📅
-                    </Avatar>
 
                     <Box flex={1} minWidth={0}>
                       <Typography
@@ -166,14 +147,13 @@ export default function NotificationsOngPage() {
 
                       <Stack spacing={1.5} mb={2}>
                         <Box display="flex" alignItems="center" gap={1}>
-                          <Typography variant="body2" color="black">
+                          <Typography variant="body2" color="text.primary">
                             📍 {event.location}
                           </Typography>
                         </Box>
                         <Box display="flex" alignItems="center" gap={1}>
-                          <Typography variant="body2" color="black">
-                            🕐 {formatStartDate(event.startDate)} •{" "}
-                            {event.durationMinutes} minutos
+                          <Typography variant="body2" color="text.primary">
+                            🕐 {formatStartDate(event.startDate)}
                           </Typography>
                         </Box>
                       </Stack>
@@ -192,7 +172,7 @@ export default function NotificationsOngPage() {
                       >
                         <Typography
                           variant="caption"
-                          color="black"
+                          color="text.primary"
                           sx={{
                             display: "block",
                             mb: 1,
@@ -211,6 +191,7 @@ export default function NotificationsOngPage() {
                             fontSize: { xs: "2rem", sm: "2.5rem" },
                             letterSpacing: 8,
                             fontFamily: "monospace",
+                            color: theme.palette.text.primary,
                           }}
                         >
                           {event.checkInCode}

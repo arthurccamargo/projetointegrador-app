@@ -5,7 +5,6 @@ import {
   Stack,
   Card,
   CardContent,
-  Avatar,
   Chip,
   Divider,
   TextField,
@@ -138,7 +137,7 @@ export default function NotificationsVolunteerPage() {
       const minutes = Math.floor(hours * 60);
       return `${minutes} minutos`;
     }
-    return `${hours.toFixed(1)} horas`;
+    return `${hours.toFixed(0)} horas`;
   };
 
   const handleOpenReviewModal = (application: EligibleApplication) => {
@@ -228,7 +227,7 @@ export default function NotificationsVolunteerPage() {
       </Box>
 
       {eligibleApplications.length > 0 && (
-        <Box mb={4}>
+        <Box mb={4} width="100%">
           <Typography
             variant="h5"
             fontWeight="bold"
@@ -236,25 +235,22 @@ export default function NotificationsVolunteerPage() {
             mb={2}
             sx={{ display: "flex", alignItems: "center", gap: 1 }}
           >
-            <Star
-              size={24}
-              color={theme.palette.warning.main}
-              fill={theme.palette.warning.main}
-            />
-            Eventos para Avaliar
+            Avaliações Pendentes
           </Typography>
-          <Stack spacing={2}>
+          <Stack spacing={2} width="100%">
             {eligibleApplications.map((application: EligibleApplication) => (
               <Card
                 key={application.applicationId}
                 sx={{
                   bgcolor: theme.palette.background.paper,
-                  border: `2px solid ${theme.palette.warning.main}`,
-                  boxShadow: theme.shadows[2],
-                  transition: "all 0.2s ease",
+                  borderRadius: 8,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  boxShadow: 1,
+                  transition: "box-shadow 0.3s, transform 0.3s",
                   "&:hover": {
-                    boxShadow: theme.shadows[6],
-                    transform: "translateY(-2px)",
+                    boxShadow: 3,
+                    transform: "translateY(-4px)",
                   },
                 }}
               >
@@ -264,19 +260,6 @@ export default function NotificationsVolunteerPage() {
                     gap={{ xs: 2, sm: 3 }}
                     flexDirection={{ xs: "column", sm: "row" }}
                   >
-                    <Avatar
-                      sx={{
-                        bgcolor: theme.palette.warning.main,
-                        width: { xs: 56, sm: 64 },
-                        height: { xs: 56, sm: 64 },
-                        fontSize: { xs: 28, sm: 32 },
-                        flexShrink: 0,
-                        alignSelf: { xs: "center", sm: "flex-start" },
-                      }}
-                    >
-                      <Star size={32} />
-                    </Avatar>
-
                     <Box flex={1} minWidth={0}>
                       <Typography
                         variant="h5"
@@ -369,7 +352,7 @@ export default function NotificationsVolunteerPage() {
                           startIcon={<Star size={20} />}
                           onClick={() => handleOpenReviewModal(application)}
                         >
-                          Avaliar Evento
+                          Avaliar Experiência
                         </Button>
                       </Box>
                     </Box>
@@ -390,14 +373,6 @@ export default function NotificationsVolunteerPage() {
       <Stack spacing={3} width="100%">
         {eventNotifications.length === 0 ? (
           <Box textAlign="center" mt={8}>
-            <Typography
-              variant="h6"
-              fontWeight="medium"
-              color="text.primary"
-              mb={1}
-            >
-              Nenhuma notificação
-            </Typography>
             <Typography color="text.primary">
               Não há notificações no momento
             </Typography>
@@ -411,14 +386,14 @@ export default function NotificationsVolunteerPage() {
                 key={event.applicationId}
                 sx={{
                   bgcolor: theme.palette.background.paper,
-                  border: event.checkedIn
-                    ? `2px solid ${theme.palette.success.main}`
-                    : `2px solid ${statusInfo.bg}`,
-                  boxShadow: theme.shadows[2],
-                  transition: "all 0.2s ease",
+                  borderRadius: 8,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  boxShadow: 1,
+                  transition: "box-shadow 0.3s, transform 0.3s",
                   "&:hover": {
-                    boxShadow: theme.shadows[6],
-                    transform: "translateY(-2px)",
+                    boxShadow: 3,
+                    transform: "translateY(-4px)",
                   },
                 }}
               >
@@ -428,21 +403,6 @@ export default function NotificationsVolunteerPage() {
                     gap={{ xs: 2, sm: 3 }}
                     flexDirection={{ xs: "column", sm: "row" }}
                   >
-                    <Avatar
-                      sx={{
-                        bgcolor: event.checkedIn
-                          ? theme.palette.success.main
-                          : theme.palette.primary.main,
-                        width: { xs: 56, sm: 64 },
-                        height: { xs: 56, sm: 64 },
-                        fontSize: { xs: 28, sm: 32 },
-                        flexShrink: 0,
-                        alignSelf: { xs: "center", sm: "flex-start" },
-                      }}
-                    >
-                      {event.checkedIn ? "✓" : "📅"}
-                    </Avatar>
-
                     <Box flex={1} minWidth={0}>
                       <Typography
                         variant="h5"
@@ -679,13 +639,8 @@ export default function NotificationsVolunteerPage() {
             justifyContent="space-between"
           >
             <Box display="flex" alignItems="center" gap={1}>
-              <Star
-                size={24}
-                color={theme.palette.warning.main}
-                fill={theme.palette.warning.main}
-              />
               <Typography variant="h6" fontWeight="bold">
-                Avaliar Evento
+                Avaliação
               </Typography>
             </Box>
             <IconButton onClick={handleCloseReviewModal} size="small">
@@ -693,7 +648,7 @@ export default function NotificationsVolunteerPage() {
             </IconButton>
           </Box>
           {selectedApplication && (
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            <Typography variant="body2" color="text.primary" sx={{ mt: 1 }}>
               {selectedApplication.event.title}
             </Typography>
           )}
@@ -768,7 +723,8 @@ export default function NotificationsVolunteerPage() {
                     sx={{
                       fontSize: "3rem",
                       "& .MuiRating-iconEmpty": {
-                        color: theme.palette.action.disabled,
+                        color: theme.palette.text.primary,
+                        opacity: 0.3,
                       },
                       "& .MuiRating-iconFilled": {
                         color: theme.palette.warning.main,
@@ -825,7 +781,7 @@ export default function NotificationsVolunteerPage() {
                 />
                 <Typography
                   variant="caption"
-                  color="text.secondary"
+                  color="text.primary"
                   sx={{ display: "block", mt: 1 }}
                 >
                   {comment.length} / 500 caracteres
@@ -846,6 +802,11 @@ export default function NotificationsVolunteerPage() {
                   borderRadius: 2,
                   textTransform: "none",
                   fontWeight: "medium",
+                  color: theme.palette.text.primary,
+                  borderColor: theme.palette.divider,
+                  "&:hover": {
+                    borderColor: theme.palette.text.primary,
+                  },
                 }}
               >
                 Cancelar
