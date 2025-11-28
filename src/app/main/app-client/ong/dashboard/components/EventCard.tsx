@@ -36,7 +36,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
         borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
-        borderColor: "grey.200",
+        borderColor: "divider",
         p: 3,
         transition: "box-shadow 0.3s, transform 0.3s",
         "&:hover": {
@@ -51,7 +51,7 @@ export default function EventCard({ event, onDelete, onEdit }: EventCardProps) {
         alignItems="flex-start"
       >
         <Box flex={1}>
-          <Box display="flex" alignItems="center" gap={2} mb={2} bgcolor={ theme.palette.background.paper }>
+          <Box display="flex" alignItems="center" gap={2} mb={2}>
             <Typography
               variant="h6"
               fontWeight="bold"
