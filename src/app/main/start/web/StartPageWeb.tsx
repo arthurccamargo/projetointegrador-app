@@ -187,7 +187,7 @@ export default function StartPageWeb() {
                 variant="contained"
                 size="large"
                 endIcon={<ArrowForward />}
-                onClick={() => navigate("/sign-up")}
+                onClick={() => navigate("/sign-in")}
                 sx={{
                   bgcolor: theme.palette.secondary.main,
                   color: theme.palette.secondary.contrastText,
@@ -250,7 +250,7 @@ export default function StartPageWeb() {
             >
               Como o HelpHub Funciona
             </Typography>
-            <Typography variant="h6" color="text.secondary">
+            <Typography variant="h6" color="text.primary">
               Três passos simples para começar a fazer diferença
             </Typography>
           </Box>
@@ -267,6 +267,7 @@ export default function StartPageWeb() {
               {
                 step: 1,
                 title: "ONGs Cadastram Ações",
+                color: "black",
                 description:
                   "Organizações publicam suas oportunidades de voluntariado, detalham as necessidades e compartilham seu propósito social.",
               },
@@ -332,7 +333,7 @@ export default function StartPageWeb() {
                   {item.title}
                 </Typography>
                 <Typography
-                  color="text.secondary"
+                  color="#6c6c6cff"
                   sx={{ px: 2, fontSize: "0.95rem" }}
                 >
                   {item.description}
@@ -361,7 +362,7 @@ export default function StartPageWeb() {
             >
               Uma Plataforma Moderna e Intuitiva
             </Typography>
-            <Typography variant="h6" color="text.secondary">
+            <Typography variant="h6" color="6c6c6cff">
               Design mobile-first pensado para você. Simples, rápido e
               eficiente.
             </Typography>
@@ -581,7 +582,7 @@ export default function StartPageWeb() {
               >
                 Tudo que você precisa em um app
               </Typography>
-              <Typography color="text.secondary" sx={{ mb: 3 }}>
+              <Typography color="#6c6c6cff" sx={{ mb: 3 }}>
                 HelpHub oferece uma experiência completa e moderna para conectar
                 você com oportunidades de impacto social.
               </Typography>
@@ -617,7 +618,7 @@ export default function StartPageWeb() {
                       >
                         {feature.title}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="body2" color="#6c6c6cff">
                         {feature.description}
                       </Typography>
                     </Box>
@@ -629,7 +630,7 @@ export default function StartPageWeb() {
                 variant="contained"
                 size="large"
                 endIcon={<ArrowForward />}
-                onClick={() => navigate("/sign-up")}
+                onClick={() => navigate("/sign-in")}
                 sx={{
                   bgcolor: theme.palette.primary.main,
                   color: theme.palette.primary.contrastText,
@@ -668,7 +669,7 @@ export default function StartPageWeb() {
             >
               Por que escolher o HelpHub?
             </Typography>
-            <Typography variant="h6" color="text.secondary">
+            <Typography variant="h6" color="#6c6c6cff">
               Benefícios que fazem a diferença
             </Typography>
           </Box>
@@ -735,7 +736,7 @@ export default function StartPageWeb() {
                     >
                       {benefit.title}
                     </Typography>
-                    <Typography color="text.secondary">
+                    <Typography color="#6c6c6cff">
                       {benefit.description}
                     </Typography>
                   </CardContent>
@@ -798,7 +799,7 @@ export default function StartPageWeb() {
               variant="contained"
               size="large"
               endIcon={<ArrowForward />}
-              onClick={() => navigate("/sign-up")}
+              onClick={() => navigate("/sign-in")}
               sx={{
                 bgcolor: theme.palette.secondary.main,
                 color: theme.palette.secondary.contrastText,
@@ -835,7 +836,7 @@ export default function StartPageWeb() {
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Favorite />
-              <span>Feito com ❤️ para a Comunidade</span>
+              <span>Feito para Comunidade</span>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <FlashOn />
