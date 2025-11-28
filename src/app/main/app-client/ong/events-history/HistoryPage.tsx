@@ -1,4 +1,4 @@
-import { Container, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
@@ -21,24 +21,32 @@ export default function EventsPage() {
   );
 
   return (
-    <Container
-      maxWidth="lg"
+    <Box
       sx={{
-        py: 2,
-        minHeight: "100vh",
-        position: "relative",
-        mb: 2,
-        bgcolor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.default,
+        minHeight: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        px: { xs: 2, sm: 3, md: 4 },
+        pb: { xs: 12, md: 4 },
+        pt: 2,
       }}
     >
-      <Box mb={8}>
-        <Typography variant="h4" fontWeight="bold" color="text.primary" mb={2}>
+      <Box
+        mb={4}
+        width="100%"
+        maxWidth="400px"
+        color={theme.palette.text.primary}
+      >
+        <Typography variant="h4" fontWeight="bold" color="text.primary" mb={1} sx={{ whiteSpace: "nowrap" }}>
           Meu Histórico de Eventos
         </Typography>
         <Typography color="text.primary" mb={3}>
           Visualize seus eventos passados
         </Typography>
-        <Box maxWidth={400}>
+        <Box>
           <TextField
             fullWidth
             sx={{
@@ -62,15 +70,12 @@ export default function EventsPage() {
         </Box>
       </Box>
 
-      <Stack spacing={3}>
+      <Stack spacing={3} width="100%">
         {isLoadingEvents ? (
-          <Typography>Carregando eventos...</Typography>
+          <Typography color="text.primary">Carregando eventos...</Typography>
         ) : (
           filteredEvents.map((event: Event) => (
-            <HistoryEventCard
-              key={event.id}
-              event={event}
-            />
+            <HistoryEventCard key={event.id} event={event} />
           ))
         )}
       </Stack>
@@ -90,6 +95,6 @@ export default function EventsPage() {
           </Typography>
         </Box>
       )}
-    </Container>
+    </Box>
   );
 }

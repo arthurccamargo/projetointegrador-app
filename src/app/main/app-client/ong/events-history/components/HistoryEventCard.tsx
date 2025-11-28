@@ -5,9 +5,8 @@ import type { Event } from "../../../../../../types/events.type";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { getStatusColor } from "../../../../../shared-components/functions/getStatusEvent";
 import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 import HistoryVolunteersModal from "./HistoryVolunteersModal";
-
 
 interface HistoryEventCardProps {
   event: Event;
@@ -19,10 +18,13 @@ export default function HistoryEventCard({ event }: HistoryEventCardProps) {
   const theme = useTheme();
   const [openCandidatesModal, setOpenCandidatesModal] = useState(false);
 
-  const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(event.startDate);
+  const { date: formattedDate, time: formattedTime } = formatDateTimeBrazil(
+    event.startDate
+  );
   const hours = Math.floor(event.durationMinutes / 60);
   const minutes = event.durationMinutes % 60;
-  const formattedDuration = minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
+  const formattedDuration =
+    minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
   const statusInfo = getStatusColor(event.status);
 
   return (
@@ -33,7 +35,7 @@ export default function HistoryEventCard({ event }: HistoryEventCardProps) {
         borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
-        borderColor: "grey.200",
+        borderColor: "divider",
         p: 3,
         transition: "box-shadow 0.3s, transform 0.3s",
         "&:hover": {
@@ -48,12 +50,8 @@ export default function HistoryEventCard({ event }: HistoryEventCardProps) {
         alignItems="flex-start"
       >
         <Box flex={1}>
-          <Box display="flex" alignItems="center" gap={2} mb={2} bgcolor={ theme.palette.background.paper }>
-            <Typography
-              variant="h6"
-              fontWeight="bold"
-              color="text.primary"
-            >
+          <Box display="flex" alignItems="center" gap={2} mb={2}>
+            <Typography variant="h6" fontWeight="bold" color="text.primary">
               {event.title}
             </Typography>
             <Chip
@@ -100,7 +98,11 @@ export default function HistoryEventCard({ event }: HistoryEventCardProps) {
               sx={{ minWidth: "fit-content" }}
             >
               <Calendar size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.primary" sx={{ whiteSpace: "nowrap" }}>
+              <Typography
+                variant="body2"
+                color="text.primary"
+                sx={{ whiteSpace: "nowrap" }}
+              >
                 {formattedDate}
               </Typography>
             </Box>
@@ -111,11 +113,7 @@ export default function HistoryEventCard({ event }: HistoryEventCardProps) {
               gap={1}
             >
               <Clock size={16} style={{ color: "#6b7280" }} />
-              <Typography
-                variant="body2"
-                color="text.primary"
-                sx={{ ml: 0 }}
-              >
+              <Typography variant="body2" color="text.primary" sx={{ ml: 0 }}>
                 Hora de Início: {formattedTime}
               </Typography>
             </Box>
@@ -162,7 +160,7 @@ export default function HistoryEventCard({ event }: HistoryEventCardProps) {
               <Users
                 size={16}
                 style={{
-                  color: '#6b7280',
+                  color: "#6b7280",
                 }}
               />
               <Typography
@@ -181,7 +179,11 @@ export default function HistoryEventCard({ event }: HistoryEventCardProps) {
             <Button
               variant="contained"
               startIcon={<Users size={18} />}
-              sx={{ borderRadius: 8, color: theme.palette.text.secondary, bgcolor: theme.palette.warning.main}}
+              sx={{
+                borderRadius: 8,
+                color: theme.palette.text.secondary,
+                bgcolor: theme.palette.warning.main,
+              }}
               onClick={() => setOpenCandidatesModal(true)}
             >
               Ver participantes

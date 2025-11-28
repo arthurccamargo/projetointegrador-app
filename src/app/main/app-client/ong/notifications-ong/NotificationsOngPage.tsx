@@ -1,5 +1,4 @@
 import {
-  Container,
   Box,
   Typography,
   Stack,
@@ -26,7 +25,7 @@ interface EventNotification {
     createdAt: string;
     updatedAt: string;
   };
-  status: 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'SCHEDULED';
+  status: "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "SCHEDULED";
   checkInCode: string;
   checkInCodeGeneratedAt: string;
 }
@@ -46,26 +45,34 @@ export default function NotificationsOngPage() {
   };
 
   return (
-    <Container
-      maxWidth="lg"
+    <Box
       sx={{
-        py: 2,
-        minHeight: "100vh",
-        position: "relative",
-        mb: 2,
-        bgcolor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.default,
+        minHeight: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        px: { xs: 2, sm: 3, md: 4 },
+        pb: { xs: 12, md: 4 },
+        pt: 2,
       }}
     >
-      <Box mb={4}>
+      <Box
+        mb={4}
+        width="100%"
+        maxWidth="400px"
+        color={theme.palette.text.primary}
+      >
         <Typography variant="h4" fontWeight="bold" color="text.primary" mb={1}>
           Notificações
         </Typography>
-        <Typography color="black">
+        <Typography color="text.primary">
           Acompanhe suas notificações
         </Typography>
       </Box>
 
-      <Stack spacing={3}>
+      <Stack spacing={3} width="100%">
         {eventNotifications.length === 0 ? (
           <Box textAlign="center" mt={8}>
             <Typography
@@ -83,7 +90,7 @@ export default function NotificationsOngPage() {
         ) : (
           eventNotifications.map((event: EventNotification) => {
             const statusInfo = getStatusColor(event.status);
-            
+
             return (
               <Card
                 key={event.id}
@@ -217,6 +224,6 @@ export default function NotificationsOngPage() {
           })
         )}
       </Stack>
-    </Container>
+    </Box>
   );
 }
