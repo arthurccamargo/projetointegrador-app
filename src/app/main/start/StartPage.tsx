@@ -5,6 +5,9 @@ import LoadingSpinner from "../../shared-components/LoadingSpinner";
 import { IS_MOBILE } from "../../utils/platform";
 import StartPageMobile from "./mobile/StartPageMobile";
 import StartPageWeb from "./web/StartPageWeb";
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+import { lightTheme } from "../../../theme/theme";
 
 function StartPage() {
   const navigate = useNavigate();
@@ -38,9 +41,10 @@ function StartPage() {
   }
 
   return (
-    <>
-    {IS_MOBILE ? <StartPageMobile /> : <StartPageWeb />}
-    </>
+    <ThemeProvider theme={lightTheme}>
+      <CssBaseline />
+      {IS_MOBILE ? <StartPageMobile /> : <StartPageWeb />}
+    </ThemeProvider>
   );
 }
 

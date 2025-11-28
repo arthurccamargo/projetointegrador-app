@@ -37,6 +37,8 @@ export interface OngProfile {
   responsibleEmail: string;
   documentUrl?: string;
   status?: string;
+  averageRating?: number;
+  totalReviews?: number;
 }
 
 export interface User {

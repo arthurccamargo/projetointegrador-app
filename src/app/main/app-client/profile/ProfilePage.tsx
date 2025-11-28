@@ -71,6 +71,8 @@ export default function ProfilePage() {
         }
     }, [id, currentUser, authLoading]);
 
+    console.log(currentUser);
+    
     // Loading state
     if (authLoading || profileLoading) {
         return (
@@ -252,10 +254,10 @@ export default function ProfilePage() {
                                 variant="h6" 
                                 sx={{ fontWeight: "bold", color: theme.palette.primary.main }}
                             >
-                                {profileUser.role === "VOLUNTEER" ? "0" : "0"}
+                                {profileUser.role === "ONG" ? `${profileUser.ongProfile?.averageRating}/5` : ""}
                             </Typography>
                             <Typography variant="caption" sx={{ opacity: 0.7, color: theme.palette.text.primary }}>
-                                {profileUser.role === "VOLUNTEER" ? "participações" : "eventos criados"}
+                                {profileUser.role === "VOLUNTEER" ? "" : "nota"}
                             </Typography>
                         </Box>
                         <Box sx={{ textAlign: "center" }}>
@@ -263,10 +265,10 @@ export default function ProfilePage() {
                                 variant="h6" 
                                 sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
                             >
-                                {profileUser.status === "ACTIVE" ? "Ativo" : "Pendente"}
+                                {profileUser.role === "VOLUNTEER" ? "" : profileUser.ongProfile?.totalReviews}
                             </Typography>
                             <Typography variant="caption" sx={{ opacity: 0.7, color: theme.palette.text.primary }}>
-                                status
+                                {profileUser.role === "VOLUNTEER" ? "" : "número de avaliações"}
                             </Typography>
                         </Box>
                     </Stack>
@@ -438,9 +440,7 @@ export default function ProfilePage() {
 
             {/* Seção de Ações - só mostra se for próprio perfil */}
             {isOwnProfile && (
-                <>
-                    <Divider sx={{ width: "100%", mb: 3 }} />
-                    
+                <>  
                     <Box 
                         sx={{ 
                             width: "100%", 
