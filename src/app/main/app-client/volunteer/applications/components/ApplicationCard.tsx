@@ -1,4 +1,12 @@
-import { Box, Button, Divider, Stack, Typography, Chip, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  Chip,
+  useTheme,
+} from "@mui/material";
 import { Building, Calendar, Clock, Eye, MapPin, X } from "lucide-react";
 import { getCategoryColor } from "../../../../../shared-components/functions/getCategoryColor";
 import { formatDateTimeBrazil } from "../../../../../shared-components/functions/dateUtils";
@@ -19,7 +27,8 @@ export default function EventCardToVolunteer({
   );
   const hours = Math.floor(application.durationMinutes / 60);
   const minutes = application.durationMinutes % 60;
-  const formattedDuration = minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
+  const formattedDuration =
+    minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -27,11 +36,11 @@ export default function EventCardToVolunteer({
     <Box
       key={application.id}
       sx={{
-        bgcolor: "#F8F8F8",
+        backgroundColor: theme.palette.background.paper,
         borderRadius: 8,
         boxShadow: 1,
         border: "1px solid",
-        borderColor: "grey.200",
+        borderColor: "divider",
         p: 3,
         transition: "box-shadow 0.3s, transform 0.3s",
         "&:hover": {
@@ -47,11 +56,7 @@ export default function EventCardToVolunteer({
       >
         <Box flex={1}>
           <Box display="flex" alignItems="center" gap={2} mb={2}>
-            <Typography
-              variant="h6"
-              fontWeight="bold"
-              color="text.common.black"
-            >
+            <Typography variant="h6" fontWeight="bold" color="text.primary">
               {application.title}
             </Typography>
             <Box display="flex" gap={0.5}>
@@ -67,7 +72,7 @@ export default function EventCardToVolunteer({
               />
             </Box>
           </Box>
-          <Typography color="text.common.black" mb={3}>
+          <Typography color="text.primary" mb={3}>
             {application.description}
           </Typography>
           <Box
@@ -94,7 +99,7 @@ export default function EventCardToVolunteer({
               <Calendar size={16} style={{ color: "#6b7280" }} />
               <Typography
                 variant="body2"
-                color="text.common.black"
+                color="text.primary"
                 sx={{ whiteSpace: "nowrap" }}
               >
                 {formattedDate}
@@ -109,7 +114,7 @@ export default function EventCardToVolunteer({
               <Clock size={16} style={{ color: "#6b7280" }} />
               <Typography
                 variant="body2"
-                color="text.common.black"
+                color="text.primary"
                 sx={{ ml: 0 }}
               >
                 Hora de Início: {formattedTime}
@@ -122,7 +127,7 @@ export default function EventCardToVolunteer({
               gap={1}
             >
               <Clock size={16} style={{ color: "#6b7280" }} />
-              <Typography variant="body2" color="text.common.black">
+              <Typography variant="body2" color="text.primary">
                 Duração: {formattedDuration}
               </Typography>
             </Box>
@@ -136,7 +141,7 @@ export default function EventCardToVolunteer({
               <MapPin size={16} style={{ color: "#6b7280", flexShrink: 0 }} />
               <Typography
                 variant="body2"
-                color="text.common.black"
+                color="text.primary"
                 sx={{
                   whiteSpace: "nowrap",
                   overflow: "hidden",
@@ -153,7 +158,7 @@ export default function EventCardToVolunteer({
           <Divider sx={{ mb: 2 }} />
           <Box display="flex" alignItems="center" gap={1} mb={2}>
             <Building size={16} style={{ color: "#6b7280" }} />
-            <Typography variant="body2" color="text.common.black">
+            <Typography variant="body2" color="text.primary">
               {application.ong?.name}
             </Typography>
           </Box>
@@ -161,13 +166,12 @@ export default function EventCardToVolunteer({
             <Button
               variant="contained"
               startIcon={<Eye size={18} />}
-              sx={{ 
-                borderRadius: 9, 
+              sx={{
+                borderRadius: 9,
                 color: theme.palette.text.secondary,
-                width: { xs: '100%', sm: 'auto' }
+                width: { xs: "100%", sm: "auto" },
               }}
               onClick={() => navigate(`/profile/${application.ong?.userId}`)}
-
             >
               Ver ONG
             </Button>
@@ -177,10 +181,11 @@ export default function EventCardToVolunteer({
                   variant="contained"
                   startIcon={<X size={18} />}
                   onClick={() => onCancel(application)}
-                  sx={{ borderRadius: 9, 
-                    bgcolor: theme.palette.error.main, 
+                  sx={{
+                    borderRadius: 9,
+                    bgcolor: theme.palette.error.main,
                     color: theme.palette.text.secondary,
-                    width: { xs: '100%', sm: 'auto' }  
+                    width: { xs: "100%", sm: "auto" },
                   }}
                 >
                   Cancelar

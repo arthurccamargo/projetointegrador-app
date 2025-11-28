@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Container, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import {
@@ -48,18 +48,27 @@ export default function ApplicationsPage() {
   };
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{ py: 2, minHeight: "100vh", position: "relative", mb: 2, bgcolor: theme.palette.background.default }}
+    <Box
+      sx={{
+        backgroundColor: theme.palette.background.default,
+        minHeight: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        px: { xs: 2, sm: 3, md: 4 },
+        pb: { xs: 12, md: 4 },
+        pt: 2,
+      }}
     >
-      <Box color={ theme.palette.text.primary } mb={8}>
-        <Typography variant="h4" fontWeight="bold" mb={2}>
+      <Box mb={4} width="100%" maxWidth="400px" color={ theme.palette.text.primary }>
+        <Typography variant="h4" fontWeight="bold" color="text.primary" mb={1}>
           Minhas Candidaturas
         </Typography>
         <Typography mb={3}>
           Acompanhe suas candidaturas e atividades
         </Typography>
-        <Box maxWidth={400}>
+        <Box>
           <TextField
             fullWidth
             variant="outlined"
@@ -83,9 +92,9 @@ export default function ApplicationsPage() {
         </Box>
       </Box>
 
-      <Stack spacing={3}>
+      <Stack spacing={3} width="100%">
         {isLoadingApplications ? (
-          <Typography>Carregando candidaturas...</Typography>
+          <Typography sx={{ color: "text.primary" }}>Carregando candidaturas...</Typography>
         ) : (
           filteredEvents.map((application: EventApplication) => (
             <ApplicationCard key={application.id} application={application} onCancel={async () => handleCancelClick(application)} />
@@ -122,6 +131,6 @@ export default function ApplicationsPage() {
         message="Tem certeza que deseja cancelar esta candidatura?"
       />
 
-    </Container>
+    </Box>
   );
 }

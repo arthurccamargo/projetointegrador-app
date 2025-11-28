@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Container,
   Box,
   Typography,
   Stack,
@@ -22,8 +21,15 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { CheckCircle, Star, X } from "lucide-react";
 import { getStatusColor } from "../../../../shared-components/functions/getStatusEvent";
-import { useCheckInMutation, useGetEventNotificationsVolunteerQuery } from "../../../../api/EventApplicationApi";
-import { useGetEligibleApplicationsQuery, type EligibleApplication, useCreateReviewMutation } from "../../../../api/ReviewApi";
+import {
+  useCheckInMutation,
+  useGetEventNotificationsVolunteerQuery,
+} from "../../../../api/EventApplicationApi";
+import {
+  useGetEligibleApplicationsQuery,
+  type EligibleApplication,
+  useCreateReviewMutation,
+} from "../../../../api/ReviewApi";
 
 interface EventNotification {
   applicationId: string;
@@ -51,15 +57,22 @@ export default function NotificationsVolunteerPage() {
   const theme = useTheme();
   const { data: eventNotifications = [], refetch } =
     useGetEventNotificationsVolunteerQuery();
-  const { data: eligibleApplications = [], refetch: refetchEligible } = useGetEligibleApplicationsQuery();
+  const { data: eligibleApplications = [], refetch: refetchEligible } =
+    useGetEligibleApplicationsQuery();
   const [checkIn] = useCheckInMutation();
-  const [createReview, { isLoading: isCreatingReview }] = useCreateReviewMutation();
+  const [createReview, { isLoading: isCreatingReview }] =
+    useCreateReviewMutation();
   const [checkInCodes, setCheckInCodes] = useState<Record<string, string>>({});
-  const [checkInErrors, setCheckInErrors] = useState<Record<string, string>>({});
-  const [loadingCheckIn, setLoadingCheckIn] = useState<Record<string, boolean>>({});
-  
+  const [checkInErrors, setCheckInErrors] = useState<Record<string, string>>(
+    {}
+  );
+  const [loadingCheckIn, setLoadingCheckIn] = useState<Record<string, boolean>>(
+    {}
+  );
+
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-  const [selectedApplication, setSelectedApplication] = useState<EligibleApplication | null>(null);
+  const [selectedApplication, setSelectedApplication] =
+    useState<EligibleApplication | null>(null);
   const [rating, setRating] = useState<number | null>(0);
   const [comment, setComment] = useState("");
   const [reviewError, setReviewError] = useState("");
@@ -73,23 +86,29 @@ export default function NotificationsVolunteerPage() {
   const handleCheckIn = async (eventId: string) => {
     const code = checkInCodes[eventId];
     if (code && code.length === 6) {
-      setLoadingCheckIn(prev => ({ ...prev, [eventId]: true }));
-      setCheckInErrors(prev => ({ ...prev, [eventId]: "" }));
-      
+      setLoadingCheckIn((prev) => ({ ...prev, [eventId]: true }));
+      setCheckInErrors((prev) => ({ ...prev, [eventId]: "" }));
+
       try {
         await checkIn({ eventId, code }).unwrap();
-        setCheckInCodes(prev => ({ ...prev, [eventId]: "" }));
+        setCheckInCodes((prev) => ({ ...prev, [eventId]: "" }));
         await refetch();
       } catch (error: unknown) {
-        const errorMessage = error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'message' in error.data 
-          ? String(error.data.message)
-          : error && typeof error === 'object' && 'message' in error
-          ? String(error.message)
-          : "Erro ao fazer check-in";
-        setCheckInErrors(prev => ({ ...prev, [eventId]: errorMessage }));
+        const errorMessage =
+          error &&
+          typeof error === "object" &&
+          "data" in error &&
+          error.data &&
+          typeof error.data === "object" &&
+          "message" in error.data
+            ? String(error.data.message)
+            : error && typeof error === "object" && "message" in error
+              ? String(error.message)
+              : "Erro ao fazer check-in";
+        setCheckInErrors((prev) => ({ ...prev, [eventId]: errorMessage }));
         console.error("Erro ao fazer check-in:", error);
       } finally {
-        setLoadingCheckIn(prev => ({ ...prev, [eventId]: false }));
+        setLoadingCheckIn((prev) => ({ ...prev, [eventId]: false }));
       }
     }
   };
@@ -142,54 +161,70 @@ export default function NotificationsVolunteerPage() {
 
   const handleSubmitReview = async () => {
     if (!selectedApplication) return;
-    
+
     if (!rating || rating === 0) {
       setReviewError("Por favor, selecione uma avaliação");
       return;
     }
 
     setReviewError("");
-    
+
     try {
       await createReview({
         applicationId: selectedApplication.applicationId,
         rating: rating,
         comment: comment.trim() || undefined,
       }).unwrap();
-      
+
       setReviewSuccess(true);
       await refetchEligible();
-      
+
       setTimeout(() => {
         handleCloseReviewModal();
       }, 2000);
     } catch (error: unknown) {
-      const errorMessage = error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'message' in error.data 
-        ? String(error.data.message)
-        : error && typeof error === 'object' && 'message' in error
-        ? String(error.message)
-        : "Erro ao enviar avaliação";
+      const errorMessage =
+        error &&
+        typeof error === "object" &&
+        "data" in error &&
+        error.data &&
+        typeof error.data === "object" &&
+        "message" in error.data
+          ? String(error.data.message)
+          : error && typeof error === "object" && "message" in error
+            ? String(error.message)
+            : "Erro ao enviar avaliação";
       setReviewError(errorMessage);
       console.error("Erro ao enviar avaliação:", error);
     }
   };
 
   return (
-    <Container
-      maxWidth="lg"
+    <Box
       sx={{
-        py: 2,
-        minHeight: "100vh",
-        position: "relative",
-        mb: 2,
-        bgcolor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.default,
+        minHeight: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        px: { xs: 2, sm: 3, md: 4 },
+        pb: { xs: 12, md: 4 },
+        pt: 2,
       }}
     >
-      <Box mb={4}>
+      <Box
+        mb={4}
+        width="100%"
+        maxWidth="400px"
+        color={theme.palette.text.primary}
+      >
         <Typography variant="h4" fontWeight="bold" color="text.primary" mb={1}>
           Notificações
         </Typography>
-        <Typography color="black">Acompanhe suas notificações</Typography>
+        <Typography color="text.primary">
+          Acompanhe suas notificações
+        </Typography>
       </Box>
 
       {eligibleApplications.length > 0 && (
@@ -201,7 +236,11 @@ export default function NotificationsVolunteerPage() {
             mb={2}
             sx={{ display: "flex", alignItems: "center", gap: 1 }}
           >
-            <Star size={24} color={theme.palette.warning.main} fill={theme.palette.warning.main} />
+            <Star
+              size={24}
+              color={theme.palette.warning.main}
+              fill={theme.palette.warning.main}
+            />
             Eventos para Avaliar
           </Typography>
           <Stack spacing={2}>
@@ -277,15 +316,17 @@ export default function NotificationsVolunteerPage() {
                         />
                       </Box>
 
-                      <Stack spacing={1.5} mb={2}>
+                      <Stack spacing={1.5} mb={2} width="100%">
                         <Box display="flex" alignItems="center" gap={1}>
-                          <Typography variant="body2" color="black">
-                            ⏰ Tempo restante para avaliar: {formatHoursRemaining(application.hoursRemaining)}
+                          <Typography variant="body2" color="text.primary">
+                            ⏰ Tempo restante para avaliar:{" "}
+                            {formatHoursRemaining(application.hoursRemaining)}
                           </Typography>
                         </Box>
                         <Box display="flex" alignItems="center" gap={1}>
-                          <Typography variant="body2" color="black">
-                            ✓ Check-in realizado em {formatCheckInDate(application.checkInAt)}
+                          <Typography variant="body2" color="text.primary">
+                            ✓ Check-in realizado em{" "}
+                            {formatCheckInDate(application.checkInAt)}
                           </Typography>
                         </Box>
                       </Stack>
@@ -309,7 +350,8 @@ export default function NotificationsVolunteerPage() {
                           color="text.primary"
                           sx={{ mb: 2 }}
                         >
-                          Você participou deste evento! Que tal compartilhar sua experiência?
+                          Você participou deste evento! Que tal compartilhar sua
+                          experiência?
                         </Typography>
                         <Button
                           fullWidth
@@ -339,18 +381,13 @@ export default function NotificationsVolunteerPage() {
         </Box>
       )}
 
-      <Box mb={2}>
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          color="text.primary"
-          mb={2}
-        >
+      <Box mb={0}>
+        <Typography variant="h5" fontWeight="bold" color="text.primary" mb={2}>
           Suas Inscrições
         </Typography>
       </Box>
 
-      <Stack spacing={3}>
+      <Stack spacing={3} width="100%">
         {eventNotifications.length === 0 ? (
           <Box textAlign="center" mt={8}>
             <Typography
@@ -361,7 +398,7 @@ export default function NotificationsVolunteerPage() {
             >
               Nenhuma notificação
             </Typography>
-            <Typography color="black">
+            <Typography color="text.primary">
               Não há notificações no momento
             </Typography>
           </Box>
@@ -456,14 +493,13 @@ export default function NotificationsVolunteerPage() {
 
                       <Stack spacing={1.5} mb={2}>
                         <Box display="flex" alignItems="center" gap={1}>
-                          <Typography variant="body2" color="black">
+                          <Typography variant="body2" color="text.primary">
                             📍 {event.location}
                           </Typography>
                         </Box>
                         <Box display="flex" alignItems="center" gap={1}>
-                          <Typography variant="body2" color="black">
-                            🕐 {formatStartDate(event.startDate)} •{" "}
-                            {event.durationMinutes} minutos
+                          <Typography variant="body2" color="text.primary">
+                            🕐 {formatStartDate(event.startDate)}
                           </Typography>
                         </Box>
                       </Stack>
@@ -515,13 +551,13 @@ export default function NotificationsVolunteerPage() {
                           >
                             Presença Confirmada!
                           </Typography>
-                          <Typography variant="body2" color="black">
+                          <Typography variant="body2" color="text.primary">
                             Você fez check-in com sucesso
                           </Typography>
                           {event.checkInAt && (
                             <Typography
                               variant="caption"
-                              color="black"
+                              color="text.primary"
                               sx={{ display: "block", mt: 1 }}
                             >
                               Check-in realizado em{" "}
@@ -543,7 +579,7 @@ export default function NotificationsVolunteerPage() {
                         >
                           <Typography
                             variant="caption"
-                            color="black"
+                            color="text.primary"
                             sx={{
                               display: "block",
                               mb: 2,
@@ -555,7 +591,7 @@ export default function NotificationsVolunteerPage() {
                           >
                             Código de Check-in
                           </Typography>
-                          
+
                           {checkInErrors[event.eventId] && (
                             <Alert severity="error" sx={{ mb: 2 }}>
                               {checkInErrors[event.eventId]}
@@ -609,7 +645,9 @@ export default function NotificationsVolunteerPage() {
                               fontWeight: "bold",
                             }}
                           >
-                            {loadingCheckIn[event.eventId] ? "Verificando..." : "Fazer Check-in"}
+                            {loadingCheckIn[event.eventId]
+                              ? "Verificando..."
+                              : "Fazer Check-in"}
                           </Button>
                         </Box>
                       )}
@@ -635,9 +673,17 @@ export default function NotificationsVolunteerPage() {
         }}
       >
         <DialogTitle sx={{ pb: 1 }}>
-          <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Box display="flex" alignItems="center" gap={1}>
-              <Star size={24} color={theme.palette.warning.main} fill={theme.palette.warning.main} />
+              <Star
+                size={24}
+                color={theme.palette.warning.main}
+                fill={theme.palette.warning.main}
+              />
               <Typography variant="h6" fontWeight="bold">
                 Avaliar Evento
               </Typography>
@@ -681,7 +727,12 @@ export default function NotificationsVolunteerPage() {
                   <CheckCircle size={40} color="white" />
                 </Box>
               </Box>
-              <Typography variant="h6" fontWeight="bold" color="success.main" mb={1}>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                color="success.main"
+                mb={1}
+              >
                 Avaliação Enviada!
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -819,6 +870,6 @@ export default function NotificationsVolunteerPage() {
           </>
         )}
       </Dialog>
-    </Container>
+    </Box>
   );
 }
